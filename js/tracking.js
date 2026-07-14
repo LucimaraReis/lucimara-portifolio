@@ -18,6 +18,18 @@
     return id;
   }
 
+  // --- Transforma texto livre em um nome de evento (sem acento, sem espaço) ---
+  function slugificar(texto) {
+    return (texto || "")
+      .toString()
+      .normalize("NFD")
+      .replace(/[̀-ͯ]/g, "")
+      .toLowerCase()
+      .trim()
+      .replace(/[^a-z0-9]+/g, "_")
+      .replace(/^_+|_+$/g, "");
+  }
+
   // --- Grava um evento, sem travar o site se o Supabase falhar ---
   function trackEvent(eventType, eventName, metadata) {
     sbTracking
@@ -48,14 +60,13 @@
   trackEvent("page_view", null, { title: document.title });
 
   document.addEventListener("DOMContentLoaded", () => {
-    // --- Cliques nos botões de "trabalhe comigo" / "vamos criar" (levam a #contato) ---
-    document.querySelectorAll('a[href="#contato"]').forEach((link) => {
-      link.addEventListener("click", () => trackEvent("button_click", "trabalhar_comigo"));
-    });
-
-    // --- Cliques no botão "ver portfólio" ---
-    document.querySelectorAll('a[href="#portfolio"]').forEach((link) => {
-      link.addEventListener("click", () => trackEvent("button_click", "ver_portfolio"));
+    // --- Qualquer clique de navegação por âncora (menu, CTAs, "vamos criar") ---
+    // Cobre: menu do topo, menu mobile, botões do hero e o CTA de serviços,
+    // já que todos apontam para uma seção real da página (#sobre, #contato...).
+    document.querySelectorAll('a[href^="#"]').forEach((link) => {
+      const alvo = link.getAttribute("href").slice(1);
+      if (!alvo || link.classList.contains("logo")) return;
+      link.addEventListener("click", () => trackEvent("button_click", "menu_" + slugificar(alvo)));
     });
 
     // --- Cliques nos links de contato (WhatsApp, e-mail, Instagram, TikTok) ---
@@ -68,6 +79,33 @@
       else if (href.includes("tiktok.com")) nome = "contact_tiktok";
       if (nome) link.addEventListener("click", () => trackEvent("button_click", nome));
     });
+
+    // --- Cliques nos filtros de categoria do portfólio ---
+    // Delegado no container, porque os botões são gerados dinamicamente.
+    const filtersEl = document.getElementById("filters");
+    if (filtersEl) {
+      filtersEl.addEventListener("click", (e) => {
+        const botao = e.target.closest(".filter-btn");
+        if (!botao) return;
+        trackEvent("button_click", "filtro_" + slugificar(botao.textContent));
+      });
+    }
+
+    // --- Cliques nos cards de vídeo do portfólio ---
+    // Delegado no container, porque os cards são recriados a cada filtro.
+    // Usa o ID real do YouTube quando existir (data-video-id), senão usa o
+    // título como identificador provisório até o vídeo real ser cadastrado.
+    const gridEl = document.getElementById("portfolioGrid");
+    if (gridEl) {
+      gridEl.addEventListener("click", (e) => {
+        const card = e.target.closest(".video-card");
+        if (!card) return;
+        const titulo = card.querySelector(".video-title")?.textContent || "video";
+        const idReal = card.dataset.videoId;
+        const idEvento = idReal && idReal.trim() ? idReal.trim() : slugificar(titulo);
+        trackEvent("video_view", idEvento, { title: titulo });
+      });
+    }
 
     // --- Envio do formulário de contato (seção "contato") ---
     const contactForm = document.getElementById("contactForm");
@@ -100,11 +138,5 @@
         });
       });
     }
-
-    // --- Vídeos do portfólio ---
-    // Quando os cards de vídeo (placeholder-img dentro de #portfolioGrid) forem
-    // trocados por vídeos reais do YouTube, adicione aqui uma chamada como:
-    //   trackEvent('video_view', 'ID_DO_VIDEO_NO_YOUTUBE', { title: 'Título do vídeo' });
-    // no clique de cada card, para esses dados aparecerem na aba Portfólio do painel.
   });
 })();

@@ -704,16 +704,19 @@
   document.querySelectorAll('.reveal').forEach(el => revealObserver.observe(el));
 
   // ============================== PORTFÓLIO: cards gerados por JS ==============================
-  // EDITE AQUI: adicione, remova ou renomeie os itens do portfólio
+  // EDITE AQUI: adicione, remova ou renomeie os itens do portfólio.
+  // Quando trocar um item por um vídeo real do YouTube, preencha "youtubeId"
+  // com o ID do vídeo (ex.: em youtube.com/watch?v=ABC123, o ID é "ABC123").
+  // Isso faz o card virar automaticamente um "vídeo assistido" rastreável no painel.
   const PORTFOLIO_ITEMS = [
-    { title: 'rotina de skincare noturna', categoria: 'beleza e pele' },
-    { title: 'review de lançamento de produto', categoria: 'beleza e pele' },
-    { title: 'mini-documentário: um dia de bem-estar', categoria: 'lifestyle e bem-estar' },
-    { title: 'lookbook de coleção', categoria: 'moda' },
-    { title: 'styling e entrevista de bastidores', categoria: 'moda' },
-    { title: 'história de marca, do zero à conexão', categoria: 'narrativa' },
-    { title: 'anúncio ugc para performance', categoria: 'anúncios ugc' },
-    { title: 'antes e depois: rotina capilar', categoria: 'problema × solução' },
+    { title: 'rotina de skincare noturna', categoria: 'beleza e pele', youtubeId: '' },
+    { title: 'review de lançamento de produto', categoria: 'beleza e pele', youtubeId: '' },
+    { title: 'mini-documentário: um dia de bem-estar', categoria: 'lifestyle e bem-estar', youtubeId: '' },
+    { title: 'lookbook de coleção', categoria: 'moda', youtubeId: '' },
+    { title: 'styling e entrevista de bastidores', categoria: 'moda', youtubeId: '' },
+    { title: 'história de marca, do zero à conexão', categoria: 'narrativa', youtubeId: '' },
+    { title: 'anúncio ugc para performance', categoria: 'anúncios ugc', youtubeId: '' },
+    { title: 'antes e depois: rotina capilar', categoria: 'problema × solução', youtubeId: '' },
   ];
   const GRADS = ['grad-1','grad-2','grad-3','grad-4','grad-5'];
   const grid = document.getElementById('portfolioGrid');
@@ -727,6 +730,7 @@
       .forEach((item, i) => {
         const card = document.createElement('div');
         card.className = `video-card placeholder-img ${GRADS[i % GRADS.length]}`;
+        card.dataset.videoId = item.youtubeId || '';
         // EDITE AQUI: troque o conteúdo do card por um <video> real quando integrar seus arquivos
         card.innerHTML = `
           <span class="video-tag">${item.categoria}</span>
