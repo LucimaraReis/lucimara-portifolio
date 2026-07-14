@@ -1,0 +1,293 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="robots" content="noindex">
+<title>Acesso restrito · meu.painel</title>
+
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,500;9..144,600&family=Outfit:wght@400;500;600;700&display=swap" rel="stylesheet">
+
+<style>
+  /* ============================ DESIGN SYSTEM ============================ */
+  :root{
+    --coral: #D4572A;
+    --coral-escuro: #B8461F;
+    --creme: #F5F3EF;
+    --branco: #FFFFFF;
+    --grafite: #1A1816;
+    --texto-suave: #6B645C;
+    --borda: #DDD8D0;
+    --sucesso: #2D7A4F;
+    --erro: #C4453C;
+    --radius-sm: 12px;
+    --radius-md: 16px;
+    --radius-lg: 24px;
+    --sombra: 0 10px 30px rgba(26,24,22,0.08);
+  }
+
+  *{ box-sizing: border-box; }
+
+  body{
+    margin: 0;
+    min-height: 100vh;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: var(--creme);
+    font-family: "Outfit", sans-serif;
+    color: var(--grafite);
+    padding: 24px;
+  }
+
+  .card{
+    width: 100%;
+    max-width: 400px;
+    background: var(--branco);
+    border: 1px solid var(--borda);
+    border-radius: var(--radius-lg);
+    box-shadow: var(--sombra);
+    padding: 40px 32px;
+  }
+
+  .logo{
+    font-family: "Fraunces", serif;
+    font-size: 24px;
+    font-weight: 600;
+    text-align: center;
+    margin-bottom: 28px;
+  }
+  .logo .ponto{ color: var(--coral); }
+
+  h1{
+    font-family: "Fraunces", serif;
+    font-size: 22px;
+    font-weight: 600;
+    margin: 0 0 8px;
+    text-align: center;
+  }
+
+  .subtitulo{
+    font-size: 14px;
+    color: var(--texto-suave);
+    text-align: center;
+    margin: 0 0 28px;
+    line-height: 1.5;
+  }
+
+  .faixa-erro{
+    background: #FBEAE8;
+    border: 1px solid var(--erro);
+    color: var(--erro);
+    font-size: 13px;
+    padding: 10px 14px;
+    border-radius: var(--radius-sm);
+    margin-bottom: 18px;
+    display: none;
+  }
+  .faixa-erro.visivel{ display: block; }
+
+  .faixa-sucesso{
+    background: #E7F3EC;
+    border: 1px solid var(--sucesso);
+    color: var(--sucesso);
+    font-size: 13px;
+    padding: 10px 14px;
+    border-radius: var(--radius-sm);
+    margin-bottom: 18px;
+    display: none;
+  }
+  .faixa-sucesso.visivel{ display: block; }
+
+  label{
+    display: block;
+    font-size: 13px;
+    font-weight: 500;
+    margin-bottom: 6px;
+  }
+
+  .campo{ margin-bottom: 18px; }
+
+  input[type="email"], input[type="password"], input[type="text"]{
+    width: 100%;
+    padding: 12px 14px;
+    border: 1px solid var(--borda);
+    border-radius: var(--radius-sm);
+    font-family: inherit;
+    font-size: 14px;
+    color: var(--grafite);
+    background: var(--creme);
+    outline: none;
+    transition: border-color .15s ease;
+  }
+  input:focus{
+    border-color: var(--coral);
+  }
+
+  .link-esqueci{
+    display: block;
+    text-align: right;
+    font-size: 13px;
+    color: var(--texto-suave);
+    text-decoration: none;
+    margin-bottom: 22px;
+    cursor: pointer;
+  }
+  .link-esqueci:hover{ color: var(--coral); }
+
+  button.botao-primario{
+    width: 100%;
+    padding: 13px;
+    border: none;
+    border-radius: var(--radius-sm);
+    background: var(--coral);
+    color: var(--branco);
+    font-family: inherit;
+    font-size: 15px;
+    font-weight: 600;
+    cursor: pointer;
+    transition: background .15s ease, opacity .15s ease;
+  }
+  button.botao-primario:hover{ background: var(--coral-escuro); }
+  button.botao-primario:disabled{ opacity: .7; cursor: default; }
+
+  .link-voltar{
+    display: block;
+    text-align: center;
+    font-size: 13px;
+    color: var(--texto-suave);
+    margin-top: 18px;
+    cursor: pointer;
+  }
+  .link-voltar:hover{ color: var(--coral); }
+
+  .oculto{ display: none !important; }
+</style>
+</head>
+<body>
+
+  <div class="card">
+    <div class="logo">meu<span class="ponto">.</span>painel</div>
+    <h1>Acesso restrito</h1>
+    <p class="subtitulo">Faça login para ver os números do seu portfólio.</p>
+
+    <div id="faixaErro" class="faixa-erro"></div>
+    <div id="faixaSucesso" class="faixa-sucesso"></div>
+
+    <!-- Formulário de login -->
+    <form id="formLogin">
+      <div class="campo">
+        <label for="email">E-mail</label>
+        <input type="email" id="email" name="email" required autocomplete="username">
+      </div>
+      <div class="campo">
+        <label for="senha">Senha</label>
+        <input type="password" id="senha" name="senha" required autocomplete="current-password">
+      </div>
+      <a class="link-esqueci" id="linkEsqueci">Esqueci minha senha</a>
+      <button type="submit" class="botao-primario" id="botaoEntrar">Entrar</button>
+    </form>
+
+    <!-- Formulário de recuperação de senha (escondido por padrão) -->
+    <form id="formRecuperar" class="oculto">
+      <div class="campo">
+        <label for="emailRecuperar">E-mail</label>
+        <input type="email" id="emailRecuperar" name="emailRecuperar" required autocomplete="username">
+      </div>
+      <button type="submit" class="botao-primario" id="botaoRecuperar">Enviar link de recuperação</button>
+      <a class="link-voltar" id="linkVoltar">Voltar para o login</a>
+    </form>
+  </div>
+
+  <!-- Carrega o SDK do Supabase via CDN e depois a lógica de autenticação -->
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2/dist/umd/supabase.min.js"></script>
+  <script src="/js/auth.js"></script>
+  <script>
+    const formLogin = document.getElementById("formLogin");
+    const formRecuperar = document.getElementById("formRecuperar");
+    const faixaErro = document.getElementById("faixaErro");
+    const faixaSucesso = document.getElementById("faixaSucesso");
+    const linkEsqueci = document.getElementById("linkEsqueci");
+    const linkVoltar = document.getElementById("linkVoltar");
+    const botaoEntrar = document.getElementById("botaoEntrar");
+    const botaoRecuperar = document.getElementById("botaoRecuperar");
+
+    function mostrarErro(msg){
+      faixaSucesso.classList.remove("visivel");
+      faixaErro.textContent = msg;
+      faixaErro.classList.add("visivel");
+    }
+    function esconderMensagens(){
+      faixaErro.classList.remove("visivel");
+      faixaSucesso.classList.remove("visivel");
+    }
+
+    // Se já existir uma sessão ativa, vai direto para o painel
+    (async () => {
+      const { data } = await sb.auth.getSession();
+      if (data.session) {
+        window.location.href = "/painel";
+      }
+    })();
+
+    // Envio do login
+    formLogin.addEventListener("submit", async (e) => {
+      e.preventDefault();
+      esconderMensagens();
+
+      const email = document.getElementById("email").value.trim();
+      const senha = document.getElementById("senha").value;
+
+      botaoEntrar.disabled = true;
+      botaoEntrar.textContent = "Entrando...";
+
+      try {
+        await Auth.login(email, senha);
+        window.location.href = "/painel";
+      } catch (erro) {
+        mostrarErro(erro.message);
+        botaoEntrar.disabled = false;
+        botaoEntrar.textContent = "Entrar";
+      }
+    });
+
+    // Troca para o formulário de recuperação de senha
+    linkEsqueci.addEventListener("click", () => {
+      esconderMensagens();
+      formLogin.classList.add("oculto");
+      formRecuperar.classList.remove("oculto");
+    });
+
+    // Volta para o formulário de login
+    linkVoltar.addEventListener("click", () => {
+      esconderMensagens();
+      formRecuperar.classList.add("oculto");
+      formLogin.classList.remove("oculto");
+    });
+
+    // Envio da recuperação de senha
+    formRecuperar.addEventListener("submit", async (e) => {
+      e.preventDefault();
+      esconderMensagens();
+
+      const email = document.getElementById("emailRecuperar").value.trim();
+
+      botaoRecuperar.disabled = true;
+      botaoRecuperar.textContent = "Enviando...";
+
+      try {
+        await Auth.recuperarSenha(email);
+        faixaSucesso.textContent = "Enviamos um link de recuperação para o seu e-mail.";
+        faixaSucesso.classList.add("visivel");
+      } catch (erro) {
+        mostrarErro("Não foi possível enviar o link. Tente novamente.");
+      } finally {
+        botaoRecuperar.disabled = false;
+        botaoRecuperar.textContent = "Enviar link de recuperação";
+      }
+    });
+  </script>
+</body>
+</html>

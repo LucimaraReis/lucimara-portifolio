@@ -1,0 +1,1017 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="robots" content="noindex">
+<title>Painel · meu.painel</title>
+
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,500;9..144,600&family=Outfit:wght@400;500;600;700&display=swap" rel="stylesheet">
+
+<!-- SDK do Supabase via CDN (precisa vir antes de /js/auth.js) -->
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2/dist/umd/supabase.min.js"></script>
+<script src="/js/auth.js"></script>
+
+<style>
+  /* ============================ DESIGN SYSTEM ============================ */
+  :root{
+    --coral: #D4572A;
+    --coral-escuro: #B8461F;
+    --creme: #F5F3EF;
+    --branco: #FFFFFF;
+    --grafite: #1A1816;
+    --texto-suave: #6B645C;
+    --borda: #DDD8D0;
+    --sucesso: #2D7A4F;
+    --erro: #C4453C;
+    --radius-sm: 12px;
+    --radius-md: 16px;
+    --radius-lg: 24px;
+    --sombra: 0 10px 30px rgba(26,24,22,0.06);
+    --sidebar-largura: 264px;
+  }
+
+  *{ box-sizing: border-box; }
+
+  html, body{
+    margin: 0;
+    background: var(--creme);
+    font-family: "Outfit", sans-serif;
+    color: var(--grafite);
+  }
+
+  h1, h2, h3{
+    font-family: "Fraunces", serif;
+    font-weight: 600;
+    margin: 0;
+  }
+
+  /* Escondido até o guarda de autenticação confirmar a sessão */
+  body.pre-auth{ visibility: hidden; }
+
+  a{ color: inherit; }
+
+  /* ============================== LAYOUT ============================== */
+  .app{
+    display: flex;
+    min-height: 100vh;
+  }
+
+  /* ------------------------------ SIDEBAR ------------------------------ */
+  .sidebar{
+    width: var(--sidebar-largura);
+    flex-shrink: 0;
+    background: var(--branco);
+    border-right: 1px solid var(--borda);
+    display: flex;
+    flex-direction: column;
+    padding: 28px 20px;
+    position: sticky;
+    top: 0;
+    height: 100vh;
+  }
+
+  .logo{
+    font-family: "Fraunces", serif;
+    font-size: 20px;
+    font-weight: 600;
+    margin-bottom: 36px;
+    padding: 0 4px;
+  }
+  .logo .ponto{ color: var(--coral); }
+
+  .menu-lateral-nav{
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+    flex: 1;
+  }
+
+  .item-menu{
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    padding: 12px 14px;
+    border: none;
+    background: none;
+    border-radius: var(--radius-sm);
+    font-family: inherit;
+    font-size: 14px;
+    font-weight: 500;
+    color: var(--texto-suave);
+    cursor: pointer;
+    text-align: left;
+    transition: background .15s ease, color .15s ease;
+  }
+  .item-menu svg{ flex-shrink: 0; }
+  .item-menu:hover{ background: var(--creme); color: var(--grafite); }
+  .item-menu.ativo{ background: var(--coral); color: var(--branco); }
+
+  .sidebar-rodape{
+    border-top: 1px solid var(--borda);
+    padding-top: 16px;
+    margin-top: 16px;
+  }
+  .sidebar-email{
+    font-size: 12px;
+    color: var(--texto-suave);
+    padding: 0 4px 10px;
+    word-break: break-all;
+  }
+  .botao-sair{
+    width: 100%;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    padding: 10px 14px;
+    border: 1px solid var(--borda);
+    background: var(--branco);
+    border-radius: var(--radius-sm);
+    font-family: inherit;
+    font-size: 13px;
+    font-weight: 500;
+    color: var(--grafite);
+    cursor: pointer;
+    transition: border-color .15s ease, color .15s ease;
+  }
+  .botao-sair:hover{ border-color: var(--erro); color: var(--erro); }
+
+  /* --------------------------- ÁREA DE CONTEÚDO --------------------------- */
+  .conteudo{
+    flex: 1;
+    padding: 32px 40px 60px;
+    max-width: 100%;
+    overflow-x: hidden;
+  }
+
+  .topo{
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    flex-wrap: wrap;
+    gap: 16px;
+    margin-bottom: 28px;
+  }
+
+  .topo-titulo{
+    display: flex;
+    align-items: center;
+    gap: 12px;
+  }
+
+  #tituloTopo{ font-size: 26px; }
+
+  .botao-menu-mobile{
+    display: none;
+    border: 1px solid var(--borda);
+    background: var(--branco);
+    border-radius: var(--radius-sm);
+    padding: 8px 10px;
+    cursor: pointer;
+  }
+
+  .filtro-periodo{
+    display: flex;
+    gap: 6px;
+    background: var(--branco);
+    border: 1px solid var(--borda);
+    border-radius: var(--radius-sm);
+    padding: 4px;
+  }
+  .botao-periodo{
+    border: none;
+    background: none;
+    padding: 8px 16px;
+    border-radius: 8px;
+    font-family: inherit;
+    font-size: 13px;
+    font-weight: 500;
+    color: var(--texto-suave);
+    cursor: pointer;
+    transition: background .15s ease, color .15s ease;
+  }
+  .botao-periodo:hover{ color: var(--grafite); }
+  .botao-periodo.ativo{ background: var(--coral); color: var(--branco); }
+
+  .saudacao{
+    font-size: 14px;
+    color: var(--texto-suave);
+    margin-bottom: 20px;
+  }
+
+  .banner-erro{
+    display: none;
+    background: #FBEAE8;
+    border: 1px solid var(--erro);
+    color: var(--erro);
+    font-size: 13px;
+    padding: 12px 16px;
+    border-radius: var(--radius-sm);
+    margin-bottom: 20px;
+  }
+  .banner-erro.visivel{ display: block; }
+
+  /* ------------------------------- CARTÕES ------------------------------- */
+  .cartao{
+    background: var(--branco);
+    border: 1px solid var(--borda);
+    border-radius: var(--radius-lg);
+    box-shadow: var(--sombra);
+    padding: 24px;
+  }
+
+  .grade-numeros{
+    display: grid;
+    grid-template-columns: repeat(5, minmax(0, 1fr));
+    gap: 16px;
+    margin-bottom: 20px;
+  }
+
+  .cartao-numero{
+    background: var(--branco);
+    border: 1px solid var(--borda);
+    border-radius: var(--radius-md);
+    box-shadow: var(--sombra);
+    padding: 20px;
+  }
+  .cartao-numero.destaque{
+    background: var(--coral);
+    border-color: var(--coral);
+    color: var(--branco);
+  }
+  .cartao-numero-numero{
+    font-family: "Fraunces", serif;
+    font-size: 32px;
+    font-weight: 600;
+    line-height: 1.1;
+  }
+  .cartao-numero-rotulo{
+    font-size: 13px;
+    color: var(--texto-suave);
+    margin-top: 6px;
+  }
+  .cartao-numero.destaque .cartao-numero-rotulo{ color: rgba(255,255,255,.85); }
+
+  .cartao-destaque-contato{
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    flex-wrap: wrap;
+    gap: 16px;
+    border: 1px solid var(--coral);
+    margin-bottom: 24px;
+  }
+  .cartao-destaque-contato-texto h3{ font-size: 17px; }
+  .cartao-destaque-contato-texto p{
+    font-size: 12px;
+    color: var(--texto-suave);
+    margin: 6px 0 0;
+    max-width: 440px;
+    line-height: 1.5;
+  }
+  .cartao-destaque-contato-numero{
+    font-family: "Fraunces", serif;
+    font-size: 40px;
+    font-weight: 600;
+    color: var(--coral);
+  }
+
+  .cartao-grafico h3{ font-size: 16px; margin-bottom: 20px; }
+
+  /* --------------------------- GRÁFICO DE BARRAS --------------------------- */
+  .barras{
+    display: flex;
+    align-items: flex-end;
+    gap: 8px;
+    height: 160px;
+  }
+  .barra-dia{
+    position: relative;
+    flex: 1;
+    height: 100%;
+    display: flex;
+    align-items: flex-end;
+  }
+  .barra-coluna{
+    width: 100%;
+    background: var(--coral);
+    border-radius: 6px 6px 0 0;
+    min-height: 3px;
+    transition: opacity .15s ease;
+  }
+  .barra-dia:hover .barra-coluna{ opacity: .8; }
+  .barra-tooltip{
+    position: absolute;
+    bottom: calc(100% + 8px);
+    left: 50%;
+    transform: translateX(-50%);
+    background: var(--grafite);
+    color: var(--branco);
+    font-size: 11px;
+    padding: 5px 9px;
+    border-radius: 8px;
+    white-space: nowrap;
+    opacity: 0;
+    pointer-events: none;
+    transition: opacity .15s ease;
+    z-index: 5;
+  }
+  .barra-dia:hover .barra-tooltip{ opacity: 1; }
+
+  /* ---------------------------- ABAS DO PAINEL ---------------------------- */
+  .painel-aba{ display: none; }
+  .painel-aba.ativo{ display: block; }
+
+  .grade-portfolio{
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 20px;
+  }
+  .grade-portfolio .cartao{ margin-bottom: 0; }
+  .cartao-largo{ grid-column: 1 / -1; }
+
+  .cartao h3{ font-size: 16px; margin-bottom: 18px; }
+
+  .estado-vazio{
+    font-size: 13px;
+    color: var(--texto-suave);
+    padding: 12px 0;
+  }
+
+  /* ------------------------------ VÍDEOS ------------------------------ */
+  .item-video{
+    display: flex;
+    gap: 14px;
+    align-items: center;
+    padding: 10px 0;
+    border-bottom: 1px solid var(--borda);
+  }
+  .item-video:last-child{ border-bottom: none; }
+  .thumb-video{
+    width: 96px;
+    height: 54px;
+    object-fit: cover;
+    border-radius: 10px;
+    flex-shrink: 0;
+    background: var(--creme);
+  }
+  .item-video-info{ flex: 1; min-width: 0; }
+  .item-video-titulo{
+    display: block;
+    font-size: 13px;
+    font-weight: 500;
+    text-decoration: none;
+    margin-bottom: 6px;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+  }
+  .item-video-titulo:hover{ color: var(--coral); }
+  .item-video-contagem{
+    font-size: 11px;
+    color: var(--texto-suave);
+  }
+
+  /* --------------------------- BARRAS HORIZONTAIS --------------------------- */
+  .barra-horizontal{
+    background: var(--creme);
+    border-radius: 6px;
+    height: 8px;
+    overflow: hidden;
+    margin: 6px 0;
+  }
+  .barra-horizontal-preenchida{
+    height: 100%;
+    background: var(--coral);
+    border-radius: 6px;
+  }
+  .item-barra-horizontal{ padding: 8px 0; }
+  .item-barra-cabecalho{
+    display: flex;
+    justify-content: space-between;
+    font-size: 13px;
+    margin-bottom: 4px;
+  }
+
+  /* ------------------------------ CONTATOS ------------------------------ */
+  .item-contato{
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 10px 0;
+    border-bottom: 1px solid var(--borda);
+    font-size: 13px;
+  }
+  .item-contato:last-child{ border-bottom: none; }
+  .item-contato strong{
+    font-family: "Fraunces", serif;
+    font-size: 16px;
+    color: var(--coral);
+  }
+
+  /* -------------------------------- LEADS -------------------------------- */
+  .lista-leads{ display: flex; flex-direction: column; gap: 10px; }
+  .cartao-lead{
+    border: 1px solid var(--borda);
+    border-radius: var(--radius-md);
+    overflow: hidden;
+  }
+  .cartao-lead-cabecalho{
+    display: flex;
+    align-items: center;
+    gap: 14px;
+    padding: 14px 16px;
+    cursor: pointer;
+    flex-wrap: wrap;
+  }
+  .selo{
+    font-size: 10px;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: .03em;
+    padding: 4px 9px;
+    border-radius: 999px;
+    background: var(--creme);
+    color: var(--texto-suave);
+    flex-shrink: 0;
+  }
+  .selo-popup{ background: #F3E8DE; color: var(--coral-escuro); }
+  .selo-contact{ background: #E7F3EC; color: var(--sucesso); }
+
+  .cartao-lead-principal{
+    display: flex;
+    flex-direction: column;
+    gap: 2px;
+    min-width: 120px;
+  }
+  .cartao-lead-principal strong{ font-size: 13px; }
+  .cartao-lead-data{ font-size: 11px; color: var(--texto-suave); }
+  .cartao-lead-email{
+    font-size: 12px;
+    color: var(--texto-suave);
+    flex: 1;
+    min-width: 140px;
+  }
+  .cartao-lead-seta{
+    font-size: 12px;
+    color: var(--texto-suave);
+    transition: transform .15s ease;
+  }
+  .cartao-lead.expandido .cartao-lead-seta{ transform: rotate(180deg); }
+
+  .cartao-lead-detalhes{
+    display: none;
+    padding: 0 16px 16px;
+    font-size: 13px;
+    border-top: 1px solid var(--borda);
+  }
+  .cartao-lead-detalhes p{ margin: 10px 0 0; line-height: 1.5; }
+  .cartao-lead.expandido .cartao-lead-detalhes{ display: block; }
+
+  .cartao-lead-acoes{
+    display: flex;
+    gap: 10px;
+    margin-top: 14px;
+    flex-wrap: wrap;
+  }
+  .botao-acao{
+    display: inline-block;
+    text-decoration: none;
+    font-size: 12px;
+    font-weight: 600;
+    padding: 8px 14px;
+    border-radius: var(--radius-sm);
+    background: var(--coral);
+    color: var(--branco);
+  }
+  .botao-acao:hover{ background: var(--coral-escuro); }
+  .botao-whatsapp{ background: var(--sucesso); }
+  .botao-whatsapp:hover{ background: #235f3d; }
+
+  /* ============================== RESPONSIVO ============================== */
+  @media (max-width: 900px){
+    .grade-numeros{ grid-template-columns: repeat(2, 1fr); }
+    .grade-portfolio{ grid-template-columns: 1fr; }
+  }
+
+  @media (max-width: 760px){
+    .botao-menu-mobile{ display: inline-flex; }
+
+    .sidebar{
+      position: fixed;
+      left: 0; top: 0;
+      z-index: 30;
+      transform: translateX(-100%);
+      transition: transform .2s ease;
+      box-shadow: var(--sombra);
+    }
+    body.menu-aberto .sidebar{ transform: translateX(0); }
+
+    .overlay-mobile{
+      display: none;
+      position: fixed;
+      inset: 0;
+      background: rgba(26,24,22,.4);
+      z-index: 20;
+    }
+    body.menu-aberto .overlay-mobile{ display: block; }
+
+    .conteudo{ padding: 20px 16px 40px; }
+    .grade-numeros{ grid-template-columns: repeat(2, 1fr); }
+    .cartao-numero-numero{ font-size: 26px; }
+  }
+</style>
+</head>
+<body class="pre-auth">
+
+  <div class="app">
+
+    <div class="overlay-mobile" id="overlayMobile"></div>
+
+    <!-- ============================== SIDEBAR ============================== -->
+    <aside class="sidebar" id="sidebar">
+      <div class="logo">meu<span class="ponto">.</span>painel</div>
+
+      <nav class="menu-lateral-nav">
+        <button class="item-menu ativo" data-tab="menu-principal">
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 9.5 12 3l9 6.5"/><path d="M5 9.5V21h14V9.5"/><path d="M9 21v-6h6v6"/></svg>
+          Menu Principal
+        </button>
+        <button class="item-menu" data-tab="portfolio">
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 3v18h18"/><rect x="7" y="12" width="3" height="6"/><rect x="12" y="8" width="3" height="10"/><rect x="17" y="5" width="3" height="13"/></svg>
+          Portfólio
+        </button>
+      </nav>
+
+      <div class="sidebar-rodape">
+        <div class="sidebar-email" id="emailUsuario"></div>
+        <button class="botao-sair" id="botaoSair">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"/><polyline points="16 17 21 12 16 7"/><line x1="21" y1="12" x2="9" y2="12"/></svg>
+          Sair
+        </button>
+      </div>
+    </aside>
+
+    <!-- =========================== ÁREA DE CONTEÚDO =========================== -->
+    <main class="conteudo">
+
+      <div class="topo">
+        <div class="topo-titulo">
+          <button class="botao-menu-mobile" id="botaoMenuMobile" aria-label="Abrir menu">
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="3" y1="6" x2="21" y2="6"/><line x1="3" y1="12" x2="21" y2="12"/><line x1="3" y1="18" x2="21" y2="18"/></svg>
+          </button>
+          <h1 id="tituloTopo">Menu Principal</h1>
+        </div>
+
+        <div class="filtro-periodo">
+          <button class="botao-periodo ativo" data-periodo="tudo">Tudo</button>
+          <button class="botao-periodo" data-periodo="7d">7d</button>
+          <button class="botao-periodo" data-periodo="30d">30d</button>
+          <button class="botao-periodo" data-periodo="90d">90d</button>
+        </div>
+      </div>
+
+      <div class="banner-erro" id="bannerErro"></div>
+
+      <!-- ============================ ABA: MENU PRINCIPAL ============================ -->
+      <section class="painel-aba ativo" id="aba-menu-principal">
+        <p class="saudacao">Olá! Aqui estão os números do seu portfólio.</p>
+
+        <div class="grade-numeros">
+          <div class="cartao-numero destaque">
+            <div class="cartao-numero-numero" id="numVisitas">0</div>
+            <div class="cartao-numero-rotulo">Visitas</div>
+          </div>
+          <div class="cartao-numero">
+            <div class="cartao-numero-numero" id="numVisitantes">0</div>
+            <div class="cartao-numero-rotulo">Visitantes únicos</div>
+          </div>
+          <div class="cartao-numero">
+            <div class="cartao-numero-numero" id="numCliques">0</div>
+            <div class="cartao-numero-rotulo">Cliques em botões</div>
+          </div>
+          <div class="cartao-numero">
+            <div class="cartao-numero-numero" id="numVideos">0</div>
+            <div class="cartao-numero-rotulo">Vídeos vistos</div>
+          </div>
+          <div class="cartao-numero">
+            <div class="cartao-numero-numero" id="numMensagens">0</div>
+            <div class="cartao-numero-rotulo">Mensagens</div>
+          </div>
+        </div>
+
+        <div class="cartao cartao-destaque-contato">
+          <div class="cartao-destaque-contato-texto">
+            <h3>Clicaram para entrar em contato</h3>
+            <p>Conta quem clicou em WhatsApp, e-mail, Instagram ou no botão de enviar o formulário.</p>
+          </div>
+          <div class="cartao-destaque-contato-numero" id="numContatos">0</div>
+        </div>
+
+        <div class="cartao cartao-grafico">
+          <h3>Visitas nos últimos 14 dias</h3>
+          <div class="barras" id="barrasVisitas"></div>
+        </div>
+      </section>
+
+      <!-- =============================== ABA: PORTFÓLIO =============================== -->
+      <section class="painel-aba" id="aba-portfolio">
+        <div class="grade-portfolio">
+
+          <div class="cartao">
+            <h3>Vídeos mais vistos</h3>
+            <div id="listaVideos"></div>
+          </div>
+
+          <div class="cartao">
+            <h3>Botões mais clicados</h3>
+            <div id="listaBotoes"></div>
+          </div>
+
+          <div class="cartao">
+            <h3>Cliques para contato</h3>
+            <div id="listaContatos"></div>
+          </div>
+
+          <div class="cartao cartao-largo">
+            <h3>Mensagens recebidas</h3>
+            <div class="lista-leads" id="listaLeads"></div>
+          </div>
+
+        </div>
+      </section>
+
+    </main>
+  </div>
+
+  <script>
+    // ==========================================================================
+    // ESTADO EM MEMÓRIA (cache) — carregado uma vez, refiltrado ao trocar período
+    // ==========================================================================
+    let cacheEventos = [];
+    let cacheLeads = [];
+    let periodoAtual = "tudo"; // "tudo" | "7d" | "30d" | "90d"
+
+    const TITULOS_ABA = {
+      "menu-principal": "Menu Principal",
+      "portfolio": "Portfólio",
+    };
+
+    // --------------------------------------------------------------------------
+    // Escapa texto vindo do banco antes de inserir no HTML (evita XSS, já que
+    // mensagens de contato são digitadas por visitantes do site).
+    // --------------------------------------------------------------------------
+    function escapeHtml(valor) {
+      if (valor === null || valor === undefined) return "";
+      return String(valor)
+        .replace(/&/g, "&amp;")
+        .replace(/</g, "&lt;")
+        .replace(/>/g, "&gt;")
+        .replace(/"/g, "&quot;")
+        .replace(/'/g, "&#39;");
+    }
+
+    function formatarNomeLegivel(nome) {
+      if (!nome) return "";
+      return nome.replace(/_/g, " ").replace(/\b\w/g, (c) => c.toUpperCase());
+    }
+
+    function chaveDia(data) {
+      const ano = data.getFullYear();
+      const mes = String(data.getMonth() + 1).padStart(2, "0");
+      const dia = String(data.getDate()).padStart(2, "0");
+      return `${ano}-${mes}-${dia}`;
+    }
+
+    // ==========================================================================
+    // BUSCA COM PAGINAÇÃO — o Supabase limita a 1000 linhas por consulta, então
+    // buscamos em blocos de 1000 até vir um bloco menor (fim dos dados).
+    // ==========================================================================
+    async function buscarTudo(tabela) {
+      const TAMANHO_BLOCO = 1000;
+      let resultado = [];
+      let inicio = 0;
+
+      while (true) {
+        const { data, error } = await sb
+          .from(tabela)
+          .select("*")
+          .order("created_at", { ascending: false })
+          .range(inicio, inicio + TAMANHO_BLOCO - 1);
+
+        if (error) throw error;
+
+        resultado = resultado.concat(data);
+        if (data.length < TAMANHO_BLOCO) break;
+        inicio += TAMANHO_BLOCO;
+      }
+
+      return resultado;
+    }
+
+    // ==========================================================================
+    // FILTRO DE PERÍODO — refiltra em memória, sem nova consulta ao banco
+    // ==========================================================================
+    function filtrarPorPeriodo(lista) {
+      if (periodoAtual === "tudo") return lista;
+      const dias = { "7d": 7, "30d": 30, "90d": 90 }[periodoAtual];
+      const corte = new Date();
+      corte.setDate(corte.getDate() - dias);
+      return lista.filter((item) => new Date(item.created_at) >= corte);
+    }
+
+    // ==========================================================================
+    // RENDERIZAÇÃO — ABA MENU PRINCIPAL
+    // ==========================================================================
+    function renderizarVisaoGeral(eventosFiltrados, leadsFiltrados) {
+      const pageViews = eventosFiltrados.filter((e) => e.event_type === "page_view");
+      const cliques = eventosFiltrados.filter((e) => e.event_type === "button_click");
+      const videos = eventosFiltrados.filter((e) => e.event_type === "video_view");
+      const contatos = cliques.filter((e) => e.event_name && e.event_name.startsWith("contact_"));
+
+      document.getElementById("numVisitas").textContent = pageViews.length;
+      document.getElementById("numVisitantes").textContent = new Set(pageViews.map((e) => e.session_id)).size;
+      document.getElementById("numCliques").textContent = cliques.length;
+      document.getElementById("numVideos").textContent = videos.length;
+      document.getElementById("numMensagens").textContent = leadsFiltrados.length;
+      document.getElementById("numContatos").textContent = contatos.length;
+
+      renderizarGraficoVisitas(pageViews);
+    }
+
+    function renderizarGraficoVisitas(pageViews) {
+      const hoje = new Date();
+      hoje.setHours(0, 0, 0, 0);
+
+      const dias = [];
+      const contagemPorDia = {};
+      for (let i = 13; i >= 0; i--) {
+        const d = new Date(hoje);
+        d.setDate(d.getDate() - i);
+        const chave = chaveDia(d);
+        dias.push({ chave, data: d });
+        contagemPorDia[chave] = 0;
+      }
+
+      pageViews.forEach((e) => {
+        const chave = chaveDia(new Date(e.created_at));
+        if (chave in contagemPorDia) contagemPorDia[chave]++;
+      });
+
+      const maximo = Math.max(1, ...Object.values(contagemPorDia));
+      const container = document.getElementById("barrasVisitas");
+      container.innerHTML = "";
+
+      dias.forEach(({ chave, data }) => {
+        const contagem = contagemPorDia[chave];
+        const altura = Math.max(Math.round((contagem / maximo) * 100), contagem > 0 ? 4 : 1);
+        const dataFormatada = data.toLocaleDateString("pt-BR", { day: "2-digit", month: "2-digit" });
+
+        const barraDia = document.createElement("div");
+        barraDia.className = "barra-dia";
+        barraDia.innerHTML = `
+          <div class="barra-tooltip">${dataFormatada}: ${contagem}</div>
+          <div class="barra-coluna" style="height:${altura}%"></div>
+        `;
+        container.appendChild(barraDia);
+      });
+    }
+
+    // ==========================================================================
+    // RENDERIZAÇÃO — ABA PORTFÓLIO
+    // ==========================================================================
+    function renderizarVideos(eventosFiltrados) {
+      const container = document.getElementById("listaVideos");
+      const videos = eventosFiltrados.filter((e) => e.event_type === "video_view");
+
+      if (videos.length === 0) {
+        container.innerHTML = '<p class="estado-vazio">Nenhum vídeo assistido ainda.</p>';
+        return;
+      }
+
+      const mapa = {};
+      videos.forEach((v) => {
+        const id = v.event_name;
+        if (!mapa[id]) {
+          mapa[id] = { contagem: 0, titulo: (v.metadata && v.metadata.title) || id };
+        }
+        mapa[id].contagem++;
+      });
+
+      const ordenado = Object.entries(mapa).sort((a, b) => b[1].contagem - a[1].contagem);
+      const maximo = ordenado[0][1].contagem;
+
+      container.innerHTML = ordenado
+        .map(([id, info]) => {
+          const largura = Math.round((info.contagem / maximo) * 100);
+          const urlAssistir = `https://www.youtube.com/watch?v=${encodeURIComponent(id)}`;
+          const urlThumb = `https://i.ytimg.com/vi/${encodeURIComponent(id)}/mqdefault.jpg`;
+          return `
+            <div class="item-video">
+              <a href="${urlAssistir}" target="_blank" rel="noopener">
+                <img src="${urlThumb}" alt="${escapeHtml(info.titulo)}" class="thumb-video" loading="lazy">
+              </a>
+              <div class="item-video-info">
+                <a href="${urlAssistir}" target="_blank" rel="noopener" class="item-video-titulo">${escapeHtml(info.titulo)}</a>
+                <div class="barra-horizontal"><div class="barra-horizontal-preenchida" style="width:${largura}%"></div></div>
+                <span class="item-video-contagem">${info.contagem} visualiza${info.contagem === 1 ? "ção" : "ções"}</span>
+              </div>
+            </div>`;
+        })
+        .join("");
+    }
+
+    function renderizarBotoes(eventosFiltrados) {
+      const container = document.getElementById("listaBotoes");
+      const cliques = eventosFiltrados.filter((e) => e.event_type === "button_click");
+
+      if (cliques.length === 0) {
+        container.innerHTML = '<p class="estado-vazio">Nenhum clique registrado ainda.</p>';
+        return;
+      }
+
+      const mapa = {};
+      cliques.forEach((e) => { mapa[e.event_name] = (mapa[e.event_name] || 0) + 1; });
+
+      const ordenado = Object.entries(mapa).sort((a, b) => b[1] - a[1]);
+      const maximo = ordenado[0][1];
+
+      container.innerHTML = ordenado
+        .map(([nome, contagem]) => {
+          const largura = Math.round((contagem / maximo) * 100);
+          return `
+            <div class="item-barra-horizontal">
+              <div class="item-barra-cabecalho">
+                <span>${escapeHtml(formatarNomeLegivel(nome))}</span>
+                <strong>${contagem}</strong>
+              </div>
+              <div class="barra-horizontal"><div class="barra-horizontal-preenchida" style="width:${largura}%"></div></div>
+            </div>`;
+        })
+        .join("");
+    }
+
+    function renderizarContatos(eventosFiltrados) {
+      const container = document.getElementById("listaContatos");
+      const contatos = eventosFiltrados.filter(
+        (e) => e.event_type === "button_click" && e.event_name && e.event_name.startsWith("contact_")
+      );
+
+      if (contatos.length === 0) {
+        container.innerHTML = '<p class="estado-vazio">Nenhum clique de contato ainda.</p>';
+        return;
+      }
+
+      const mapa = {};
+      contatos.forEach((e) => { mapa[e.event_name] = (mapa[e.event_name] || 0) + 1; });
+
+      const ordenado = Object.entries(mapa).sort((a, b) => b[1] - a[1]);
+
+      container.innerHTML = ordenado
+        .map(([nome, contagem]) => `
+          <div class="item-contato">
+            <span>${escapeHtml(formatarNomeLegivel(nome.replace(/^contact_/, "")))}</span>
+            <strong>${contagem}</strong>
+          </div>`)
+        .join("");
+    }
+
+    function renderizarLeads(leadsFiltrados) {
+      const container = document.getElementById("listaLeads");
+
+      if (leadsFiltrados.length === 0) {
+        container.innerHTML = '<p class="estado-vazio">Nenhuma mensagem por enquanto.</p>';
+        return;
+      }
+
+      const ordenado = [...leadsFiltrados].sort((a, b) => new Date(b.created_at) - new Date(a.created_at));
+
+      container.innerHTML = ordenado
+        .map((lead, indice) => {
+          const digitosTelefone = lead.phone ? lead.phone.replace(/\D/g, "") : "";
+          const dataFormatada = new Date(lead.created_at).toLocaleDateString("pt-BR", {
+            day: "2-digit", month: "2-digit", year: "numeric", hour: "2-digit", minute: "2-digit",
+          });
+          const origem = lead.source === "popup" ? "Pop-up" : "Contato";
+          const seloClasse = lead.source === "popup" ? "selo-popup" : "selo-contact";
+
+          return `
+            <div class="cartao-lead" data-indice="${indice}">
+              <div class="cartao-lead-cabecalho">
+                <span class="selo ${seloClasse}">${escapeHtml(origem)}</span>
+                <div class="cartao-lead-principal">
+                  <strong>${escapeHtml(lead.name || "Sem nome")}</strong>
+                  <span class="cartao-lead-data">${dataFormatada}</span>
+                </div>
+                <span class="cartao-lead-email">${escapeHtml(lead.email || "")}</span>
+                <span class="cartao-lead-seta">▾</span>
+              </div>
+              <div class="cartao-lead-detalhes">
+                ${lead.phone ? `<p><strong>Telefone:</strong> ${escapeHtml(lead.phone)}</p>` : ""}
+                ${lead.brand ? `<p><strong>Marca:</strong> ${escapeHtml(lead.brand)}</p>` : ""}
+                ${lead.budget ? `<p><strong>Orçamento:</strong> ${escapeHtml(lead.budget)}</p>` : ""}
+                ${lead.message ? `<p><strong>Mensagem:</strong> ${escapeHtml(lead.message)}</p>` : ""}
+                <div class="cartao-lead-acoes">
+                  <a class="botao-acao" href="mailto:${escapeHtml(lead.email || "")}">Responder por e-mail</a>
+                  ${digitosTelefone ? `<a class="botao-acao botao-whatsapp" href="https://wa.me/${digitosTelefone}" target="_blank" rel="noopener">WhatsApp</a>` : ""}
+                </div>
+              </div>
+            </div>`;
+        })
+        .join("");
+
+      container.querySelectorAll(".cartao-lead-cabecalho").forEach((cabecalho) => {
+        cabecalho.addEventListener("click", () => {
+          cabecalho.parentElement.classList.toggle("expandido");
+        });
+      });
+    }
+
+    // ==========================================================================
+    // RENDERIZAÇÃO GERAL — chamada ao carregar e sempre que o período mudar
+    // ==========================================================================
+    function renderizarTudo() {
+      const eventosFiltrados = filtrarPorPeriodo(cacheEventos);
+      const leadsFiltrados = filtrarPorPeriodo(cacheLeads);
+
+      renderizarVisaoGeral(eventosFiltrados, leadsFiltrados);
+      renderizarVideos(eventosFiltrados);
+      renderizarBotoes(eventosFiltrados);
+      renderizarContatos(eventosFiltrados);
+      renderizarLeads(leadsFiltrados);
+    }
+
+    // ==========================================================================
+    // CARREGAMENTO DE DADOS — uma única vez, com tratamento de erro
+    // ==========================================================================
+    async function carregarDados() {
+      try {
+        const [eventos, leads] = await Promise.all([
+          buscarTudo("portfolio_events"),
+          buscarTudo("portfolio_leads"),
+        ]);
+        cacheEventos = eventos;
+        cacheLeads = leads;
+      } catch (erro) {
+        console.error(erro);
+        const banner = document.getElementById("bannerErro");
+        banner.textContent = "Não foi possível carregar os dados agora. Tente novamente em instantes.";
+        banner.classList.add("visivel");
+      }
+      renderizarTudo();
+    }
+
+    // ==========================================================================
+    // INTERAÇÕES — abas, filtro de período, menu mobile, logout
+    // ==========================================================================
+    document.querySelectorAll(".item-menu").forEach((botao) => {
+      botao.addEventListener("click", () => {
+        document.querySelectorAll(".item-menu").forEach((b) => b.classList.remove("ativo"));
+        botao.classList.add("ativo");
+
+        const aba = botao.dataset.tab;
+        document.querySelectorAll(".painel-aba").forEach((p) => p.classList.remove("ativo"));
+        document.getElementById("aba-" + aba).classList.add("ativo");
+        document.getElementById("tituloTopo").textContent = TITULOS_ABA[aba];
+
+        document.body.classList.remove("menu-aberto");
+      });
+    });
+
+    document.querySelectorAll(".botao-periodo").forEach((botao) => {
+      botao.addEventListener("click", () => {
+        document.querySelectorAll(".botao-periodo").forEach((b) => b.classList.remove("ativo"));
+        botao.classList.add("ativo");
+        periodoAtual = botao.dataset.periodo;
+        renderizarTudo();
+      });
+    });
+
+    document.getElementById("botaoMenuMobile").addEventListener("click", () => {
+      document.body.classList.toggle("menu-aberto");
+    });
+    document.getElementById("overlayMobile").addEventListener("click", () => {
+      document.body.classList.remove("menu-aberto");
+    });
+
+    document.getElementById("botaoSair").addEventListener("click", () => {
+      Auth.logout();
+    });
+
+    // ==========================================================================
+    // GUARDA DE AUTENTICAÇÃO — roda antes de mostrar qualquer conteúdo
+    // ==========================================================================
+    (async function iniciar() {
+      const usuario = await Auth.checkAuth();
+      if (!usuario) return; // Auth.checkAuth já redirecionou para /login
+
+      document.getElementById("emailUsuario").textContent = usuario.email;
+      document.body.classList.remove("pre-auth");
+
+      await carregarDados();
+    })();
+  </script>
+</body>
+</html>
