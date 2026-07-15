@@ -1240,21 +1240,34 @@
     // CARREGAMENTO DE DADOS — uma única vez, com tratamento de erro
     // ==========================================================================
     async function carregarDados() {
-      try {
-        const [eventos, leads, tarefas] = await Promise.all([
-          buscarTudo("portfolio_events"),
-          buscarTudo("portfolio_leads"),
-          buscarTudo("portfolio_tasks"),
-        ]);
-        cacheEventos = eventos;
-        cacheLeads = leads;
-        cacheTarefas = tarefas;
-      } catch (erro) {
-        console.error(erro);
-        const banner = document.getElementById("bannerErro");
-        banner.textContent = "Não foi possível carregar os dados agora. Tente novamente em instantes.";
+      // Cada tabela é buscada de forma independente: se uma falhar (ex.: a
+      // tabela portfolio_tasks ainda não foi criada no Supabase), as outras
+      // continuam carregando normalmente em vez de tudo travar junto.
+      const [eventos, leads, tarefas] = await Promise.allSettled([
+        buscarTudo("portfolio_events"),
+        buscarTudo("portfolio_leads"),
+        buscarTudo("portfolio_tasks"),
+      ]);
+
+      let houveErro = false;
+
+      if (eventos.status === "fulfilled") cacheEventos = eventos.value;
+      else { console.error(eventos.reason); houveErro = true; }
+
+      if (leads.status === "fulfilled") cacheLeads = leads.value;
+      else { console.error(leads.reason); houveErro = true; }
+
+      if (tarefas.status === "fulfilled") cacheTarefas = tarefas.value;
+      else { console.error(tarefas.reason); houveErro = true; }
+
+      const banner = document.getElementById("bannerErro");
+      if (houveErro) {
+        banner.textContent = "Alguns dados não puderam ser carregados agora. Tente novamente em instantes.";
         banner.classList.add("visivel");
+      } else {
+        banner.classList.remove("visivel");
       }
+
       renderizarTudo();
     }
 
