@@ -485,6 +485,18 @@
     font-size: 13px;
     background: var(--branco);
   }
+  .form-linha-horarios{ display: flex; gap: 10px; }
+  .form-campo-horario{ flex: 1; display: flex; flex-direction: column; gap: 4px; }
+  .form-campo-horario label{ font-size: 11px; color: var(--texto-suave); }
+  .form-campo-horario input[type="time"]{
+    border: 1px solid var(--borda);
+    border-radius: var(--radius-sm);
+    padding: 8px 10px;
+    font-family: inherit;
+    font-size: 13px;
+    background: var(--branco);
+    width: 100%;
+  }
   .form-linha{ display: flex; gap: 8px; }
   .form-linha select{
     border: 1px solid var(--borda);
@@ -545,6 +557,7 @@
   .tarefa-titulo{ margin: 0; font-size: 14px; }
   .item-tarefa.concluida .tarefa-titulo{ text-decoration: line-through; color: var(--texto-suave); }
   .tarefa-notas{ margin: 3px 0 0; font-size: 12px; color: var(--texto-suave); }
+  .tarefa-horario{ margin: 2px 0 0; font-size: 12px; color: var(--texto-suave); }
   .tarefa-marca{
     margin: 0 0 2px;
     font-size: 11px;
@@ -946,6 +959,16 @@
             <form class="form-nova-tarefa oculto" id="formNovaTarefa">
               <input type="text" id="tarefaTitulo" placeholder="O que precisa ser feito?" required>
               <input type="text" id="tarefaMarca" placeholder="Marca ou cliente (opcional)">
+              <div class="form-linha-horarios">
+                <div class="form-campo-horario">
+                  <label for="tarefaInicio">Começa (opcional)</label>
+                  <input type="time" id="tarefaInicio">
+                </div>
+                <div class="form-campo-horario">
+                  <label for="tarefaFim">Termina (opcional)</label>
+                  <input type="time" id="tarefaFim">
+                </div>
+              </div>
               <div class="form-linha">
                 <select id="tarefaTipo">
                   <option value="entrega">Entrega</option>
@@ -1394,6 +1417,7 @@
           <div class="tarefa-texto">
             ${t.marca ? `<p class="tarefa-marca">${escapeHtml(t.marca)}</p>` : ""}
             <p class="tarefa-titulo">${escapeHtml(t.titulo)}</p>
+            ${formatarHorario(t) ? `<p class="tarefa-horario">${formatarHorario(t)}</p>` : ""}
             ${t.notas ? `<p class="tarefa-notas">${escapeHtml(t.notas)}</p>` : ""}
           </div>
           ${estaAtrasada(t) ? `<span class="tarefa-badge atrasada">Atrasada</span>` : ""}
@@ -1418,6 +1442,16 @@
     // Uma tarefa está atrasada quando o dia dela já passou e ela não foi concluída.
     function estaAtrasada(tarefa) {
       return !tarefa.concluida && tarefa.data_venc < chaveDia(new Date());
+    }
+
+    // Formata "14:00:00" / "16:00:00" em algo como "14:00 - 16:00"
+    function formatarHorario(tarefa) {
+      const inicio = tarefa.hora_inicio ? tarefa.hora_inicio.slice(0, 5) : "";
+      const fim = tarefa.hora_fim ? tarefa.hora_fim.slice(0, 5) : "";
+      if (inicio && fim) return `${inicio} - ${fim}`;
+      if (inicio) return `A partir das ${inicio}`;
+      if (fim) return `Até ${fim}`;
+      return "";
     }
 
     // Lista completa de pendências em aberto e concluídas, de todas as datas
@@ -1448,7 +1482,7 @@
           <div class="tarefa-texto">
             ${t.marca ? `<p class="tarefa-marca">${escapeHtml(t.marca)}</p>` : ""}
             <p class="tarefa-titulo">${escapeHtml(t.titulo)}</p>
-            <p class="tarefa-data">${formatarDataVenc(t.data_venc)}</p>
+            <p class="tarefa-data">${formatarDataVenc(t.data_venc)}${formatarHorario(t) ? " · " + formatarHorario(t) : ""}</p>
           </div>
           ${estaAtrasada(t) ? `<span class="tarefa-badge atrasada">Atrasada</span>` : ""}
           <span class="tarefa-badge ${t.tipo}">${t.tipo === "entrega" ? "Entrega" : "Pendência"}</span>
@@ -1464,10 +1498,17 @@
       });
     }
 
-    async function criarTarefa(titulo, tipo, marca) {
+    async function criarTarefa(titulo, tipo, marca, horaInicio, horaFim) {
       const { data, error } = await sb
         .from("portfolio_tasks")
-        .insert({ titulo, tipo, marca: marca || null, data_venc: chaveDia(diaSelecionado) })
+        .insert({
+          titulo,
+          tipo,
+          marca: marca || null,
+          hora_inicio: horaInicio || null,
+          hora_fim: horaFim || null,
+          data_venc: chaveDia(diaSelecionado),
+        })
         .select()
         .single();
 
@@ -1563,8 +1604,10 @@
       const titulo = document.getElementById("tarefaTitulo").value.trim();
       const tipo = document.getElementById("tarefaTipo").value;
       const marca = document.getElementById("tarefaMarca").value.trim();
+      const horaInicio = document.getElementById("tarefaInicio").value;
+      const horaFim = document.getElementById("tarefaFim").value;
       if (!titulo) return;
-      await criarTarefa(titulo, tipo, marca);
+      await criarTarefa(titulo, tipo, marca, horaInicio, horaFim);
       e.target.reset();
       document.getElementById("formNovaTarefa").classList.add("oculto");
     });
