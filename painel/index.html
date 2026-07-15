@@ -367,6 +367,209 @@
     padding: 12px 0;
   }
 
+  /* ------------------------------ CALENDÁRIO ------------------------------ */
+  .grade-calendario{
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 20px;
+    align-items: start;
+  }
+
+  .calendario-cabecalho{
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin-bottom: 18px;
+  }
+  .calendario-cabecalho h3{ margin: 0; }
+  .botao-mes{
+    width: 32px;
+    height: 32px;
+    border: 1px solid var(--borda);
+    background: var(--branco);
+    border-radius: 999px;
+    font-size: 16px;
+    line-height: 1;
+    color: var(--texto-suave);
+    cursor: pointer;
+    transition: border-color .15s ease, color .15s ease;
+  }
+  .botao-mes:hover{ border-color: var(--coral); color: var(--coral); }
+
+  .calendario-dias-semana{
+    display: grid;
+    grid-template-columns: repeat(7, 1fr);
+    text-align: center;
+    font-size: 11px;
+    color: var(--texto-suave);
+    text-transform: uppercase;
+    letter-spacing: .04em;
+    margin-bottom: 8px;
+  }
+
+  .calendario-grade{
+    display: grid;
+    grid-template-columns: repeat(7, 1fr);
+    gap: 4px;
+  }
+  .dia-vazio{ aspect-ratio: 1; }
+  .dia-celula{
+    aspect-ratio: 1;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 3px;
+    border: none;
+    background: transparent;
+    border-radius: var(--radius-sm);
+    font-family: inherit;
+    font-size: 13px;
+    color: var(--grafite);
+    cursor: pointer;
+    transition: background .15s ease, color .15s ease;
+  }
+  .dia-celula:hover{ background: var(--creme); }
+  .dia-celula.hoje{ font-weight: 700; color: var(--coral); }
+  .dia-celula.selecionado{ background: var(--coral); color: var(--branco); }
+  .dia-ponto{ width: 5px; height: 5px; border-radius: 50%; background: var(--coral); }
+  .dia-ponto.concluido{ background: var(--texto-suave); }
+  .dia-celula.selecionado .dia-ponto{ background: var(--branco); }
+
+  .dia-cabecalho{
+    display: flex;
+    align-items: flex-start;
+    justify-content: space-between;
+    gap: 12px;
+    margin-bottom: 18px;
+  }
+  .dia-rotulo{
+    font-size: 11px;
+    text-transform: uppercase;
+    letter-spacing: .08em;
+    color: var(--coral);
+    margin: 0 0 4px;
+  }
+  .cartao-dia h3{ margin: 0; font-size: 18px; }
+  .botao-nova-tarefa{
+    border: none;
+    background: var(--coral);
+    color: var(--branco);
+    border-radius: var(--radius-sm);
+    padding: 9px 16px;
+    font-family: inherit;
+    font-size: 13px;
+    font-weight: 600;
+    cursor: pointer;
+    transition: background .15s ease;
+    white-space: nowrap;
+  }
+  .botao-nova-tarefa:hover{ background: var(--coral-escuro); }
+
+  .form-nova-tarefa{
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    background: var(--creme);
+    border-radius: var(--radius-sm);
+    padding: 14px;
+    margin-bottom: 16px;
+  }
+  .form-nova-tarefa.oculto{ display: none; }
+  .form-nova-tarefa input[type="text"]{
+    border: 1px solid var(--borda);
+    border-radius: var(--radius-sm);
+    padding: 10px 12px;
+    font-family: inherit;
+    font-size: 13px;
+    background: var(--branco);
+  }
+  .form-linha{ display: flex; gap: 8px; }
+  .form-linha select{
+    border: 1px solid var(--borda);
+    border-radius: var(--radius-sm);
+    padding: 8px 10px;
+    font-family: inherit;
+    font-size: 13px;
+    background: var(--branco);
+  }
+  .botao-salvar-tarefa{
+    border: none;
+    background: var(--coral);
+    color: var(--branco);
+    border-radius: var(--radius-sm);
+    padding: 8px 14px;
+    font-family: inherit;
+    font-size: 13px;
+    font-weight: 600;
+    cursor: pointer;
+  }
+  .botao-cancelar-tarefa{
+    border: 1px solid var(--borda);
+    background: var(--branco);
+    color: var(--texto-suave);
+    border-radius: var(--radius-sm);
+    padding: 8px 14px;
+    font-family: inherit;
+    font-size: 13px;
+    cursor: pointer;
+  }
+
+  .item-tarefa{
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    padding: 12px 0;
+    border-bottom: 1px solid var(--borda);
+  }
+  .item-tarefa:last-child{ border-bottom: none; }
+  .tarefa-check{
+    flex-shrink: 0;
+    width: 22px;
+    height: 22px;
+    border-radius: 50%;
+    border: 1px solid var(--borda);
+    background: var(--branco);
+    color: var(--branco);
+    font-size: 12px;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 0;
+  }
+  .item-tarefa.concluida .tarefa-check{ background: var(--sucesso); border-color: var(--sucesso); }
+  .tarefa-texto{ flex: 1; min-width: 0; }
+  .tarefa-titulo{ margin: 0; font-size: 14px; }
+  .item-tarefa.concluida .tarefa-titulo{ text-decoration: line-through; color: var(--texto-suave); }
+  .tarefa-notas{ margin: 3px 0 0; font-size: 12px; color: var(--texto-suave); }
+  .tarefa-badge{
+    flex-shrink: 0;
+    font-size: 11px;
+    font-weight: 600;
+    padding: 4px 10px;
+    border-radius: 999px;
+    text-transform: uppercase;
+    letter-spacing: .03em;
+  }
+  .tarefa-badge.entrega{ background: var(--coral); color: var(--branco); }
+  .tarefa-badge.pendencia{ background: var(--creme); color: var(--texto-suave); border: 1px solid var(--borda); }
+  .tarefa-excluir{
+    flex-shrink: 0;
+    border: none;
+    background: none;
+    color: var(--texto-suave);
+    font-size: 18px;
+    line-height: 1;
+    cursor: pointer;
+    padding: 2px 4px;
+  }
+  .tarefa-excluir:hover{ color: var(--erro); }
+
+  @media (max-width: 900px){
+    .grade-calendario{ grid-template-columns: 1fr; }
+  }
+
   /* ------------------------------ VÍDEOS ------------------------------ */
   .item-video{
     display: flex;
@@ -570,6 +773,10 @@
           <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 3v18h18"/><rect x="7" y="12" width="3" height="6"/><rect x="12" y="8" width="3" height="10"/><rect x="17" y="5" width="3" height="13"/></svg>
           Portfólio
         </button>
+        <button class="item-menu" data-tab="calendario">
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="4" width="18" height="18" rx="2"/><line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/><line x1="3" y1="10" x2="21" y2="10"/></svg>
+          Calendário
+        </button>
       </nav>
 
       <div class="sidebar-rodape">
@@ -676,6 +883,49 @@
         </div>
       </section>
 
+      <!-- ============================ ABA: CALENDÁRIO ============================ -->
+      <section class="painel-aba" id="aba-calendario">
+        <div class="grade-calendario">
+
+          <div class="cartao cartao-calendario">
+            <div class="calendario-cabecalho">
+              <button type="button" class="botao-mes" id="mesAnterior" aria-label="Mês anterior">‹</button>
+              <h3 id="tituloMes"></h3>
+              <button type="button" class="botao-mes" id="mesProximo" aria-label="Próximo mês">›</button>
+            </div>
+            <div class="calendario-dias-semana">
+              <span>Dom</span><span>Seg</span><span>Ter</span><span>Qua</span><span>Qui</span><span>Sex</span><span>Sáb</span>
+            </div>
+            <div class="calendario-grade" id="calendarioGrade"></div>
+          </div>
+
+          <div class="cartao cartao-dia">
+            <div class="dia-cabecalho">
+              <div>
+                <p class="dia-rotulo" id="diaRotulo">Hoje</p>
+                <h3 id="diaData"></h3>
+              </div>
+              <button type="button" class="botao-nova-tarefa" id="botaoNovaTarefa">+ Nova</button>
+            </div>
+
+            <form class="form-nova-tarefa oculto" id="formNovaTarefa">
+              <input type="text" id="tarefaTitulo" placeholder="O que precisa ser feito?" required>
+              <div class="form-linha">
+                <select id="tarefaTipo">
+                  <option value="entrega">Entrega</option>
+                  <option value="pendencia">Pendência</option>
+                </select>
+                <button type="submit" class="botao-salvar-tarefa">Salvar</button>
+                <button type="button" class="botao-cancelar-tarefa" id="botaoCancelarTarefa">Cancelar</button>
+              </div>
+            </form>
+
+            <div class="lista-tarefas" id="listaTarefas"></div>
+          </div>
+
+        </div>
+      </section>
+
     </main>
   </div>
 
@@ -685,12 +935,20 @@
     // ==========================================================================
     let cacheEventos = [];
     let cacheLeads = [];
+    let cacheTarefas = [];
     let periodoAtual = "tudo"; // "tudo" | "7d" | "30d" | "90d"
+    let mesAtual = new Date();
+    mesAtual.setDate(1);
+    let diaSelecionado = new Date();
 
     const TITULOS_ABA = {
       "menu-principal": "Menu Principal",
       "portfolio": "Portfólio",
+      "calendario": "Calendário",
     };
+
+    const MESES_PT = ["Janeiro","Fevereiro","Março","Abril","Maio","Junho","Julho","Agosto","Setembro","Outubro","Novembro","Dezembro"];
+    const DIAS_SEMANA_LONGO = ["Domingo","Segunda-feira","Terça-feira","Quarta-feira","Quinta-feira","Sexta-feira","Sábado"];
 
     // --------------------------------------------------------------------------
     // Escapa texto vindo do banco antes de inserir no HTML (evita XSS, já que
@@ -972,6 +1230,8 @@
       renderizarVisaoGeral(eventosFiltrados, leadsFiltrados);
       renderizarVideos(eventosFiltrados);
       renderizarBotoes(eventosFiltrados);
+      renderizarCalendario();
+      renderizarListaTarefas();
       renderizarContatos(eventosFiltrados);
       renderizarLeads(leadsFiltrados);
     }
@@ -981,12 +1241,14 @@
     // ==========================================================================
     async function carregarDados() {
       try {
-        const [eventos, leads] = await Promise.all([
+        const [eventos, leads, tarefas] = await Promise.all([
           buscarTudo("portfolio_events"),
           buscarTudo("portfolio_leads"),
+          buscarTudo("portfolio_tasks"),
         ]);
         cacheEventos = eventos;
         cacheLeads = leads;
+        cacheTarefas = tarefas;
       } catch (erro) {
         console.error(erro);
         const banner = document.getElementById("bannerErro");
@@ -994,6 +1256,142 @@
         banner.classList.add("visivel");
       }
       renderizarTudo();
+    }
+
+    // ==========================================================================
+    // CALENDÁRIO — entregas e pendências (não depende do filtro de período)
+    // ==========================================================================
+    function renderizarCalendario() {
+      const ano = mesAtual.getFullYear();
+      const mes = mesAtual.getMonth();
+      document.getElementById("tituloMes").textContent = `${MESES_PT[mes]} ${ano}`;
+
+      const primeiroDiaSemana = new Date(ano, mes, 1).getDay();
+      const totalDiasMes = new Date(ano, mes + 1, 0).getDate();
+      const hojeChave = chaveDia(new Date());
+      const selecionadoChave = chaveDia(diaSelecionado);
+
+      const tarefasPorDia = {};
+      cacheTarefas.forEach((t) => {
+        (tarefasPorDia[t.data_venc] = tarefasPorDia[t.data_venc] || []).push(t);
+      });
+
+      let html = "";
+      for (let i = 0; i < primeiroDiaSemana; i++) html += `<div class="dia-vazio"></div>`;
+
+      for (let dia = 1; dia <= totalDiasMes; dia++) {
+        const chave = chaveDia(new Date(ano, mes, dia));
+        const tarefasDoDia = tarefasPorDia[chave] || [];
+        const temPendente = tarefasDoDia.some((t) => !t.concluida);
+        const classes = ["dia-celula"];
+        if (chave === hojeChave) classes.push("hoje");
+        if (chave === selecionadoChave) classes.push("selecionado");
+        html += `
+          <button type="button" class="${classes.join(" ")}" data-dia="${chave}">
+            <span>${dia}</span>
+            ${tarefasDoDia.length ? `<span class="dia-ponto ${temPendente ? "" : "concluido"}"></span>` : ""}
+          </button>
+        `;
+      }
+      document.getElementById("calendarioGrade").innerHTML = html;
+
+      document.querySelectorAll(".dia-celula").forEach((celula) => {
+        celula.addEventListener("click", () => {
+          const [a, m, d] = celula.dataset.dia.split("-").map(Number);
+          diaSelecionado = new Date(a, m - 1, d);
+          renderizarCalendario();
+          renderizarListaTarefas();
+        });
+      });
+    }
+
+    function renderizarListaTarefas() {
+      const chave = chaveDia(diaSelecionado);
+      const hojeChave = chaveDia(new Date());
+      document.getElementById("diaRotulo").textContent = chave === hojeChave ? "Hoje" : DIAS_SEMANA_LONGO[diaSelecionado.getDay()];
+      document.getElementById("diaData").textContent = `${diaSelecionado.getDate()} de ${MESES_PT[diaSelecionado.getMonth()].toLowerCase()}`;
+
+      const tarefas = cacheTarefas
+        .filter((t) => t.data_venc === chave)
+        .sort((a, b) => Number(a.concluida) - Number(b.concluida));
+
+      const container = document.getElementById("listaTarefas");
+
+      if (!tarefas.length) {
+        container.innerHTML = `<p class="estado-vazio">Nenhuma entrega ou pendência para este dia.</p>`;
+        return;
+      }
+
+      container.innerHTML = tarefas.map((t) => `
+        <div class="item-tarefa ${t.concluida ? "concluida" : ""}">
+          <button type="button" class="tarefa-check" data-acao="alternar" data-id="${t.id}" aria-label="Marcar como concluída">${t.concluida ? "✓" : ""}</button>
+          <div class="tarefa-texto">
+            <p class="tarefa-titulo">${escapeHtml(t.titulo)}</p>
+            ${t.notas ? `<p class="tarefa-notas">${escapeHtml(t.notas)}</p>` : ""}
+          </div>
+          <span class="tarefa-badge ${t.tipo}">${t.tipo === "entrega" ? "Entrega" : "Pendência"}</span>
+          <button type="button" class="tarefa-excluir" data-acao="excluir" data-id="${t.id}" aria-label="Excluir">×</button>
+        </div>
+      `).join("");
+
+      container.querySelectorAll('[data-acao="alternar"]').forEach((botao) => {
+        botao.addEventListener("click", () => alternarConcluida(botao.dataset.id));
+      });
+      container.querySelectorAll('[data-acao="excluir"]').forEach((botao) => {
+        botao.addEventListener("click", () => excluirTarefa(botao.dataset.id));
+      });
+    }
+
+    async function criarTarefa(titulo, tipo) {
+      const { data, error } = await sb
+        .from("portfolio_tasks")
+        .insert({ titulo, tipo, data_venc: chaveDia(diaSelecionado) })
+        .select()
+        .single();
+
+      if (error) {
+        console.error(error);
+        const banner = document.getElementById("bannerErro");
+        banner.textContent = "Não foi possível salvar a tarefa. Tente novamente.";
+        banner.classList.add("visivel");
+        return;
+      }
+      cacheTarefas.push(data);
+      renderizarCalendario();
+      renderizarListaTarefas();
+    }
+
+    async function alternarConcluida(id) {
+      const tarefa = cacheTarefas.find((t) => t.id === id);
+      if (!tarefa) return;
+      const novoValor = !tarefa.concluida;
+      tarefa.concluida = novoValor;
+      renderizarListaTarefas();
+      renderizarCalendario();
+
+      const { error } = await sb.from("portfolio_tasks").update({ concluida: novoValor }).eq("id", id);
+      if (error) {
+        console.error(error);
+        tarefa.concluida = !novoValor;
+        renderizarListaTarefas();
+        renderizarCalendario();
+      }
+    }
+
+    async function excluirTarefa(id) {
+      const indice = cacheTarefas.findIndex((t) => t.id === id);
+      if (indice === -1) return;
+      const removida = cacheTarefas.splice(indice, 1)[0];
+      renderizarListaTarefas();
+      renderizarCalendario();
+
+      const { error } = await sb.from("portfolio_tasks").delete().eq("id", id);
+      if (error) {
+        console.error(error);
+        cacheTarefas.splice(indice, 0, removida);
+        renderizarListaTarefas();
+        renderizarCalendario();
+      }
     }
 
     // ==========================================================================
@@ -1009,8 +1407,38 @@
         document.getElementById("aba-" + aba).classList.add("ativo");
         document.getElementById("tituloTopo").textContent = TITULOS_ABA[aba];
 
+        // O filtro de período (Tudo/7d/30d/90d) não se aplica ao calendário
+        document.querySelector(".filtro-periodo").style.display = aba === "calendario" ? "none" : "flex";
+
         document.body.classList.remove("menu-aberto");
       });
+    });
+
+    document.getElementById("mesAnterior").addEventListener("click", () => {
+      mesAtual.setMonth(mesAtual.getMonth() - 1);
+      renderizarCalendario();
+    });
+    document.getElementById("mesProximo").addEventListener("click", () => {
+      mesAtual.setMonth(mesAtual.getMonth() + 1);
+      renderizarCalendario();
+    });
+
+    document.getElementById("botaoNovaTarefa").addEventListener("click", () => {
+      document.getElementById("formNovaTarefa").classList.toggle("oculto");
+      document.getElementById("tarefaTitulo").focus();
+    });
+    document.getElementById("botaoCancelarTarefa").addEventListener("click", () => {
+      document.getElementById("formNovaTarefa").classList.add("oculto");
+      document.getElementById("formNovaTarefa").reset();
+    });
+    document.getElementById("formNovaTarefa").addEventListener("submit", async (e) => {
+      e.preventDefault();
+      const titulo = document.getElementById("tarefaTitulo").value.trim();
+      const tipo = document.getElementById("tarefaTipo").value;
+      if (!titulo) return;
+      await criarTarefa(titulo, tipo);
+      e.target.reset();
+      document.getElementById("formNovaTarefa").classList.add("oculto");
     });
 
     document.querySelectorAll(".botao-periodo").forEach((botao) => {
