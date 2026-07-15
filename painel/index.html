@@ -566,8 +566,31 @@
   }
   .tarefa-excluir:hover{ color: var(--erro); }
 
+  .grade-status-tarefas{
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 20px;
+    margin-top: 20px;
+  }
+  .item-tarefa-status{
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    padding: 12px 14px;
+    border-radius: var(--radius-sm);
+    margin-bottom: 8px;
+  }
+  .item-tarefa-status:last-child{ margin-bottom: 0; }
+  .item-tarefa-status.aberta{ background: #FBEAE8; }
+  .item-tarefa-status.concluida{ background: #E5EEFA; }
+  .item-tarefa-status .tarefa-texto{ flex: 1; min-width: 0; }
+  .item-tarefa-status .tarefa-titulo{ margin: 0; font-size: 14px; }
+  .item-tarefa-status.concluida .tarefa-titulo{ text-decoration: line-through; color: var(--texto-suave); }
+  .item-tarefa-status .tarefa-data{ font-size: 11px; color: var(--texto-suave); margin: 2px 0 0; }
+
   @media (max-width: 900px){
     .grade-calendario{ grid-template-columns: 1fr; }
+    .grade-status-tarefas{ grid-template-columns: 1fr; }
   }
 
   /* ------------------------------ VÍDEOS ------------------------------ */
@@ -924,6 +947,17 @@
           </div>
 
         </div>
+
+        <div class="grade-status-tarefas">
+          <div class="cartao">
+            <h3>Pendências em aberto</h3>
+            <div id="listaAbertas"></div>
+          </div>
+          <div class="cartao">
+            <h3>Concluídas</h3>
+            <div id="listaConcluidas"></div>
+          </div>
+        </div>
       </section>
 
     </main>
@@ -1232,6 +1266,7 @@
       renderizarBotoes(eventosFiltrados);
       renderizarCalendario();
       renderizarListaTarefas();
+      renderizarStatusTarefas();
       renderizarContatos(eventosFiltrados);
       renderizarLeads(leadsFiltrados);
     }
@@ -1314,6 +1349,7 @@
           diaSelecionado = new Date(a, m - 1, d);
           renderizarCalendario();
           renderizarListaTarefas();
+      renderizarStatusTarefas();
         });
       });
     }
@@ -1355,6 +1391,53 @@
       });
     }
 
+    function formatarDataVenc(dataStr) {
+      const [ano, mes, dia] = dataStr.split("-").map(Number);
+      return `${dia} de ${MESES_PT[mes - 1].toLowerCase()}`;
+    }
+
+    // Lista completa de pendências em aberto e concluídas, de todas as datas
+    // (diferente da lista acima, que mostra só o dia selecionado no calendário).
+    function renderizarStatusTarefas() {
+      const abertas = cacheTarefas
+        .filter((t) => !t.concluida)
+        .sort((a, b) => a.data_venc.localeCompare(b.data_venc));
+      const concluidas = cacheTarefas
+        .filter((t) => t.concluida)
+        .sort((a, b) => b.data_venc.localeCompare(a.data_venc));
+
+      montarListaStatus("listaAbertas", abertas, "aberta", "Nenhuma pendência em aberto.");
+      montarListaStatus("listaConcluidas", concluidas, "concluida", "Nenhuma tarefa concluída ainda.");
+    }
+
+    function montarListaStatus(containerId, lista, classe, mensagemVazia) {
+      const container = document.getElementById(containerId);
+
+      if (!lista.length) {
+        container.innerHTML = `<p class="estado-vazio">${mensagemVazia}</p>`;
+        return;
+      }
+
+      container.innerHTML = lista.map((t) => `
+        <div class="item-tarefa-status ${classe}">
+          <button type="button" class="tarefa-check" data-acao="alternar" data-id="${t.id}" aria-label="Marcar como concluída">${t.concluida ? "✓" : ""}</button>
+          <div class="tarefa-texto">
+            <p class="tarefa-titulo">${escapeHtml(t.titulo)}</p>
+            <p class="tarefa-data">${formatarDataVenc(t.data_venc)}</p>
+          </div>
+          <span class="tarefa-badge ${t.tipo}">${t.tipo === "entrega" ? "Entrega" : "Pendência"}</span>
+          <button type="button" class="tarefa-excluir" data-acao="excluir" data-id="${t.id}" aria-label="Excluir">×</button>
+        </div>
+      `).join("");
+
+      container.querySelectorAll('[data-acao="alternar"]').forEach((botao) => {
+        botao.addEventListener("click", () => alternarConcluida(botao.dataset.id));
+      });
+      container.querySelectorAll('[data-acao="excluir"]').forEach((botao) => {
+        botao.addEventListener("click", () => excluirTarefa(botao.dataset.id));
+      });
+    }
+
     async function criarTarefa(titulo, tipo) {
       const { data, error } = await sb
         .from("portfolio_tasks")
@@ -1372,6 +1455,7 @@
       cacheTarefas.push(data);
       renderizarCalendario();
       renderizarListaTarefas();
+      renderizarStatusTarefas();
     }
 
     async function alternarConcluida(id) {
@@ -1380,6 +1464,7 @@
       const novoValor = !tarefa.concluida;
       tarefa.concluida = novoValor;
       renderizarListaTarefas();
+      renderizarStatusTarefas();
       renderizarCalendario();
 
       const { error } = await sb.from("portfolio_tasks").update({ concluida: novoValor }).eq("id", id);
@@ -1387,6 +1472,7 @@
         console.error(error);
         tarefa.concluida = !novoValor;
         renderizarListaTarefas();
+      renderizarStatusTarefas();
         renderizarCalendario();
       }
     }
@@ -1396,6 +1482,7 @@
       if (indice === -1) return;
       const removida = cacheTarefas.splice(indice, 1)[0];
       renderizarListaTarefas();
+      renderizarStatusTarefas();
       renderizarCalendario();
 
       const { error } = await sb.from("portfolio_tasks").delete().eq("id", id);
@@ -1403,6 +1490,7 @@
         console.error(error);
         cacheTarefas.splice(indice, 0, removida);
         renderizarListaTarefas();
+      renderizarStatusTarefas();
         renderizarCalendario();
       }
     }
