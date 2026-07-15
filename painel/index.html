@@ -971,7 +971,7 @@
               </div>
               <div class="form-linha">
                 <select id="tarefaTipo">
-                  <option value="entrega">Entrega</option>
+                  <option value="entrega">Entregar</option>
                   <option value="pendencia">Pendência</option>
                 </select>
                 <button type="submit" class="botao-salvar-tarefa">Salvar</button>
@@ -1421,7 +1421,7 @@
             ${t.notas ? `<p class="tarefa-notas">${escapeHtml(t.notas)}</p>` : ""}
           </div>
           ${estaAtrasada(t) ? `<span class="tarefa-badge atrasada">Atrasada</span>` : ""}
-          <span class="tarefa-badge ${t.tipo}">${t.tipo === "entrega" ? "Entrega" : "Pendência"}</span>
+          <span class="tarefa-badge ${t.tipo}">${t.tipo === "entrega" ? "Entregar" : "Pendência"}</span>
           <button type="button" class="tarefa-excluir" data-acao="excluir" data-id="${t.id}" aria-label="Excluir">×</button>
         </div>
       `).join("");
@@ -1485,7 +1485,7 @@
             <p class="tarefa-data">${formatarDataVenc(t.data_venc)}${formatarHorario(t) ? " · " + formatarHorario(t) : ""}</p>
           </div>
           ${estaAtrasada(t) ? `<span class="tarefa-badge atrasada">Atrasada</span>` : ""}
-          <span class="tarefa-badge ${t.tipo}">${t.tipo === "entrega" ? "Entrega" : "Pendência"}</span>
+          <span class="tarefa-badge ${t.tipo}">${t.tipo === "entrega" ? "Entregar" : "Pendência"}</span>
           <button type="button" class="tarefa-excluir" data-acao="excluir" data-id="${t.id}" aria-label="Excluir">×</button>
         </div>
       `).join("");
