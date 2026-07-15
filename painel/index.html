@@ -434,6 +434,7 @@
   .dia-celula.selecionado{ background: var(--coral); color: var(--branco); }
   .dia-ponto{ width: 5px; height: 5px; border-radius: 50%; background: var(--coral); }
   .dia-ponto.concluido{ background: var(--texto-suave); }
+  .dia-ponto.atrasado{ background: var(--erro); }
   .dia-celula.selecionado .dia-ponto{ background: var(--branco); }
 
   .dia-cabecalho{
@@ -518,7 +519,8 @@
   .item-tarefa{
     display: flex;
     align-items: center;
-    gap: 12px;
+    flex-wrap: wrap;
+    gap: 8px 12px;
     padding: 12px 0;
     border-bottom: 1px solid var(--borda);
   }
@@ -543,6 +545,14 @@
   .tarefa-titulo{ margin: 0; font-size: 14px; }
   .item-tarefa.concluida .tarefa-titulo{ text-decoration: line-through; color: var(--texto-suave); }
   .tarefa-notas{ margin: 3px 0 0; font-size: 12px; color: var(--texto-suave); }
+  .tarefa-marca{
+    margin: 0 0 2px;
+    font-size: 11px;
+    font-weight: 600;
+    color: var(--coral);
+    text-transform: uppercase;
+    letter-spacing: .03em;
+  }
   .tarefa-badge{
     flex-shrink: 0;
     font-size: 11px;
@@ -554,6 +564,7 @@
   }
   .tarefa-badge.entrega{ background: var(--coral); color: var(--branco); }
   .tarefa-badge.pendencia{ background: var(--creme); color: var(--texto-suave); border: 1px solid var(--borda); }
+  .tarefa-badge.atrasada{ background: var(--erro); color: var(--branco); }
   .tarefa-excluir{
     flex-shrink: 0;
     border: none;
@@ -575,7 +586,8 @@
   .item-tarefa-status{
     display: flex;
     align-items: center;
-    gap: 12px;
+    flex-wrap: wrap;
+    gap: 8px 12px;
     padding: 12px 14px;
     border-radius: var(--radius-sm);
     margin-bottom: 8px;
@@ -933,6 +945,7 @@
 
             <form class="form-nova-tarefa oculto" id="formNovaTarefa">
               <input type="text" id="tarefaTitulo" placeholder="O que precisa ser feito?" required>
+              <input type="text" id="tarefaMarca" placeholder="Marca ou cliente (opcional)">
               <div class="form-linha">
                 <select id="tarefaTipo">
                   <option value="entrega">Entrega</option>
@@ -1331,13 +1344,17 @@
         const chave = chaveDia(new Date(ano, mes, dia));
         const tarefasDoDia = tarefasPorDia[chave] || [];
         const temPendente = tarefasDoDia.some((t) => !t.concluida);
+        const temAtrasada = tarefasDoDia.some((t) => estaAtrasada(t));
         const classes = ["dia-celula"];
         if (chave === hojeChave) classes.push("hoje");
         if (chave === selecionadoChave) classes.push("selecionado");
+        let classePonto = "concluido";
+        if (temAtrasada) classePonto = "atrasado";
+        else if (temPendente) classePonto = "";
         html += `
           <button type="button" class="${classes.join(" ")}" data-dia="${chave}">
             <span>${dia}</span>
-            ${tarefasDoDia.length ? `<span class="dia-ponto ${temPendente ? "" : "concluido"}"></span>` : ""}
+            ${tarefasDoDia.length ? `<span class="dia-ponto ${classePonto}"></span>` : ""}
           </button>
         `;
       }
@@ -1375,9 +1392,11 @@
         <div class="item-tarefa ${t.concluida ? "concluida" : ""}">
           <button type="button" class="tarefa-check" data-acao="alternar" data-id="${t.id}" aria-label="Marcar como concluída">${t.concluida ? "✓" : ""}</button>
           <div class="tarefa-texto">
+            ${t.marca ? `<p class="tarefa-marca">${escapeHtml(t.marca)}</p>` : ""}
             <p class="tarefa-titulo">${escapeHtml(t.titulo)}</p>
             ${t.notas ? `<p class="tarefa-notas">${escapeHtml(t.notas)}</p>` : ""}
           </div>
+          ${estaAtrasada(t) ? `<span class="tarefa-badge atrasada">Atrasada</span>` : ""}
           <span class="tarefa-badge ${t.tipo}">${t.tipo === "entrega" ? "Entrega" : "Pendência"}</span>
           <button type="button" class="tarefa-excluir" data-acao="excluir" data-id="${t.id}" aria-label="Excluir">×</button>
         </div>
@@ -1394,6 +1413,11 @@
     function formatarDataVenc(dataStr) {
       const [ano, mes, dia] = dataStr.split("-").map(Number);
       return `${dia} de ${MESES_PT[mes - 1].toLowerCase()}`;
+    }
+
+    // Uma tarefa está atrasada quando o dia dela já passou e ela não foi concluída.
+    function estaAtrasada(tarefa) {
+      return !tarefa.concluida && tarefa.data_venc < chaveDia(new Date());
     }
 
     // Lista completa de pendências em aberto e concluídas, de todas as datas
@@ -1422,9 +1446,11 @@
         <div class="item-tarefa-status ${classe}">
           <button type="button" class="tarefa-check" data-acao="alternar" data-id="${t.id}" aria-label="Marcar como concluída">${t.concluida ? "✓" : ""}</button>
           <div class="tarefa-texto">
+            ${t.marca ? `<p class="tarefa-marca">${escapeHtml(t.marca)}</p>` : ""}
             <p class="tarefa-titulo">${escapeHtml(t.titulo)}</p>
             <p class="tarefa-data">${formatarDataVenc(t.data_venc)}</p>
           </div>
+          ${estaAtrasada(t) ? `<span class="tarefa-badge atrasada">Atrasada</span>` : ""}
           <span class="tarefa-badge ${t.tipo}">${t.tipo === "entrega" ? "Entrega" : "Pendência"}</span>
           <button type="button" class="tarefa-excluir" data-acao="excluir" data-id="${t.id}" aria-label="Excluir">×</button>
         </div>
@@ -1438,10 +1464,10 @@
       });
     }
 
-    async function criarTarefa(titulo, tipo) {
+    async function criarTarefa(titulo, tipo, marca) {
       const { data, error } = await sb
         .from("portfolio_tasks")
-        .insert({ titulo, tipo, data_venc: chaveDia(diaSelecionado) })
+        .insert({ titulo, tipo, marca: marca || null, data_venc: chaveDia(diaSelecionado) })
         .select()
         .single();
 
@@ -1536,8 +1562,9 @@
       e.preventDefault();
       const titulo = document.getElementById("tarefaTitulo").value.trim();
       const tipo = document.getElementById("tarefaTipo").value;
+      const marca = document.getElementById("tarefaMarca").value.trim();
       if (!titulo) return;
-      await criarTarefa(titulo, tipo);
+      await criarTarefa(titulo, tipo, marca);
       e.target.reset();
       document.getElementById("formNovaTarefa").classList.add("oculto");
     });
