@@ -709,14 +709,9 @@
   // com o ID do vídeo (ex.: em youtube.com/watch?v=ABC123, o ID é "ABC123").
   // Isso faz o card virar automaticamente um "vídeo assistido" rastreável no painel.
   const PORTFOLIO_ITEMS = [
-    { title: 'rotina de skincare noturna', categoria: 'beleza e pele', youtubeId: '' },
-    { title: 'review de lançamento de produto', categoria: 'beleza e pele', youtubeId: '' },
-    { title: 'mini-documentário: um dia de bem-estar', categoria: 'lifestyle e bem-estar', youtubeId: '' },
-    { title: 'lookbook de coleção', categoria: 'moda', youtubeId: '' },
-    { title: 'styling e entrevista de bastidores', categoria: 'moda', youtubeId: '' },
-    { title: 'história de marca, do zero à conexão', categoria: 'narrativa', youtubeId: '' },
-    { title: 'anúncio ugc para performance', categoria: 'anúncios ugc', youtubeId: '' },
-    { title: 'antes e depois: rotina capilar', categoria: 'problema × solução', youtubeId: '' },
+    { title: 'Medo de Short', categoria: 'Arrume-se comigo', youtubeId: 'Ead3KnMdNuY' },
+    { title: 'Creamy', categoria: 'Skincare', youtubeId: 'AI9EBIH4CQM' },
+    { title: 'Stand Vizzela', categoria: 'Visitas em feiras', youtubeId: 'FYGkstWYD3Q' },
   ];
   const GRADS = ['grad-1','grad-2','grad-3','grad-4','grad-5'];
   const grid = document.getElementById('portfolioGrid');
@@ -728,10 +723,20 @@
     PORTFOLIO_ITEMS
       .filter(item => filtro === 'todos' || item.categoria === filtro)
       .forEach((item, i) => {
-        const card = document.createElement('div');
-        card.className = `video-card placeholder-img ${GRADS[i % GRADS.length]}`;
+        const temVideo = !!item.youtubeId;
+        const card = document.createElement(temVideo ? 'a' : 'div');
+        card.className = `video-card ${temVideo ? '' : 'placeholder-img ' + GRADS[i % GRADS.length]}`;
         card.dataset.videoId = item.youtubeId || '';
-        // EDITE AQUI: troque o conteúdo do card por um <video> real quando integrar seus arquivos
+        if (temVideo) {
+          // Vídeo real do YouTube: usa a miniatura de verdade e abre o vídeo ao clicar
+          card.href = `https://www.youtube.com/watch?v=${item.youtubeId}`;
+          card.target = '_blank';
+          card.rel = 'noopener';
+          card.style.backgroundImage = `linear-gradient(0deg, rgba(43,26,31,.6), rgba(43,26,31,.05)), url('https://i.ytimg.com/vi/${item.youtubeId}/hqdefault.jpg')`;
+          card.style.backgroundSize = 'cover';
+          card.style.backgroundPosition = 'center';
+        }
+        // EDITE AQUI: para itens ainda sem vídeo, troque o conteúdo por um <video> real quando integrar seus arquivos
         card.innerHTML = `
           <span class="video-tag">${item.categoria}</span>
           <span class="play-icon">▶</span>
