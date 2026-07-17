@@ -316,6 +316,7 @@
 
   /* ============================== RESULTADOS ============================== */
   .results{ background: var(--vinho); color: var(--off-white); }
+  .results em{ color: var(--rosa-claro); }
   .metrics-grid{
     display:grid; grid-template-columns: repeat(4, 1fr); gap: 2.4rem 2rem; margin-bottom: 3rem;
   }
@@ -342,17 +343,6 @@
     display:flex; align-items:center; justify-content:space-between; gap: 1.5rem; flex-wrap:wrap;
   }
   .service-cta h3{ font-family: var(--font-display); font-weight:400; font-size: 1.5rem; }
-
-  /* ============================== DEPOIMENTOS ============================== */
-  .testimonial-grid{ display:grid; grid-template-columns: repeat(3, 1fr); gap: 1.6rem; }
-  .testimonial{
-    background: var(--off-white); border: 1px solid rgba(92,31,49,.12); padding: 2.2rem;
-    border-radius: 3px;
-  }
-  .testimonial.featured{ background: var(--vinho); color: var(--off-white); grid-column: span 1; }
-  .testimonial p.quote{ font-family: var(--font-italic); font-style:italic; font-size: 1.15rem; margin-bottom: 1.4rem; }
-  .testimonial .name{ font-family: var(--font-display); font-size: 1rem; }
-  .testimonial .role{ font-size: .74rem; opacity:.7; text-transform:uppercase; letter-spacing:.08em; }
 
   /* ============================== CONTATO ============================== */
   .contact{ background: var(--vinho-escuro); color: var(--off-white); }
@@ -431,7 +421,6 @@
     .about-collage{ margin-bottom: 5rem; }
     .portfolio-grid{ grid-template-columns: repeat(2, 1fr); }
     .metrics-grid{ grid-template-columns: repeat(2, 1fr); }
-    .testimonial-grid{ grid-template-columns: repeat(2, 1fr); }
     .popup{ grid-template-columns: 1fr; }
     .popup-image{ min-height: 180px; }
   }
@@ -440,7 +429,6 @@
     .hamburger{ display:flex; }
     .portfolio-grid{ grid-template-columns: 1fr; }
     .metrics-grid{ grid-template-columns: repeat(2, 1fr); }
-    .testimonial-grid{ grid-template-columns: 1fr; }
     .service-row{ grid-template-columns: 40px 1fr; }
     .service-desc{ grid-column: 1/-1; }
     .contact-form{ grid-template-columns: 1fr; }
@@ -461,7 +449,6 @@
         <a href="#portfolio">portfólio</a>
         <a href="#servicos">serviços</a>
         <a href="#resultados">resultados</a>
-        <a href="#depoimentos">depoimentos</a>
         <a href="#contato">contato</a>
       </nav>
       <a href="#contato" class="btn btn-outline nav-cta">trabalhe comigo</a>
@@ -477,7 +464,6 @@
     <a href="#portfolio">portfólio</a>
     <a href="#servicos">serviços</a>
     <a href="#resultados">resultados</a>
-    <a href="#depoimentos">depoimentos</a>
     <a href="#contato">contato</a>
     <a href="#contato" class="btn btn-outline">trabalhe comigo</a>
   </div>
@@ -574,7 +560,7 @@
   <!-- ============================== RESULTADOS ============================== -->
   <section id="resultados" class="results reveal">
     <p class="eyebrow light center">resultados</p>
-    <h2 class="section-title light center">números que <em>contam</em> a minha história</h2>
+    <h2 class="section-title light center">resultados que vão <em>além</em> dos números</h2>
     <!-- EDITE AQUI: métricas reais (o valor em --val controla a barra). Atualize
          conforme o Instagram @lucimarareis.ugc crescer. -->
     <div class="metrics-grid">
@@ -583,7 +569,7 @@
       <div class="metric"><strong>121</strong><span>interações em 1 vídeo</span><div class="bar"><div class="bar-fill" style="--val:45%"></div></div></div>
       <div class="metric"><strong>198</strong><span>seguidores</span><div class="bar"><div class="bar-fill" style="--val:30%"></div></div></div>
     </div>
-    <p class="editorial-quote">"cada vídeo carrega <em>minha essência</em>, não só estética."</p>
+    <p class="editorial-quote">"cada conteúdo tem intenção, autenticidade e a <em>essência</em> da marca."</p>
   </section>
 
   <!-- ============================== SERVIÇOS ============================== -->
@@ -604,40 +590,6 @@
     <div class="service-cta">
       <h3>vamos criar juntas o próximo vídeo da sua marca?</h3>
       <a href="#contato" class="btn btn-solid">vamos criar</a>
-    </div>
-  </section>
-
-  <!-- ============================== DEPOIMENTOS ============================== -->
-  <section id="depoimentos" class="testimonials reveal">
-    <p class="eyebrow center">depoimentos</p>
-    <h2 class="section-title center">marcas que já <em>confiaram</em></h2>
-    <!-- EDITE AQUI: depoimentos reais -->
-    <div class="testimonial-grid">
-      <div class="testimonial featured">
-        <p class="quote">"o conteúdo entregue superou nossas expectativas — estética impecável e resultado real em vendas."</p>
-        <p class="name">[Nome da Marca]</p>
-        <p class="role">[Cargo, Empresa]</p>
-      </div>
-      <div class="testimonial">
-        <p class="quote">"processo leve, profissional e com uma sensibilidade estética rara."</p>
-        <p class="name">[Nome da Marca]</p>
-        <p class="role">[Cargo, Empresa]</p>
-      </div>
-      <div class="testimonial">
-        <p class="quote">"entendeu nossa marca em detalhes e transformou isso em conteúdo genuíno."</p>
-        <p class="name">[Nome da Marca]</p>
-        <p class="role">[Cargo, Empresa]</p>
-      </div>
-      <div class="testimonial">
-        <p class="quote">"nossos vídeos com melhor performance no último trimestre foram os dela."</p>
-        <p class="name">[Nome da Marca]</p>
-        <p class="role">[Cargo, Empresa]</p>
-      </div>
-      <div class="testimonial">
-        <p class="quote">"comunicação clara, prazos cumpridos e um olhar editorial impecável."</p>
-        <p class="name">[Nome da Marca]</p>
-        <p class="role">[Cargo, Empresa]</p>
-      </div>
     </div>
   </section>
 
