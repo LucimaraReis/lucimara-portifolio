@@ -13,6 +13,7 @@
 <!-- SDK do Supabase via CDN (precisa vir antes de /js/auth.js) -->
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2/dist/umd/supabase.min.js"></script>
 <script src="/js/auth.js"></script>
+<script src="/js/instagram.js"></script>
 
 <style>
   /* ============================ DESIGN SYSTEM ============================ */
@@ -618,6 +619,89 @@
     .grade-status-tarefas{ grid-template-columns: 1fr; }
   }
 
+  /* ------------------------------ INSTAGRAM ------------------------------ */
+  .oculto{ display: none !important; }
+
+  .ig-conexao{ max-width: 560px; margin: 0 auto; }
+  .ig-conexao-texto{ font-size: 13px; color: var(--texto-suave); line-height: 1.6; margin: 4px 0 20px; }
+  .ig-conexao-texto strong{ color: var(--grafite); }
+  .ig-form-conexao{ display: flex; flex-direction: column; gap: 16px; }
+  .ig-form-conexao .campo{ display: flex; flex-direction: column; gap: 6px; }
+  .ig-form-conexao label{ font-size: 12px; font-weight: 500; color: var(--texto-suave); }
+  .ig-form-conexao input{
+    border: 1px solid var(--borda); border-radius: var(--radius-sm);
+    padding: 11px 14px; font-family: inherit; font-size: 13px; background: var(--creme);
+  }
+  .ig-form-conexao input:focus{ outline: none; border-color: var(--coral); }
+
+  .ig-topo{ display: flex; align-items: center; gap: 12px; flex-wrap: wrap; margin-bottom: 8px; }
+  .ig-periodo-personalizado{ display: flex; align-items: center; gap: 8px; }
+  .ig-periodo-personalizado input[type="date"]{
+    border: 1px solid var(--borda); border-radius: var(--radius-sm);
+    padding: 8px 10px; font-family: inherit; font-size: 13px; background: var(--branco);
+  }
+  .ig-periodo-personalizado span{ font-size: 12px; color: var(--texto-suave); }
+
+  .ig-ultima-sincronizacao{ font-size: 12px; color: var(--texto-suave); margin: 0 0 20px; }
+  .ig-grade-numeros{ grid-template-columns: repeat(4, minmax(0,1fr)); }
+  .ig-ranking-abas{ margin-bottom: 18px; }
+
+  .ig-grade-posts{ display: grid; grid-template-columns: repeat(4, 1fr); gap: 16px; }
+  .ig-post-card{
+    border: 1px solid var(--borda); border-radius: var(--radius-md); overflow: hidden;
+    cursor: pointer; background: var(--branco); transition: box-shadow .15s ease, transform .15s ease;
+  }
+  .ig-post-card:hover{ box-shadow: var(--sombra); transform: translateY(-2px); }
+  .ig-post-thumb{
+    aspect-ratio: 4/5; background-color: var(--creme); background-size: cover; background-position: center;
+    position: relative;
+  }
+  .ig-post-tipo{
+    position: absolute; top: 8px; left: 8px; background: rgba(26,24,22,.6); color: var(--branco);
+    font-size: 10px; font-weight: 600; text-transform: uppercase; letter-spacing: .04em;
+    padding: 3px 8px; border-radius: 999px;
+  }
+  .ig-post-info{ padding: 12px; }
+  .ig-post-data{ font-size: 11px; color: var(--texto-suave); margin: 0 0 6px; }
+  .ig-post-legenda{
+    font-size: 12px; color: var(--grafite); margin: 0 0 10px; line-height: 1.4;
+    display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; overflow: hidden;
+  }
+  .ig-post-metricas{ display: flex; flex-wrap: wrap; gap: 8px; font-size: 11px; color: var(--texto-suave); }
+  .ig-post-metricas strong{ color: var(--grafite); }
+
+  .ig-modal-overlay{
+    position: fixed; inset: 0; background: rgba(26,24,22,.6);
+    display: flex; align-items: center; justify-content: center; z-index: 900;
+    opacity: 0; visibility: hidden; transition: opacity .2s ease, visibility .2s ease; padding: 24px;
+  }
+  .ig-modal-overlay.ativo{ opacity: 1; visibility: visible; }
+  .ig-modal{
+    position: relative; background: var(--branco); border-radius: var(--radius-lg);
+    max-width: 640px; width: 100%; max-height: 88vh; overflow-y: auto;
+    padding: 32px; box-shadow: 0 40px 80px rgba(26,24,22,.35);
+  }
+  .ig-modal-fechar{
+    position: absolute; top: 16px; right: 16px; border: none; background: var(--creme);
+    width: 30px; height: 30px; border-radius: 50%; font-size: 16px; color: var(--texto-suave); cursor: pointer;
+  }
+  .ig-modal-fechar:hover{ color: var(--erro); }
+
+  .ig-insight-item{
+    display: flex; gap: 10px; align-items: flex-start; padding: 10px 0;
+    border-bottom: 1px solid var(--borda); font-size: 13px; line-height: 1.5;
+  }
+  .ig-insight-item:last-child{ border-bottom: none; }
+
+  .ig-metrica-delta{ font-size: 12px; margin-top: 4px; }
+  .ig-metrica-delta.positivo{ color: var(--sucesso); }
+  .ig-metrica-delta.negativo{ color: var(--erro); }
+
+  @media (max-width: 900px){
+    .ig-grade-numeros{ grid-template-columns: repeat(2, 1fr); }
+    .ig-grade-posts{ grid-template-columns: repeat(2, 1fr); }
+  }
+
   /* ------------------------------ VÍDEOS ------------------------------ */
   .item-video{
     display: flex;
@@ -825,6 +909,10 @@
           <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="4" width="18" height="18" rx="2"/><line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/><line x1="3" y1="10" x2="21" y2="10"/></svg>
           Calendário
         </button>
+        <button class="item-menu" data-tab="instagram">
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="2" width="20" height="20" rx="5"/><path d="M16 11.37A4 4 0 1 1 12.63 8 4 4 0 0 1 16 11.37z"/><line x1="17.5" y1="6.5" x2="17.51" y2="6.5"/></svg>
+          Instagram
+        </button>
       </nav>
 
       <div class="sidebar-rodape">
@@ -996,6 +1084,100 @@
         </div>
       </section>
 
+      <!-- ============================ ABA: INSTAGRAM ============================ -->
+      <section class="painel-aba" id="aba-instagram">
+
+        <!-- Tela de conexão — só aparece se ainda não houver token salvo -->
+        <div class="cartao ig-conexao" id="igConexao">
+          <h3>Conectar sua conta do Instagram</h3>
+          <p class="ig-conexao-texto">
+            Para ver seus dados aqui, cole o <strong>ID da conta comercial do Instagram</strong>
+            e o <strong>token de acesso</strong>, gerados no Meta for Developers.
+            Pergunte pra mim se precisar do passo a passo de como conseguir isso.
+          </p>
+          <form id="formConexaoInstagram" class="ig-form-conexao">
+            <div class="campo">
+              <label for="igUserId">ID da conta comercial do Instagram</label>
+              <input type="text" id="igUserId" placeholder="ex.: 17841400..." required>
+            </div>
+            <div class="campo">
+              <label for="igToken">Token de acesso</label>
+              <input type="text" id="igToken" placeholder="cole aqui o token gerado no Meta" required>
+            </div>
+            <button type="submit" class="botao-salvar-tarefa">Conectar</button>
+          </form>
+        </div>
+
+        <!-- Conteúdo principal — só aparece depois de conectado -->
+        <div id="igConteudo" class="oculto">
+
+          <div class="ig-topo">
+            <div class="filtro-periodo">
+              <button class="botao-periodo" data-ig-periodo="7d">7d</button>
+              <button class="botao-periodo ativo" data-ig-periodo="30d">30d</button>
+              <button class="botao-periodo" data-ig-periodo="90d">90d</button>
+              <button class="botao-periodo" data-ig-periodo="personalizado">Personalizado</button>
+            </div>
+            <div class="ig-periodo-personalizado oculto" id="igPeriodoPersonalizado">
+              <input type="date" id="igDataInicio">
+              <span>até</span>
+              <input type="date" id="igDataFim">
+              <button class="botao-atualizar" id="igAplicarPersonalizado">Aplicar</button>
+            </div>
+            <button class="botao-atualizar" id="botaoSincronizarInstagram" title="Buscar dados novos da Instagram Graph API">
+              <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 12a9 9 0 1 1-3-6.7"/><polyline points="21 3 21 9 15 9"/></svg>
+              Sincronizar
+            </button>
+          </div>
+
+          <p class="ig-ultima-sincronizacao" id="igUltimaSincronizacao"></p>
+
+          <div class="banner-erro" id="igBannerErro"></div>
+
+          <!-- 1. DASHBOARD -->
+          <div class="grade-numeros ig-grade-numeros" id="igDashboard"></div>
+
+          <div class="cartao cartao-grafico" style="margin-bottom:24px;">
+            <h3>Seguidores no período</h3>
+            <div class="barras" id="igGraficoSeguidores"></div>
+          </div>
+
+          <!-- 4. INSIGHTS -->
+          <div class="cartao" style="margin-bottom:24px;">
+            <h3>Insights</h3>
+            <div id="igInsights"></div>
+          </div>
+
+          <!-- 3. MELHORES CONTEÚDOS -->
+          <div class="cartao" style="margin-bottom:24px;">
+            <h3>Melhores conteúdos</h3>
+            <div class="filtro-periodo ig-ranking-abas">
+              <button class="botao-periodo ativo" data-ranking="alcance">Alcance</button>
+              <button class="botao-periodo" data-ranking="engajamento">Engajamento</button>
+              <button class="botao-periodo" data-ranking="compartilhamentos">Compartilhamentos</button>
+              <button class="botao-periodo" data-ranking="salvamentos">Salvamentos</button>
+            </div>
+            <div id="igRanking"></div>
+          </div>
+
+          <!-- 2. ÚLTIMAS POSTAGENS -->
+          <div class="cartao">
+            <h3>Últimas postagens</h3>
+            <div class="ig-grade-posts" id="igPosts"></div>
+          </div>
+
+        </div>
+
+        <!-- Detalhe de uma postagem -->
+        <div class="ig-modal-overlay" id="igModalPost">
+          <div class="ig-modal">
+            <button class="ig-modal-fechar" id="igModalFechar" aria-label="fechar">×</button>
+            <div id="igModalConteudo"></div>
+          </div>
+        </div>
+
+      </section>
+
     </main>
   </div>
 
@@ -1015,6 +1197,7 @@
       "menu-principal": "Menu Principal",
       "portfolio": "Portfólio",
       "calendario": "Calendário",
+      "instagram": "Instagram",
     };
 
     const MESES_PT = ["Janeiro","Fevereiro","Março","Abril","Maio","Junho","Julho","Agosto","Setembro","Outubro","Novembro","Dezembro"];
@@ -1575,8 +1758,14 @@
         document.getElementById("aba-" + aba).classList.add("ativo");
         document.getElementById("tituloTopo").textContent = TITULOS_ABA[aba];
 
-        // O filtro de período (Tudo/7d/30d/90d) não se aplica ao calendário
-        document.querySelector(".filtro-periodo").style.display = aba === "calendario" ? "none" : "flex";
+        // O filtro de período (Tudo/7d/30d/90d) não se aplica ao calendário nem ao Instagram
+        // (o Instagram tem o próprio filtro, com opção de período personalizado)
+        document.querySelector(".filtro-periodo").style.display = (aba === "calendario" || aba === "instagram") ? "none" : "flex";
+        document.getElementById("botaoAtualizar").style.display = aba === "instagram" ? "none" : "flex";
+
+        if (aba === "instagram" && window.InstagramIntelligence) {
+          window.InstagramIntelligence.iniciar();
+        }
 
         document.body.classList.remove("menu-aberto");
       });
