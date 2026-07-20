@@ -147,7 +147,8 @@
       let insightsConta = { data: [] };
       try {
         insightsConta = await chamarGraphApi(`${config.ig_user_id}/insights`, {
-          metric: "reach,impressions,profile_views,website_clicks",
+          // "impressions" foi descontinuada pela Meta para métricas de conta — usamos as válidas atuais
+          metric: "reach,profile_views,website_clicks",
           period: "day",
         });
       } catch (erroInsights) {
@@ -191,8 +192,9 @@
         let metricas = {};
         try {
           const ehReel = post.media_product_type === "REELS";
+          // A Meta renomeou "plays" para "views" nas métricas de mídia
           const listaMetricas = ehReel
-            ? "reach,saved,shares,plays,total_interactions"
+            ? "reach,saved,shares,views,total_interactions"
             : "reach,saved,shares";
           const insightsPost = await chamarGraphApi(`${post.id}/insights`, { metric: listaMetricas });
           (insightsPost.data || []).forEach((m) => {
@@ -220,7 +222,7 @@
             salvamentos: metricas.saved ?? null,
             alcance: metricas.reach ?? null,
             impressoes: metricas.impressions ?? null,
-            plays: metricas.plays ?? null,
+            plays: metricas.views ?? null,
             atualizado_em: new Date().toISOString(),
           },
           { onConflict: "id" }
