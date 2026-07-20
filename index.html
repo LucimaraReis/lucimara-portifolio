@@ -314,6 +314,24 @@
     background: linear-gradient(0deg, rgba(43,26,31,.55), transparent);
   }
 
+  /* ============================== FOTOS UGC ============================== */
+  .fotos-ugc{ background: var(--off-white); }
+  .polaroid-grade{
+    display: flex; flex-wrap: wrap; justify-content: center; gap: 2rem;
+    max-width: 1000px; margin: 3rem auto 0;
+  }
+  .polaroid{
+    background: var(--off-white); padding: .8rem .8rem 2.2rem; border-radius: 3px;
+    box-shadow: 0 20px 40px rgba(43,26,31,.18); width: 200px;
+    transition: transform .3s ease;
+  }
+  .polaroid:hover{ transform: scale(1.04) rotate(0deg) !important; }
+  .polaroid-img{ width: 100%; aspect-ratio: 1/1.1; background-size: cover; background-position: center; border-radius: 2px; }
+  .p1{ transform: rotate(-4deg); }
+  .p2{ transform: rotate(3deg); }
+  .p3{ transform: rotate(-2deg); }
+  .p4{ transform: rotate(4deg); }
+
   /* ============================== RESULTADOS ============================== */
   .results{ background: var(--vinho); color: var(--off-white); }
   .results em{ color: var(--rosa-claro); }
@@ -434,6 +452,7 @@
     .contact-form{ grid-template-columns: 1fr; }
     .collage-2{ width: 68%; right: 0; }
     .expect-grid{ grid-template-columns: 1fr; }
+    .polaroid{ width: 42vw; }
   }
 </style>
 </head>
@@ -555,6 +574,19 @@
     <h2 class="section-title center">trabalhos <em>selecionados</em></h2>
     <div class="filters" id="filters"></div>
     <div class="portfolio-grid" id="portfolioGrid"></div>
+  </section>
+
+  <!-- ============================== FOTOS UGC ============================== -->
+  <section id="fotos-ugc" class="fotos-ugc reveal">
+    <p class="eyebrow center">registros</p>
+    <h2 class="section-title center">fotos <em>ugc</em></h2>
+    <!-- EDITE AQUI: adicione mais fotos suas mantendo a classe "polaroid" -->
+    <div class="polaroid-grade">
+      <div class="polaroid p1"><div class="polaroid-img" style="background:url('Fotos%20do%20portifolio/capa.jpg') center/cover;"></div></div>
+      <div class="polaroid p2"><div class="polaroid-img" style="background:url('Fotos%20do%20portifolio/crwn.jpeg') center/cover;"></div></div>
+      <div class="polaroid p3"><div class="polaroid-img" style="background:url('Fotos%20do%20portifolio/capa-skincare.PNG') center/cover;"></div></div>
+      <div class="polaroid p4"><div class="polaroid-img" style="background:url('Fotos%20do%20portifolio/capa-vizzela.jpeg') center/cover;"></div></div>
+    </div>
   </section>
 
   <!-- ============================== RESULTADOS ============================== -->
