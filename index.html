@@ -3,811 +3,1848 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Lucimara Reis · Creator de UGC</title>
-<meta name="description" content="Lucimara Reis — Creator UGC especializada em beleza, skincare, haircare, bem-estar, lifestyle, fitness, moda, maternidade, casa, gastronomia e pet.">
-
-<!--
-  ============================================================================
-  COMO EDITAR ESTE PORTFÓLIO
-  ============================================================================
-  1. Busque por "EDITE AQUI" no código — cada trecho marcado é um texto,
-     dado ou imagem para você substituir pelo seu conteúdo real.
-  2. Fotos/vídeos: procure por elementos com a classe "placeholder-img".
-     Troque a <div class="placeholder-img ..."> por uma tag real, ex.:
-       <img src="fotos/minha-foto.jpg" alt="descrição da foto" class="real-img">
-     ou para vídeo:
-       <video src="videos/meu-video.mp4" controls class="real-img"></video>
-     Mantenha a classe do container (ex.: "hero-photo") para preservar o layout.
-  3. O array PORTFOLIO_ITEMS (dentro do <script>) gera os cards da seção de
-     portfólio automaticamente — edite título, categoria e proporção ali.
-  4. O formulário de contato e o pop-up estão configurados para apenas
-     mostrar uma confirmação (não há backend). Procure por "TODO: conectar
-     formulário" para integrar com Formspree, EmailJS, WhatsApp ou seu backend.
-  ============================================================================
--->
+<meta name="robots" content="noindex">
+<title>Painel · meu.painel</title>
 
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,500;1,400;1,500&family=Fraunces:ital,opsz,wght@0,9..144,300;0,9..144,400;0,9..144,600;1,9..144,300;1,9..144,400&family=Jost:wght@300;400;500;600&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,500;9..144,600&family=Outfit:wght@400;500;600;700&display=swap" rel="stylesheet">
+
+<!-- SDK do Supabase via CDN (precisa vir antes de /js/auth.js) -->
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2/dist/umd/supabase.min.js"></script>
+<script src="/js/auth.js"></script>
+<script src="/js/instagram.js"></script>
 
 <style>
-  /* ============================== VARIÁVEIS ============================== */
+  /* ============================ DESIGN SYSTEM ============================ */
   :root{
-    --vinho: #5c1f31;
-    --vinho-escuro: #401621;
-    --vinho-suave: #7a3245;
-    --rosa-claro: #f2d9dd;
-    --rosa-2: #eccdd3;
-    --nude: #e9d6c9;
-    --bege-rosado: #f1e0d6;
-    --off-white: #faf5f1;
-    --texto: #2b1a1f;
-    --texto-suave: #6b4b52;
-
-    --font-display: 'Fraunces', serif;
-    --font-italic: 'Cormorant Garamond', serif;
-    --font-sans: 'Jost', sans-serif;
+    --coral: #D4572A;
+    --coral-escuro: #B8461F;
+    --creme: #F5F3EF;
+    --branco: #FFFFFF;
+    --grafite: #1A1816;
+    --texto-suave: #6B645C;
+    --borda: #DDD8D0;
+    --sucesso: #2D7A4F;
+    --erro: #C4453C;
+    --radius-sm: 12px;
+    --radius-md: 16px;
+    --radius-lg: 24px;
+    --sombra: 0 10px 30px rgba(26,24,22,0.06);
+    --sidebar-largura: 264px;
   }
 
-  *{ box-sizing: border-box; margin:0; padding:0; }
-  html{ scroll-behavior: smooth; }
-  body{
-    font-family: var(--font-sans);
-    color: var(--texto);
-    background: var(--off-white);
+  *{ box-sizing: border-box; }
+
+  html, body{
+    margin: 0;
+    background: var(--creme);
+    font-family: "Outfit", sans-serif;
+    color: var(--grafite);
+  }
+
+  h1, h2, h3{
+    font-family: "Fraunces", serif;
+    font-weight: 600;
+    margin: 0;
+  }
+
+  /* Escondido até o guarda de autenticação confirmar a sessão */
+  body.pre-auth{ visibility: hidden; }
+
+  a{ color: inherit; }
+
+  /* ============================== LAYOUT ============================== */
+  .app{
+    display: flex;
+    min-height: 100vh;
+  }
+
+  /* ------------------------------ SIDEBAR ------------------------------ */
+  .sidebar{
+    width: var(--sidebar-largura);
+    flex-shrink: 0;
+    background: var(--branco);
+    border-right: 1px solid var(--borda);
+    display: flex;
+    flex-direction: column;
+    padding: 28px 20px;
+    position: sticky;
+    top: 0;
+    height: 100vh;
+  }
+
+  .logo{
+    font-family: "Fraunces", serif;
+    font-size: 20px;
+    font-weight: 600;
+    margin-bottom: 36px;
+    padding: 0 4px;
+  }
+  .logo .ponto{ color: var(--coral); }
+
+  .menu-lateral-nav{
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+    flex: 1;
+  }
+
+  .item-menu{
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    padding: 12px 14px;
+    border: none;
+    background: none;
+    border-radius: var(--radius-sm);
+    font-family: inherit;
+    font-size: 14px;
+    font-weight: 500;
+    color: var(--texto-suave);
+    cursor: pointer;
+    text-align: left;
+    transition: background .15s ease, color .15s ease;
+  }
+  .item-menu svg{ flex-shrink: 0; }
+  .item-menu:hover{ background: var(--creme); color: var(--grafite); }
+  .item-menu.ativo{ background: var(--coral); color: var(--branco); }
+
+  .sidebar-rodape{
+    border-top: 1px solid var(--borda);
+    padding-top: 16px;
+    margin-top: 16px;
+  }
+  .sidebar-email{
+    font-size: 12px;
+    color: var(--texto-suave);
+    padding: 0 4px 10px;
+    word-break: break-all;
+  }
+  .botao-sair{
+    width: 100%;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    padding: 10px 14px;
+    border: 1px solid var(--borda);
+    background: var(--branco);
+    border-radius: var(--radius-sm);
+    font-family: inherit;
+    font-size: 13px;
+    font-weight: 500;
+    color: var(--grafite);
+    cursor: pointer;
+    transition: border-color .15s ease, color .15s ease;
+  }
+  .botao-sair:hover{ border-color: var(--erro); color: var(--erro); }
+
+  /* --------------------------- ÁREA DE CONTEÚDO --------------------------- */
+  .conteudo{
+    flex: 1;
+    padding: 32px 40px 60px;
+    max-width: 100%;
     overflow-x: hidden;
-    font-weight: 300;
-    line-height: 1.6;
   }
-  img, video{ max-width:100%; display:block; }
-  a{ text-decoration:none; color:inherit; }
-  em{ font-family: var(--font-italic); font-style: italic; color: var(--vinho); }
-  section{ padding: 7rem 6vw; position: relative; }
-  @media (max-width: 768px){ section{ padding: 5rem 6vw; } }
 
-  .eyebrow{
-    font-family: var(--font-sans);
-    text-transform: uppercase;
-    letter-spacing: 0.28em;
-    font-size: 0.72rem;
-    color: var(--vinho);
-    margin-bottom: 1.2rem;
+  .topo{
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    flex-wrap: wrap;
+    gap: 16px;
+    margin-bottom: 28px;
   }
-  .eyebrow.light{ color: var(--rosa-claro); }
-  .center{ text-align:center; }
-  .section-title{
-    font-family: var(--font-display);
-    font-weight: 300;
-    font-size: clamp(2.1rem, 4.2vw, 3.4rem);
-    line-height: 1.1;
-    margin-bottom: 2.5rem;
-  }
-  .section-title.light{ color: var(--off-white); }
 
-  .btn{
-    display:inline-block;
-    padding: 0.95rem 2.1rem;
-    font-size: 0.82rem;
-    letter-spacing: 0.14em;
-    text-transform: uppercase;
-    border-radius: 999px;
-    transition: all .45s ease;
-    border: 1px solid var(--vinho);
+  .topo-titulo{
+    display: flex;
+    align-items: center;
+    gap: 12px;
+  }
+
+  #tituloTopo{ font-size: 26px; }
+
+  .botao-menu-mobile{
+    display: none;
+    border: 1px solid var(--borda);
+    background: var(--branco);
+    border-radius: var(--radius-sm);
+    padding: 8px 10px;
     cursor: pointer;
   }
-  .btn-solid{ background: var(--vinho); color: var(--off-white); }
-  .btn-solid:hover{ background: var(--vinho-escuro); transform: translateY(-2px); box-shadow: 0 12px 26px rgba(92,31,49,.28); }
-  .btn-outline{ background: transparent; color: var(--vinho); }
-  .btn-outline:hover{ background: var(--vinho); color: var(--off-white); transform: translateY(-2px); }
 
-  /* ============================== REVEAL SCROLL ============================== */
-  .reveal{ opacity:0; transform: translateY(40px); transition: opacity .9s ease, transform .9s ease; }
-  .reveal.in-view{ opacity:1; transform:none; }
+  .topo-acoes{
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    flex-wrap: wrap;
+  }
 
-  /* ============================== PLACEHOLDERS DE FOTO/VÍDEO ============================== */
-  .placeholder-img{
+  .filtro-periodo{
+    display: flex;
+    gap: 6px;
+    background: var(--branco);
+    border: 1px solid var(--borda);
+    border-radius: var(--radius-sm);
+    padding: 4px;
+  }
+  .botao-periodo{
+    border: none;
+    background: none;
+    padding: 8px 16px;
+    border-radius: 8px;
+    font-family: inherit;
+    font-size: 13px;
+    font-weight: 500;
+    color: var(--texto-suave);
+    cursor: pointer;
+    transition: background .15s ease, color .15s ease;
+  }
+  .botao-periodo:hover{ color: var(--grafite); }
+  .botao-periodo.ativo{ background: var(--coral); color: var(--branco); }
+
+  .botao-atualizar{
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    background: var(--branco);
+    border: 1px solid var(--borda);
+    border-radius: var(--radius-sm);
+    padding: 10px 16px;
+    font-family: inherit;
+    font-size: 13px;
+    font-weight: 500;
+    color: var(--texto-suave);
+    cursor: pointer;
+    transition: border-color .15s ease, color .15s ease;
+  }
+  .botao-atualizar:hover{ border-color: var(--coral); color: var(--coral); }
+  .botao-atualizar svg{ transition: transform .5s ease; }
+  .botao-atualizar.girando svg{ animation: girar .8s linear infinite; }
+  @keyframes girar{ to{ transform: rotate(360deg); } }
+
+  .saudacao{
+    font-size: 14px;
+    color: var(--texto-suave);
+    margin-bottom: 20px;
+  }
+
+  .banner-erro{
+    display: none;
+    background: #FBEAE8;
+    border: 1px solid var(--erro);
+    color: var(--erro);
+    font-size: 13px;
+    padding: 12px 16px;
+    border-radius: var(--radius-sm);
+    margin-bottom: 20px;
+  }
+  .banner-erro.visivel{ display: block; }
+
+  /* ------------------------------- CARTÕES ------------------------------- */
+  .cartao{
+    background: var(--branco);
+    border: 1px solid var(--borda);
+    border-radius: var(--radius-lg);
+    box-shadow: var(--sombra);
+    padding: 24px;
+  }
+
+  .grade-numeros{
+    display: grid;
+    grid-template-columns: repeat(5, minmax(0, 1fr));
+    gap: 16px;
+    margin-bottom: 20px;
+  }
+
+  .cartao-numero{
+    background: var(--branco);
+    border: 1px solid var(--borda);
+    border-radius: var(--radius-md);
+    box-shadow: var(--sombra);
+    padding: 20px;
+  }
+  .cartao-numero.destaque{
+    background: var(--coral);
+    border-color: var(--coral);
+    color: var(--branco);
+  }
+  .cartao-numero-numero{
+    font-family: "Fraunces", serif;
+    font-size: 32px;
+    font-weight: 600;
+    line-height: 1.1;
+  }
+  .cartao-numero-rotulo{
+    font-size: 13px;
+    color: var(--texto-suave);
+    margin-top: 6px;
+  }
+  .cartao-numero.destaque .cartao-numero-rotulo{ color: rgba(255,255,255,.85); }
+
+  .cartao-destaque-contato{
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    flex-wrap: wrap;
+    gap: 16px;
+    border: 1px solid var(--coral);
+    margin-bottom: 24px;
+  }
+  .cartao-destaque-contato-texto h3{ font-size: 17px; }
+  .cartao-destaque-contato-texto p{
+    font-size: 12px;
+    color: var(--texto-suave);
+    margin: 6px 0 0;
+    max-width: 440px;
+    line-height: 1.5;
+  }
+  .cartao-destaque-contato-numero{
+    font-family: "Fraunces", serif;
+    font-size: 40px;
+    font-weight: 600;
+    color: var(--coral);
+  }
+
+  .cartao-grafico h3{ font-size: 16px; margin-bottom: 20px; }
+
+  /* --------------------------- GRÁFICO DE BARRAS --------------------------- */
+  .barras{
+    display: flex;
+    align-items: flex-end;
+    gap: 8px;
+    height: 160px;
+  }
+  .barra-dia{
     position: relative;
-    width:100%;
-    display:flex;
-    align-items:flex-end;
-    overflow:hidden;
-    border-radius: 2px;
+    flex: 1;
+    height: 100%;
+    display: flex;
+    align-items: flex-end;
   }
-  .placeholder-label{
-    font-size: 0.66rem;
-    letter-spacing: 0.14em;
-    text-transform: uppercase;
-    color: rgba(255,255,255,.85);
-    background: rgba(43,26,31,.28);
-    padding: 0.5rem 0.8rem;
-    margin: 0.9rem;
+  .barra-coluna{
+    width: 100%;
+    background: var(--coral);
+    border-radius: 6px 6px 0 0;
+    min-height: 3px;
+    transition: opacity .15s ease;
+  }
+  .barra-dia:hover .barra-coluna{ opacity: .8; }
+  .barra-tooltip{
+    position: absolute;
+    bottom: calc(100% + 8px);
+    left: 50%;
+    transform: translateX(-50%);
+    background: var(--grafite);
+    color: var(--branco);
+    font-size: 11px;
+    padding: 5px 9px;
+    border-radius: 8px;
+    white-space: nowrap;
+    opacity: 0;
+    pointer-events: none;
+    transition: opacity .15s ease;
+    z-index: 5;
+  }
+  .barra-dia:hover .barra-tooltip{ opacity: 1; }
+
+  /* ---------------------------- ABAS DO PAINEL ---------------------------- */
+  .painel-aba{ display: none; }
+  .painel-aba.ativo{ display: block; }
+
+  .grade-portfolio{
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 20px;
+  }
+  .grade-portfolio .cartao{ margin-bottom: 0; }
+  .cartao-largo{ grid-column: 1 / -1; }
+
+  .cartao h3{ font-size: 16px; margin-bottom: 18px; }
+
+  .estado-vazio{
+    font-size: 13px;
+    color: var(--texto-suave);
+    padding: 12px 0;
+  }
+
+  /* ------------------------------ CALENDÁRIO ------------------------------ */
+  .grade-calendario{
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 20px;
+    align-items: start;
+  }
+
+  .calendario-cabecalho{
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin-bottom: 18px;
+  }
+  .calendario-cabecalho h3{ margin: 0; }
+  .botao-mes{
+    width: 32px;
+    height: 32px;
+    border: 1px solid var(--borda);
+    background: var(--branco);
     border-radius: 999px;
-    backdrop-filter: blur(4px);
+    font-size: 16px;
+    line-height: 1;
+    color: var(--texto-suave);
+    cursor: pointer;
+    transition: border-color .15s ease, color .15s ease;
   }
-  .grad-1{ background: linear-gradient(135deg, var(--vinho) 0%, var(--rosa-2) 55%, var(--nude) 100%); }
-  .grad-2{ background: linear-gradient(160deg, var(--nude), var(--rosa-claro)); }
-  .grad-3{ background: linear-gradient(200deg, var(--vinho-suave), var(--bege-rosado)); }
-  .grad-4{ background: linear-gradient(200deg, var(--vinho), var(--nude)); }
-  .grad-5{ background: linear-gradient(135deg, var(--rosa-claro), var(--nude)); }
+  .botao-mes:hover{ border-color: var(--coral); color: var(--coral); }
 
-  /* ============================== NAV ============================== */
-  .nav{
-    position: fixed; top:0; left:0; right:0; z-index: 500;
-    display:flex; align-items:center;
-    padding: 1.6rem 6vw;
-    transition: background .4s ease, box-shadow .4s ease, padding .4s ease;
-  }
-  .nav.scrolled{
-    background: rgba(250,245,241,.82);
-    backdrop-filter: blur(14px);
-    box-shadow: 0 8px 30px rgba(43,26,31,.06);
-    padding: 1rem 6vw;
-  }
-  .nav-inner{ display:flex; align-items:center; justify-content:space-between; width:100%; }
-  .logo{ font-family: var(--font-display); font-size: 1.35rem; font-weight:400; letter-spacing:.02em; }
-  .nav-links{ display:flex; gap: 2.4rem; }
-  .nav-links a{
-    font-size: .82rem; letter-spacing: .1em; text-transform: uppercase;
-    position: relative; padding-bottom: 4px;
-  }
-  .nav-links a::after{
-    content:''; position:absolute; left:0; bottom:0; width:0; height:1px;
-    background: var(--vinho); transition: width .35s ease;
-  }
-  .nav-links a:hover::after{ width:100%; }
-  .nav-cta{ margin-left: 2rem; padding: .7rem 1.6rem; font-size: .72rem; }
-  .hamburger{
-    display:none; flex-direction:column; gap:5px; background:none; border:none; cursor:pointer; z-index: 600;
-  }
-  .hamburger span{ width: 26px; height:1px; background: var(--vinho); transition: all .35s ease; }
-  .hamburger.open span:nth-child(1){ transform: translateY(6px) rotate(45deg); }
-  .hamburger.open span:nth-child(2){ opacity:0; }
-  .hamburger.open span:nth-child(3){ transform: translateY(-6px) rotate(-45deg); }
-
-  .mobile-menu{
-    position: fixed; inset:0; background: var(--vinho-escuro);
-    display:flex; flex-direction:column; align-items:center; justify-content:center; gap: 1.9rem;
-    transform: translateY(-100%); transition: transform .5s cubic-bezier(.77,0,.18,1);
-    z-index: 550;
-  }
-  .mobile-menu.open{ transform: translateY(0); }
-  .mobile-menu a{
-    font-family: var(--font-display); font-size: 1.7rem; color: var(--off-white); font-weight:300;
-  }
-  .mobile-menu .btn{ margin-top: 1rem; border-color: var(--off-white); color: var(--off-white); }
-  .mobile-close{
-    position:absolute; top: 1.8rem; right: 6vw; background:none; border:none;
-    font-size: 2rem; color: var(--off-white); cursor:pointer;
+  .calendario-dias-semana{
+    display: grid;
+    grid-template-columns: repeat(7, 1fr);
+    text-align: center;
+    font-size: 11px;
+    color: var(--texto-suave);
+    text-transform: uppercase;
+    letter-spacing: .04em;
+    margin-bottom: 8px;
   }
 
-  /* ============================== HERO ============================== */
-  .hero{
-    padding-top: 9rem;
-    display:grid; grid-template-columns: 1.1fr 1fr; gap: 4vw; align-items:center;
-    min-height: 92vh;
+  .calendario-grade{
+    display: grid;
+    grid-template-columns: repeat(7, 1fr);
+    gap: 4px;
   }
-  .hero-title{
-    font-family: var(--font-display); font-weight:300;
-    font-size: clamp(3rem, 7.4vw, 6rem); line-height: .98; margin-bottom: 1.6rem;
+  .dia-vazio{ aspect-ratio: 1; }
+  .dia-celula{
+    aspect-ratio: 1;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 3px;
+    border: none;
+    background: transparent;
+    border-radius: var(--radius-sm);
+    font-family: inherit;
+    font-size: 13px;
+    color: var(--grafite);
+    cursor: pointer;
+    transition: background .15s ease, color .15s ease;
   }
-  .hero-sub{ max-width: 420px; color: var(--texto-suave); font-size: 1.05rem; margin-bottom: 2.2rem; }
-  .hero-actions{ display:flex; gap: 1rem; margin-bottom: 3rem; flex-wrap:wrap; }
-  .hero-metrics{ display:flex; gap: 2.6rem; }
-  .hero-metrics strong{ display:block; font-family: var(--font-display); font-size: 1.6rem; color: var(--vinho); }
-  .hero-metrics span{ font-size: .74rem; letter-spacing:.06em; color: var(--texto-suave); text-transform:uppercase; }
-  .hero-position{ font-size: .85rem; color: var(--texto-suave); max-width: 440px; margin: -0.6rem 0 2.2rem; }
-  .handle-tag{ font-size: .72rem; letter-spacing:.18em; text-transform:uppercase; color: var(--vinho); text-align:right; margin-bottom: 1rem; }
+  .dia-celula:hover{ background: var(--creme); }
+  .dia-celula.hoje{ font-weight: 700; color: var(--coral); }
+  .dia-celula.selecionado{ background: var(--coral); color: var(--branco); }
+  .dia-ponto{ width: 5px; height: 5px; border-radius: 50%; background: var(--coral); }
+  .dia-ponto.concluido{ background: var(--texto-suave); }
+  .dia-ponto.atrasado{ background: var(--erro); }
+  .dia-celula.selecionado .dia-ponto{ background: var(--branco); }
 
-  .hero-photo{
-    aspect-ratio: 4/5; padding: 2rem; border-radius: 32px;
+  .dia-cabecalho{
+    display: flex;
+    align-items: flex-start;
+    justify-content: space-between;
+    gap: 12px;
+    margin-bottom: 18px;
   }
-  .hero-photo-bg{
-    position: absolute; top: -20%; left: 0; width: 100%; height: 140%;
-    background-size: cover; background-position: center;
-    z-index: 0; will-change: transform;
+  .dia-rotulo{
+    font-size: 11px;
+    text-transform: uppercase;
+    letter-spacing: .08em;
+    color: var(--coral);
+    margin: 0 0 4px;
   }
-  .hero-photo-content{ position: relative; z-index: 1; }
-  .hero-overlay-text{
-    font-family: var(--font-display); font-weight:300; font-style: italic;
-    font-size: clamp(1.3rem, 2.2vw, 1.9rem); color: var(--off-white); margin-bottom: 1.6rem;
+  .cartao-dia h3{ margin: 0; font-size: 18px; }
+  .botao-nova-tarefa{
+    border: none;
+    background: var(--coral);
+    color: var(--branco);
+    border-radius: var(--radius-sm);
+    padding: 9px 16px;
+    font-family: inherit;
+    font-size: 13px;
+    font-weight: 600;
+    cursor: pointer;
+    transition: background .15s ease;
+    white-space: nowrap;
   }
+  .botao-nova-tarefa:hover{ background: var(--coral-escuro); }
 
-  /* ============================== TICKER ============================== */
-  .ticker{
-    background: var(--vinho); overflow:hidden; padding: 1rem 0; white-space: nowrap;
+  .form-nova-tarefa{
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    background: var(--creme);
+    border-radius: var(--radius-sm);
+    padding: 14px;
+    margin-bottom: 16px;
   }
-  .ticker-track{
-    display:inline-flex; gap: 1.2rem; animation: rolar 26s linear infinite;
+  .form-nova-tarefa.oculto{ display: none; }
+  .form-nova-tarefa input[type="text"]{
+    border: 1px solid var(--borda);
+    border-radius: var(--radius-sm);
+    padding: 10px 12px;
+    font-family: inherit;
+    font-size: 13px;
+    background: var(--branco);
   }
-  .ticker-track span{
-    font-family: var(--font-italic); font-style:italic; font-size: 1.05rem;
-    color: var(--rosa-claro); letter-spacing: .02em;
+  .form-linha-horarios{ display: flex; gap: 10px; }
+  .form-campo-horario{ flex: 1; display: flex; flex-direction: column; gap: 4px; }
+  .form-campo-horario label{ font-size: 11px; color: var(--texto-suave); }
+  .form-campo-horario input[type="time"]{
+    border: 1px solid var(--borda);
+    border-radius: var(--radius-sm);
+    padding: 8px 10px;
+    font-family: inherit;
+    font-size: 13px;
+    background: var(--branco);
+    width: 100%;
   }
-  @keyframes rolar{ 0%{ transform: translateX(0); } 100%{ transform: translateX(-50%); } }
-
-  /* ============================== SOBRE ============================== */
-  .about{
-    display:grid; grid-template-columns: .95fr 1fr; gap: 5vw; align-items:center;
-    background-color: var(--off-white);
-    /* textura sutil de mármore nude simulada só com CSS, sem imagem */
-    background-image:
-      radial-gradient(at 18% 25%, rgba(198,157,140,.14) 0px, transparent 50%),
-      radial-gradient(at 82% 68%, rgba(92,31,49,.07) 0px, transparent 45%),
-      radial-gradient(at 55% 15%, rgba(198,157,140,.12) 0px, transparent 42%),
-      radial-gradient(at 30% 85%, rgba(92,31,49,.05) 0px, transparent 40%);
+  .form-linha{ display: flex; gap: 8px; }
+  .form-linha select{
+    border: 1px solid var(--borda);
+    border-radius: var(--radius-sm);
+    padding: 8px 10px;
+    font-family: inherit;
+    font-size: 13px;
+    background: var(--branco);
   }
-  .about-collage{ position:relative; }
-  .collage-1{ aspect-ratio: 4/5; width: 78%; border-radius: 32px; }
-  .collage-2{ aspect-ratio: 4/5; width: 58%; position:absolute; right: -6%; bottom: -10%; box-shadow: 0 30px 60px rgba(43,26,31,.22); border-radius: 32px; }
-  .about-text h2{ margin-bottom: 1.4rem; }
-  .about-text p{ color: var(--texto-suave); max-width: 480px; margin-bottom: 1.8rem; }
-  .pills{ display:flex; flex-wrap:wrap; gap: .6rem; margin-bottom: 2.2rem; }
-  .pill{
-    font-size: .72rem; letter-spacing:.08em; text-transform:uppercase;
-    padding: .5rem 1rem; border: 1px solid var(--vinho-suave); border-radius: 999px; color: var(--vinho);
+  .botao-salvar-tarefa{
+    border: none;
+    background: var(--coral);
+    color: var(--branco);
+    border-radius: var(--radius-sm);
+    padding: 8px 14px;
+    font-family: inherit;
+    font-size: 13px;
+    font-weight: 600;
+    cursor: pointer;
   }
-  .signature{ font-family: var(--font-italic); font-style:italic; font-size: 1.9rem; color: var(--vinho); }
-
-  /* ============================== O QUE AS MARCAS PODEM ESPERAR ============================== */
-  .expect{ background: var(--bege-rosado); }
-  .expect-intro{ max-width: 720px; margin: 0 auto 3rem; text-align:center; color: var(--texto-suave); }
-  .expect-grid{ display:grid; grid-template-columns: repeat(2, 1fr); gap: 1.4rem 2.4rem; max-width: 900px; margin: 0 auto; }
-  .expect-item{ display:flex; gap: .9rem; align-items:flex-start; font-size: .96rem; color: var(--texto); }
-  .expect-item .check{
-    flex-shrink:0; width: 26px; height:26px; border-radius:50%; background: var(--vinho); color: var(--off-white);
-    display:flex; align-items:center; justify-content:center; font-size: .74rem; margin-top: 2px;
-  }
-
-  /* ============================== BANDA EDITORIAL ============================== */
-  .editorial-band{
-    min-height: 100vh; display:flex; align-items:center; justify-content:center;
-    padding: 0 6vw;
-    /* EDITE AQUI: troque o gradiente abaixo por uma foto real de pilates/wellness.
-       Mantenha o gradiente escuro por cima para garantir legibilidade do título:
-       background: linear-gradient(180deg, rgba(43,26,31,.55), rgba(43,26,31,.75)), url('sua-foto.jpg') center/cover; */
-    background:
-      linear-gradient(180deg, rgba(43,26,31,.55), rgba(43,26,31,.78)),
-      linear-gradient(135deg, var(--vinho) 0%, var(--vinho-suave) 60%, var(--nude) 130%);
-    background-size: cover; background-position:center;
-  }
-  .editorial-overlay{ text-align:center; max-width: 900px; }
-  .editorial-sub{ font-family: var(--font-italic); font-style:italic; color: var(--rosa-claro); font-size: 1.2rem; margin-bottom: 1.4rem; }
-  .editorial-title{
-    font-family: var(--font-display); font-weight:300; color: var(--off-white);
-    font-size: clamp(2.6rem, 8.6vw, 6.6rem); letter-spacing: .02em; line-height: 1.02;
-  }
-  .editorial-keywords{
-    margin-top: 1.8rem; text-transform:uppercase; letter-spacing:.3em; font-size:.78rem; color: var(--rosa-claro);
-  }
-  .editorial-title em{ color: var(--rosa-claro); }
-
-  /* ============================== PORTFÓLIO ============================== */
-  .filters{ display:flex; flex-wrap:wrap; gap: .7rem; justify-content:center; margin-bottom: 3rem; }
-  .filter-btn{
-    font-size: .72rem; letter-spacing:.1em; text-transform:uppercase;
-    padding: .55rem 1.2rem; border-radius:999px; border: 1px solid var(--vinho-suave);
-    background:transparent; color: var(--vinho); cursor:pointer; transition: all .3s ease;
-  }
-  .filter-btn.active, .filter-btn:hover{ background: var(--vinho); color: var(--off-white); }
-  .portfolio-grid{
-    display:grid; grid-template-columns: repeat(3, 1fr); gap: 1.6rem;
-  }
-  .video-card{
-    position:relative; aspect-ratio: 4/5; border-radius: 32px; overflow:hidden; cursor:pointer;
-    transition: transform .55s ease, box-shadow .55s ease;
-  }
-  .video-card:hover{ transform: scale(1.02); box-shadow: 0 26px 50px rgba(43,26,31,.22); }
-  .video-card .play-icon{
-    position:absolute; top:50%; left:50%; transform: translate(-50%,-50%);
-    width: 52px; height:52px; border-radius:50%; border: 1px solid rgba(255,255,255,.8);
-    display:flex; align-items:center; justify-content:center; color:#fff; font-size: .9rem;
-    transition: transform .4s ease;
-  }
-  .video-card:hover .play-icon{ transform: translate(-50%,-50%) scale(1.12); }
-  .video-tag{
-    position:absolute; top: .9rem; left: .9rem; font-size: .64rem; letter-spacing:.08em; text-transform:uppercase;
-    background: rgba(255,255,255,.85); color: var(--vinho); padding: .35rem .7rem; border-radius:999px;
-  }
-  .video-title{
-    position:absolute; bottom: 0; left:0; right:0; padding: 1.2rem;
-    font-family: var(--font-display); font-size: 1.05rem; color:#fff;
-    background: linear-gradient(0deg, rgba(43,26,31,.55), transparent);
+  .botao-cancelar-tarefa{
+    border: 1px solid var(--borda);
+    background: var(--branco);
+    color: var(--texto-suave);
+    border-radius: var(--radius-sm);
+    padding: 8px 14px;
+    font-family: inherit;
+    font-size: 13px;
+    cursor: pointer;
   }
 
-  /* ============================== RESULTADOS ============================== */
-  .results{ background: var(--vinho); color: var(--off-white); }
-  .results em{ color: var(--rosa-claro); }
-  .metrics-grid{
-    display:grid; grid-template-columns: repeat(4, 1fr); gap: 2.4rem 2rem; margin-bottom: 3rem;
+  .item-tarefa{
+    display: flex;
+    align-items: center;
+    flex-wrap: wrap;
+    gap: 8px 12px;
+    padding: 12px 0;
+    border-bottom: 1px solid var(--borda);
   }
-  .metric strong{ font-family: var(--font-display); font-weight:300; font-size: 2.2rem; display:block; }
-  .metric span{ font-size: .74rem; letter-spacing:.08em; text-transform:uppercase; color: var(--rosa-claro); }
-  .bar{ height:2px; background: rgba(255,255,255,.2); margin-top: .9rem; border-radius: 2px; overflow:hidden; }
-  .bar-fill{ height:100%; width:0; background: var(--rosa-claro); transition: width 1.5s cubic-bezier(.16,.84,.44,1); }
-  .results.in-view .bar-fill{ width: var(--val); }
-  .editorial-quote{ font-family: var(--font-italic); font-style:italic; font-size: 1.4rem; text-align:center; color: var(--rosa-claro); }
+  .item-tarefa:last-child{ border-bottom: none; }
+  .tarefa-check{
+    flex-shrink: 0;
+    width: 22px;
+    height: 22px;
+    border-radius: 50%;
+    border: 1px solid var(--borda);
+    background: var(--branco);
+    color: var(--branco);
+    font-size: 12px;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 0;
+  }
+  .item-tarefa.concluida .tarefa-check{ background: var(--sucesso); border-color: var(--sucesso); }
+  .tarefa-texto{ flex: 1; min-width: 0; }
+  .tarefa-titulo{ margin: 0; font-size: 14px; }
+  .item-tarefa.concluida .tarefa-titulo{ text-decoration: line-through; color: var(--texto-suave); }
+  .tarefa-notas{ margin: 3px 0 0; font-size: 12px; color: var(--texto-suave); }
+  .tarefa-horario{ margin: 2px 0 0; font-size: 12px; color: var(--texto-suave); }
+  .tarefa-marca{
+    margin: 0 0 2px;
+    font-size: 11px;
+    font-weight: 600;
+    color: var(--coral);
+    text-transform: uppercase;
+    letter-spacing: .03em;
+  }
+  .tarefa-badge{
+    flex-shrink: 0;
+    font-size: 11px;
+    font-weight: 600;
+    padding: 4px 10px;
+    border-radius: 999px;
+    text-transform: uppercase;
+    letter-spacing: .03em;
+  }
+  .tarefa-badge.entrega{ background: var(--coral); color: var(--branco); }
+  .tarefa-badge.pendencia{ background: var(--creme); color: var(--texto-suave); border: 1px solid var(--borda); }
+  .tarefa-badge.atrasada{ background: var(--erro); color: var(--branco); }
+  .tarefa-excluir{
+    flex-shrink: 0;
+    border: none;
+    background: none;
+    color: var(--texto-suave);
+    font-size: 18px;
+    line-height: 1;
+    cursor: pointer;
+    padding: 2px 4px;
+  }
+  .tarefa-excluir:hover{ color: var(--erro); }
 
-  /* ============================== SERVIÇOS ============================== */
-  .service-row{
-    display:grid; grid-template-columns: 60px 1fr 1.4fr; gap: 2rem; align-items:center;
-    padding: 1.8rem 1rem; border-bottom: 1px solid rgba(92,31,49,.15);
-    transition: background .4s ease, color .4s ease;
+  .grade-status-tarefas{
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 20px;
+    margin-top: 20px;
   }
-  .service-row:hover{ background: var(--vinho); color: var(--off-white); }
-  .service-row:hover .service-num{ color: var(--rosa-claro); }
-  .service-num{ font-family: var(--font-display); font-style:italic; color: var(--vinho-suave); transition: color .4s ease; }
-  .service-name{ font-family: var(--font-display); font-size: 1.3rem; font-weight:400; }
-  .service-desc{ color: inherit; opacity:.75; font-size: .92rem; }
-  .service-cta{
-    margin-top: 2.4rem; padding: 2.4rem; background: var(--nude); border-radius: 3px;
-    display:flex; align-items:center; justify-content:space-between; gap: 1.5rem; flex-wrap:wrap;
+  .item-tarefa-status{
+    display: flex;
+    align-items: center;
+    flex-wrap: wrap;
+    gap: 8px 12px;
+    padding: 12px 14px;
+    border-radius: var(--radius-sm);
+    margin-bottom: 8px;
   }
-  .service-cta h3{ font-family: var(--font-display); font-weight:400; font-size: 1.5rem; }
+  .item-tarefa-status:last-child{ margin-bottom: 0; }
+  .item-tarefa-status.aberta{ background: #FBEAE8; }
+  .item-tarefa-status.concluida{ background: #E5EEFA; }
+  .item-tarefa-status .tarefa-texto{ flex: 1; min-width: 0; }
+  .item-tarefa-status .tarefa-titulo{ margin: 0; font-size: 14px; }
+  .item-tarefa-status.concluida .tarefa-titulo{ text-decoration: line-through; color: var(--texto-suave); }
+  .item-tarefa-status .tarefa-data{ font-size: 11px; color: var(--texto-suave); margin: 2px 0 0; }
 
-  /* ============================== CONTATO ============================== */
-  .contact{ background: var(--vinho-escuro); color: var(--off-white); }
-  .contact-inner{ max-width: 780px; margin: 0 auto; text-align:center; }
-  .contact-title{ font-family: var(--font-display); font-weight:300; font-size: clamp(2.4rem, 6vw, 4.2rem); margin-bottom: 1.2rem; }
-  .contact-sub{ color: var(--rosa-claro); max-width: 480px; margin: 0 auto 2.4rem; }
-  .socials{ display:flex; gap: 1.6rem; justify-content:center; margin-bottom: 3rem; flex-wrap:wrap; }
-  .socials a{ font-size: .78rem; letter-spacing:.1em; text-transform:uppercase; border-bottom: 1px solid rgba(255,255,255,.35); padding-bottom: 3px; }
-  .contact-form{ display:grid; grid-template-columns: 1fr 1fr; gap: 1.6rem; text-align:left; }
-  .field{ display:flex; flex-direction:column; gap: .5rem; }
-  .field.full{ grid-column: 1 / -1; }
-  .field label{ font-size: .68rem; letter-spacing:.12em; text-transform:uppercase; color: var(--rosa-claro); }
-  .field input, .field textarea{
-    background:transparent; border:none; border-bottom: 1px solid rgba(255,255,255,.35);
-    color: var(--off-white); font-family: var(--font-sans); font-size: .95rem; padding: .5rem 0; resize:none;
+  @media (max-width: 900px){
+    .grade-calendario{ grid-template-columns: 1fr; }
+    .grade-status-tarefas{ grid-template-columns: 1fr; }
   }
-  .field input::placeholder, .field textarea::placeholder{ color: rgba(250,245,241,.4); }
-  .field input:focus, .field textarea:focus{ outline:none; border-color: var(--rosa-claro); }
-  .contact-form .btn{ grid-column: 1/-1; justify-self:center; margin-top: 1rem; border-color: var(--off-white); color: var(--off-white); }
-  .contact-form .btn:hover{ background: var(--off-white); color: var(--vinho-escuro); }
 
-  footer{ text-align:center; padding: 2.2rem; font-size: .74rem; color: var(--texto-suave); letter-spacing:.05em; }
+  /* ------------------------------ INSTAGRAM ------------------------------ */
+  .oculto{ display: none !important; }
 
-  /* ============================== POP-UP ============================== */
-  .popup-overlay{
-    position: fixed; inset:0; background: rgba(43,26,31,.55); backdrop-filter: blur(4px);
-    display:flex; align-items:center; justify-content:center; z-index: 900;
-    opacity:0; visibility:hidden; transition: opacity .5s ease, visibility .5s ease;
-    padding: 2rem;
+  .ig-conexao{ max-width: 560px; margin: 0 auto; }
+  .ig-conexao-texto{ font-size: 13px; color: var(--texto-suave); line-height: 1.6; margin: 4px 0 20px; }
+  .ig-conexao-texto strong{ color: var(--grafite); }
+  .ig-form-conexao{ display: flex; flex-direction: column; gap: 16px; }
+  .ig-form-conexao .campo{ display: flex; flex-direction: column; gap: 6px; }
+  .ig-form-conexao label{ font-size: 12px; font-weight: 500; color: var(--texto-suave); }
+  .ig-form-conexao input{
+    border: 1px solid var(--borda); border-radius: var(--radius-sm);
+    padding: 11px 14px; font-family: inherit; font-size: 13px; background: var(--creme);
   }
-  .popup-overlay.active{ opacity:1; visibility:visible; }
-  .popup{
-    background: var(--off-white); max-width: 780px; width:100%; display:grid; grid-template-columns: .9fr 1.1fr;
-    border-radius: 4px; overflow:hidden; box-shadow: 0 40px 80px rgba(43,26,31,.35);
-    transform: translateY(30px); transition: transform .5s ease;
-  }
-  .popup-overlay.active .popup{ transform: translateY(0); }
-  .popup-image{ min-height: 100%; }
-  .popup-content{ padding: 2.6rem; position:relative; }
-  .popup-content h3{ font-family: var(--font-display); font-weight:400; font-size: 1.5rem; margin: .8rem 0 1.6rem; }
-  .popup-close{
-    position:absolute; top: 1rem; right: 1.2rem; background:none; border:none; font-size: 1.4rem; cursor:pointer; color: var(--vinho);
-  }
-  .popup-form{ display:flex; flex-direction:column; gap: 1rem; }
-  .popup-form .field label{ color: var(--texto-suave); }
-  .popup-form .field input, .popup-form .field textarea{
-    border-bottom: 1px solid rgba(92,31,49,.25); color: var(--texto);
-  }
-  .popup-form .btn{ align-self:flex-start; margin-top: .6rem; }
+  .ig-form-conexao input:focus{ outline: none; border-color: var(--coral); }
 
-  /* ============================== MODAL DE VÍDEO ============================== */
-  .video-modal-overlay{
-    position: fixed; inset:0; background: rgba(20,10,13,.9);
-    display:flex; align-items:center; justify-content:center; z-index: 950;
-    opacity:0; visibility:hidden; transition: opacity .3s ease, visibility .3s ease;
-    padding: 2rem;
+  .ig-topo{ display: flex; align-items: center; gap: 12px; flex-wrap: wrap; margin-bottom: 8px; }
+  .ig-periodo-personalizado{ display: flex; align-items: center; gap: 8px; }
+  .ig-periodo-personalizado input[type="date"]{
+    border: 1px solid var(--borda); border-radius: var(--radius-sm);
+    padding: 8px 10px; font-family: inherit; font-size: 13px; background: var(--branco);
   }
-  .video-modal-overlay.active{ opacity:1; visibility:visible; }
-  .video-modal{
-    position: relative; width: 100%; max-width: 380px; max-height: 85vh;
-    aspect-ratio: 9/16; background:#000; border-radius: 20px; overflow:hidden;
-    box-shadow: 0 40px 80px rgba(0,0,0,.5);
+  .ig-periodo-personalizado span{ font-size: 12px; color: var(--texto-suave); }
+
+  .ig-ultima-sincronizacao{ font-size: 12px; color: var(--texto-suave); margin: 0 0 20px; }
+  .ig-grade-numeros{ grid-template-columns: repeat(4, minmax(0,1fr)); }
+  .ig-ranking-abas{ margin-bottom: 18px; }
+
+  .ig-grade-posts{ display: grid; grid-template-columns: repeat(4, 1fr); gap: 16px; }
+  .ig-post-card{
+    border: 1px solid var(--borda); border-radius: var(--radius-md); overflow: hidden;
+    cursor: pointer; background: var(--branco); transition: box-shadow .15s ease, transform .15s ease;
   }
-  .video-modal-frame{ width:100%; height:100%; }
-  .video-modal-frame iframe{ width:100%; height:100%; border:0; display:block; }
-  .video-modal-close{
-    position:absolute; top:-2.6rem; right:0; background:none; border:none;
-    color:#fff; font-size: 1.8rem; line-height:1; cursor:pointer;
+  .ig-post-card:hover{ box-shadow: var(--sombra); transform: translateY(-2px); }
+  .ig-post-thumb{
+    aspect-ratio: 4/5; background-color: var(--creme); background-size: cover; background-position: center;
+    position: relative;
   }
+  .ig-post-tipo{
+    position: absolute; top: 8px; left: 8px; background: rgba(26,24,22,.6); color: var(--branco);
+    font-size: 10px; font-weight: 600; text-transform: uppercase; letter-spacing: .04em;
+    padding: 3px 8px; border-radius: 999px;
+  }
+  .ig-post-info{ padding: 12px; }
+  .ig-post-data{ font-size: 11px; color: var(--texto-suave); margin: 0 0 6px; }
+  .ig-post-legenda{
+    font-size: 12px; color: var(--grafite); margin: 0 0 10px; line-height: 1.4;
+    display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; overflow: hidden;
+  }
+  .ig-post-metricas{ display: flex; flex-wrap: wrap; gap: 8px; font-size: 11px; color: var(--texto-suave); }
+  .ig-post-metricas strong{ color: var(--grafite); }
+
+  .ig-modal-overlay{
+    position: fixed; inset: 0; background: rgba(26,24,22,.6);
+    display: flex; align-items: center; justify-content: center; z-index: 900;
+    opacity: 0; visibility: hidden; transition: opacity .2s ease, visibility .2s ease; padding: 24px;
+  }
+  .ig-modal-overlay.ativo{ opacity: 1; visibility: visible; }
+  .ig-modal{
+    position: relative; background: var(--branco); border-radius: var(--radius-lg);
+    max-width: 640px; width: 100%; max-height: 88vh; overflow-y: auto;
+    padding: 32px; box-shadow: 0 40px 80px rgba(26,24,22,.35);
+  }
+  .ig-modal-fechar{
+    position: absolute; top: 16px; right: 16px; border: none; background: var(--creme);
+    width: 30px; height: 30px; border-radius: 50%; font-size: 16px; color: var(--texto-suave); cursor: pointer;
+  }
+  .ig-modal-fechar:hover{ color: var(--erro); }
+
+  .ig-insight-item{
+    display: flex; gap: 10px; align-items: flex-start; padding: 10px 0;
+    border-bottom: 1px solid var(--borda); font-size: 13px; line-height: 1.5;
+  }
+  .ig-insight-item:last-child{ border-bottom: none; }
+
+  .ig-metrica-delta{ font-size: 12px; margin-top: 4px; }
+  .ig-metrica-delta.positivo{ color: var(--sucesso); }
+  .ig-metrica-delta.negativo{ color: var(--erro); }
+
+  @media (max-width: 900px){
+    .ig-grade-numeros{ grid-template-columns: repeat(2, 1fr); }
+    .ig-grade-posts{ grid-template-columns: repeat(2, 1fr); }
+  }
+
+  /* ------------------------------ VÍDEOS ------------------------------ */
+  .item-video{
+    display: flex;
+    gap: 14px;
+    align-items: center;
+    padding: 10px 0;
+    border-bottom: 1px solid var(--borda);
+  }
+  .item-video:last-child{ border-bottom: none; }
+  .thumb-video{
+    width: 96px;
+    height: 54px;
+    object-fit: cover;
+    border-radius: 10px;
+    flex-shrink: 0;
+    background: var(--creme);
+  }
+  .item-video-info{ flex: 1; min-width: 0; }
+  .item-video-titulo{
+    display: block;
+    font-size: 13px;
+    font-weight: 500;
+    text-decoration: none;
+    margin-bottom: 6px;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+  }
+  .item-video-titulo:hover{ color: var(--coral); }
+  .item-video-contagem{
+    font-size: 11px;
+    color: var(--texto-suave);
+  }
+
+  /* --------------------------- BARRAS HORIZONTAIS --------------------------- */
+  .barra-horizontal{
+    background: var(--creme);
+    border-radius: 6px;
+    height: 8px;
+    overflow: hidden;
+    margin: 6px 0;
+  }
+  .barra-horizontal-preenchida{
+    height: 100%;
+    background: var(--coral);
+    border-radius: 6px;
+  }
+  .item-barra-horizontal{ padding: 8px 0; }
+  .item-barra-cabecalho{
+    display: flex;
+    justify-content: space-between;
+    font-size: 13px;
+    margin-bottom: 4px;
+  }
+
+  /* ------------------------------ CONTATOS ------------------------------ */
+  .item-contato{
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 10px 0;
+    border-bottom: 1px solid var(--borda);
+    font-size: 13px;
+  }
+  .item-contato:last-child{ border-bottom: none; }
+  .item-contato strong{
+    font-family: "Fraunces", serif;
+    font-size: 16px;
+    color: var(--coral);
+  }
+
+  /* -------------------------------- LEADS -------------------------------- */
+  .lista-leads{ display: flex; flex-direction: column; gap: 10px; }
+  .cartao-lead{
+    border: 1px solid var(--borda);
+    border-radius: var(--radius-md);
+    overflow: hidden;
+  }
+  .cartao-lead-cabecalho{
+    display: flex;
+    align-items: center;
+    gap: 14px;
+    padding: 14px 16px;
+    cursor: pointer;
+    flex-wrap: wrap;
+  }
+  .selo{
+    font-size: 10px;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: .03em;
+    padding: 4px 9px;
+    border-radius: 999px;
+    background: var(--creme);
+    color: var(--texto-suave);
+    flex-shrink: 0;
+  }
+  .selo-popup{ background: #F3E8DE; color: var(--coral-escuro); }
+  .selo-contact{ background: #E7F3EC; color: var(--sucesso); }
+
+  .cartao-lead-principal{
+    display: flex;
+    flex-direction: column;
+    gap: 2px;
+    min-width: 120px;
+  }
+  .cartao-lead-principal strong{ font-size: 13px; }
+  .cartao-lead-data{ font-size: 11px; color: var(--texto-suave); }
+  .cartao-lead-email{
+    font-size: 12px;
+    color: var(--texto-suave);
+    flex: 1;
+    min-width: 140px;
+  }
+  .cartao-lead-seta{
+    font-size: 12px;
+    color: var(--texto-suave);
+    transition: transform .15s ease;
+  }
+  .cartao-lead.expandido .cartao-lead-seta{ transform: rotate(180deg); }
+
+  .cartao-lead-detalhes{
+    display: none;
+    padding: 0 16px 16px;
+    font-size: 13px;
+    border-top: 1px solid var(--borda);
+  }
+  .cartao-lead-detalhes p{ margin: 10px 0 0; line-height: 1.5; }
+  .cartao-lead.expandido .cartao-lead-detalhes{ display: block; }
+
+  .cartao-lead-acoes{
+    display: flex;
+    gap: 10px;
+    margin-top: 14px;
+    flex-wrap: wrap;
+  }
+  .botao-acao{
+    display: inline-block;
+    text-decoration: none;
+    font-size: 12px;
+    font-weight: 600;
+    padding: 8px 14px;
+    border-radius: var(--radius-sm);
+    background: var(--coral);
+    color: var(--branco);
+  }
+  .botao-acao:hover{ background: var(--coral-escuro); }
+  .botao-whatsapp{ background: var(--sucesso); }
+  .botao-whatsapp:hover{ background: #235f3d; }
 
   /* ============================== RESPONSIVO ============================== */
   @media (max-width: 900px){
-    .hero{ grid-template-columns: 1fr; padding-top: 7.5rem; }
-    .hero-photo{ order:-1; }
-    .about{ grid-template-columns: 1fr; }
-    .about-collage{ margin-bottom: 5rem; }
-    .portfolio-grid{ grid-template-columns: repeat(2, 1fr); }
-    .metrics-grid{ grid-template-columns: repeat(2, 1fr); }
-    .popup{ grid-template-columns: 1fr; }
-    .popup-image{ min-height: 180px; }
+    .grade-numeros{ grid-template-columns: repeat(2, 1fr); }
+    .grade-portfolio{ grid-template-columns: 1fr; }
   }
-  @media (max-width: 640px){
-    .nav-links, .nav-cta{ display:none; }
-    .hamburger{ display:flex; }
-    .portfolio-grid{ grid-template-columns: 1fr; }
-    .metrics-grid{ grid-template-columns: repeat(2, 1fr); }
-    .service-row{ grid-template-columns: 40px 1fr; }
-    .service-desc{ grid-column: 1/-1; }
-    .contact-form{ grid-template-columns: 1fr; }
-    .collage-2{ width: 68%; right: 0; }
-    .expect-grid{ grid-template-columns: 1fr; }
+
+  @media (max-width: 760px){
+    .botao-menu-mobile{ display: inline-flex; }
+
+    .sidebar{
+      position: fixed;
+      left: 0; top: 0;
+      z-index: 30;
+      transform: translateX(-100%);
+      transition: transform .2s ease;
+      box-shadow: var(--sombra);
+    }
+    body.menu-aberto .sidebar{ transform: translateX(0); }
+
+    .overlay-mobile{
+      display: none;
+      position: fixed;
+      inset: 0;
+      background: rgba(26,24,22,.4);
+      z-index: 20;
+    }
+    body.menu-aberto .overlay-mobile{ display: block; }
+
+    .conteudo{ padding: 20px 16px 40px; }
+    .grade-numeros{ grid-template-columns: repeat(2, 1fr); }
+    .cartao-numero-numero{ font-size: 26px; }
   }
 </style>
 </head>
-<body>
+<body class="pre-auth">
 
-  <!-- ============================== NAV ============================== -->
-  <header class="nav" id="nav">
-    <div class="nav-inner">
-      <!-- EDITE AQUI: nome/handle da creator -->
-      <a href="#" class="logo">Lucimara Reis</a>
-      <nav class="nav-links">
-        <a href="#sobre">sobre</a>
-        <a href="#portfolio">portfólio</a>
-        <a href="#servicos">serviços</a>
-        <a href="#resultados">resultados</a>
-        <a href="#contato">contato</a>
+  <div class="app">
+
+    <div class="overlay-mobile" id="overlayMobile"></div>
+
+    <!-- ============================== SIDEBAR ============================== -->
+    <aside class="sidebar" id="sidebar">
+      <div class="logo">meu<span class="ponto">.</span>painel</div>
+
+      <nav class="menu-lateral-nav">
+        <button class="item-menu ativo" data-tab="menu-principal">
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 9.5 12 3l9 6.5"/><path d="M5 9.5V21h14V9.5"/><path d="M9 21v-6h6v6"/></svg>
+          Menu Principal
+        </button>
+        <button class="item-menu" data-tab="portfolio">
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 3v18h18"/><rect x="7" y="12" width="3" height="6"/><rect x="12" y="8" width="3" height="10"/><rect x="17" y="5" width="3" height="13"/></svg>
+          Portfólio
+        </button>
+        <button class="item-menu" data-tab="calendario">
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="4" width="18" height="18" rx="2"/><line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/><line x1="3" y1="10" x2="21" y2="10"/></svg>
+          Calendário
+        </button>
+        <button class="item-menu" data-tab="instagram">
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="2" width="20" height="20" rx="5"/><path d="M16 11.37A4 4 0 1 1 12.63 8 4 4 0 0 1 16 11.37z"/><line x1="17.5" y1="6.5" x2="17.51" y2="6.5"/></svg>
+          Instagram
+        </button>
       </nav>
-      <a href="#contato" class="btn btn-outline nav-cta">trabalhe comigo</a>
-      <button class="hamburger" id="hamburger" aria-label="abrir menu">
-        <span></span><span></span><span></span>
-      </button>
-    </div>
-  </header>
 
-  <div class="mobile-menu" id="mobileMenu">
-    <button class="mobile-close" id="mobileClose" aria-label="fechar menu">×</button>
-    <a href="#sobre">sobre</a>
-    <a href="#portfolio">portfólio</a>
-    <a href="#servicos">serviços</a>
-    <a href="#resultados">resultados</a>
-    <a href="#contato">contato</a>
-    <a href="#contato" class="btn btn-outline">trabalhe comigo</a>
-  </div>
+      <div class="sidebar-rodape">
+        <div class="sidebar-email" id="emailUsuario"></div>
+        <button class="botao-sair" id="botaoSair">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"/><polyline points="16 17 21 12 16 7"/><line x1="21" y1="12" x2="9" y2="12"/></svg>
+          Sair
+        </button>
+      </div>
+    </aside>
 
-  <!-- ============================== HERO ============================== -->
-  <section class="hero">
-    <div class="hero-left">
-      <p class="eyebrow">Creator UGC 40+</p>
-      <h1 class="hero-title">Lucimara <em>Reis</em></h1>
-      <p class="hero-sub">Crio conteúdos que aproximam marcas de pessoas reais, de um jeito leve, natural e verdadeiro. Gosto de mostrar produtos como eles realmente fazem parte da rotina, porque acredito que é assim que nasce a confiança.</p>
-      <p class="hero-position">Produzo conteúdos para marcas de beleza, skincare, haircare, bem-estar, fitness, lifestyle, moda, maternidade, casa, gastronomia e pet. Uno minha experiência com marketing à criação de vídeos que valorizam a identidade de cada marca, sem exageros, com uma comunicação humana, elegante e fácil de se conectar.</p>
-      <div class="hero-actions">
-        <a href="#portfolio" class="btn btn-solid">ver portfólio</a>
-        <a href="#contato" class="btn btn-outline">trabalhe comigo</a>
-      </div>
-      <!-- EDITE AQUI: mini-métricas -->
-      <div class="hero-metrics">
-        <div><strong>2,6 mil</strong><span>compartilhamentos</span></div>
-        <div><strong>712</strong><span>visualizações/mês</span></div>
-        <div><strong>198</strong><span>seguidores</span></div>
-      </div>
-    </div>
-    <div class="hero-right">
-      <p class="handle-tag">@lucimarareis.ugc</p>
-      <!-- FOTO DE CAPA: coloque o arquivo de imagem dentro da pasta "Fotos do portifolio" com o nome "capa.jpg" -->
-      <div class="hero-photo placeholder-img">
-        <div class="hero-photo-bg" style="background: linear-gradient(180deg, rgba(43,26,31,.1), rgba(43,26,31,.55)), url('Fotos%20do%20portifolio/capa.jpg') center/cover;"></div>
-        <div class="hero-photo-content">
-          <p class="hero-overlay-text">autenticidade, <em>conexão</em> & confiança</p>
+    <!-- =========================== ÁREA DE CONTEÚDO =========================== -->
+    <main class="conteudo">
+
+      <div class="topo">
+        <div class="topo-titulo">
+          <button class="botao-menu-mobile" id="botaoMenuMobile" aria-label="Abrir menu">
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="3" y1="6" x2="21" y2="6"/><line x1="3" y1="12" x2="21" y2="12"/><line x1="3" y1="18" x2="21" y2="18"/></svg>
+          </button>
+          <h1 id="tituloTopo">Menu Principal</h1>
+        </div>
+
+        <div class="topo-acoes">
+          <div class="filtro-periodo">
+            <button class="botao-periodo ativo" data-periodo="tudo">Tudo</button>
+            <button class="botao-periodo" data-periodo="7d">7d</button>
+            <button class="botao-periodo" data-periodo="30d">30d</button>
+            <button class="botao-periodo" data-periodo="90d">90d</button>
+          </div>
+          <button class="botao-atualizar" id="botaoAtualizar" title="Buscar dados novos do Supabase">
+            <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 12a9 9 0 1 1-3-6.7"/><polyline points="21 3 21 9 15 9"/></svg>
+            Atualizar
+          </button>
         </div>
       </div>
-    </div>
-  </section>
 
-  <!-- ============================== FAIXA ROLANTE ============================== -->
-  <div class="ticker">
-    <div class="ticker-track">
-      <span>beleza</span><span>·</span><span>skincare</span><span>·</span><span>haircare</span><span>·</span><span>bem-estar</span><span>·</span><span>lifestyle</span><span>·</span><span>fitness</span><span>·</span><span>moda</span><span>·</span><span>maternidade</span><span>·</span><span>casa</span><span>·</span><span>gastronomia</span><span>·</span><span>pet</span><span>·</span>
-      <span>beleza</span><span>·</span><span>skincare</span><span>·</span><span>haircare</span><span>·</span><span>bem-estar</span><span>·</span><span>lifestyle</span><span>·</span><span>fitness</span><span>·</span><span>moda</span><span>·</span><span>maternidade</span><span>·</span><span>casa</span><span>·</span><span>gastronomia</span><span>·</span><span>pet</span><span>·</span>
-    </div>
+      <div class="banner-erro" id="bannerErro"></div>
+
+      <!-- ============================ ABA: MENU PRINCIPAL ============================ -->
+      <section class="painel-aba ativo" id="aba-menu-principal">
+        <p class="saudacao">Olá! Aqui estão os números do seu portfólio.</p>
+
+        <div class="grade-numeros">
+          <div class="cartao-numero destaque">
+            <div class="cartao-numero-numero" id="numVisitas">0</div>
+            <div class="cartao-numero-rotulo">Visitas</div>
+          </div>
+          <div class="cartao-numero">
+            <div class="cartao-numero-numero" id="numVisitantes">0</div>
+            <div class="cartao-numero-rotulo">Visitantes únicos</div>
+          </div>
+          <div class="cartao-numero">
+            <div class="cartao-numero-numero" id="numCliques">0</div>
+            <div class="cartao-numero-rotulo">Cliques em botões</div>
+          </div>
+          <div class="cartao-numero">
+            <div class="cartao-numero-numero" id="numVideos">0</div>
+            <div class="cartao-numero-rotulo">Vídeos vistos</div>
+          </div>
+          <div class="cartao-numero">
+            <div class="cartao-numero-numero" id="numMensagens">0</div>
+            <div class="cartao-numero-rotulo">Mensagens</div>
+          </div>
+        </div>
+
+        <div class="cartao cartao-destaque-contato">
+          <div class="cartao-destaque-contato-texto">
+            <h3>Clicaram para entrar em contato</h3>
+            <p>Conta quem clicou em WhatsApp, e-mail, Instagram ou no botão de enviar o formulário.</p>
+          </div>
+          <div class="cartao-destaque-contato-numero" id="numContatos">0</div>
+        </div>
+
+        <div class="cartao cartao-grafico">
+          <h3>Visitas nos últimos 14 dias</h3>
+          <div class="barras" id="barrasVisitas"></div>
+        </div>
+      </section>
+
+      <!-- =============================== ABA: PORTFÓLIO =============================== -->
+      <section class="painel-aba" id="aba-portfolio">
+        <div class="grade-portfolio">
+
+          <div class="cartao">
+            <h3>Vídeos mais vistos</h3>
+            <div id="listaVideos"></div>
+          </div>
+
+          <div class="cartao">
+            <h3>Botões mais clicados</h3>
+            <div id="listaBotoes"></div>
+          </div>
+
+          <div class="cartao">
+            <h3>Cliques para contato</h3>
+            <div id="listaContatos"></div>
+          </div>
+
+          <div class="cartao cartao-largo">
+            <h3>Mensagens recebidas</h3>
+            <div class="lista-leads" id="listaLeads"></div>
+          </div>
+
+        </div>
+      </section>
+
+      <!-- ============================ ABA: CALENDÁRIO ============================ -->
+      <section class="painel-aba" id="aba-calendario">
+        <div class="grade-calendario">
+
+          <div class="cartao cartao-calendario">
+            <div class="calendario-cabecalho">
+              <button type="button" class="botao-mes" id="mesAnterior" aria-label="Mês anterior">‹</button>
+              <h3 id="tituloMes"></h3>
+              <button type="button" class="botao-mes" id="mesProximo" aria-label="Próximo mês">›</button>
+            </div>
+            <div class="calendario-dias-semana">
+              <span>Dom</span><span>Seg</span><span>Ter</span><span>Qua</span><span>Qui</span><span>Sex</span><span>Sáb</span>
+            </div>
+            <div class="calendario-grade" id="calendarioGrade"></div>
+          </div>
+
+          <div class="cartao cartao-dia">
+            <div class="dia-cabecalho">
+              <div>
+                <p class="dia-rotulo" id="diaRotulo">Hoje</p>
+                <h3 id="diaData"></h3>
+              </div>
+              <button type="button" class="botao-nova-tarefa" id="botaoNovaTarefa">+ Nova</button>
+            </div>
+
+            <form class="form-nova-tarefa oculto" id="formNovaTarefa">
+              <input type="text" id="tarefaTitulo" placeholder="O que precisa ser feito?" required>
+              <input type="text" id="tarefaMarca" placeholder="Marca ou cliente (opcional)">
+              <div class="form-linha-horarios">
+                <div class="form-campo-horario">
+                  <label for="tarefaInicio">Começa (opcional)</label>
+                  <input type="time" id="tarefaInicio">
+                </div>
+                <div class="form-campo-horario">
+                  <label for="tarefaFim">Termina (opcional)</label>
+                  <input type="time" id="tarefaFim">
+                </div>
+              </div>
+              <div class="form-linha">
+                <select id="tarefaTipo">
+                  <option value="entrega">Entregar</option>
+                  <option value="pendencia">Pendência</option>
+                </select>
+                <button type="submit" class="botao-salvar-tarefa">Salvar</button>
+                <button type="button" class="botao-cancelar-tarefa" id="botaoCancelarTarefa">Cancelar</button>
+              </div>
+            </form>
+
+            <div class="lista-tarefas" id="listaTarefas"></div>
+          </div>
+
+        </div>
+
+        <div class="grade-status-tarefas">
+          <div class="cartao">
+            <h3>Pendências em aberto</h3>
+            <div id="listaAbertas"></div>
+          </div>
+          <div class="cartao">
+            <h3>Concluídas</h3>
+            <div id="listaConcluidas"></div>
+          </div>
+        </div>
+      </section>
+
+      <!-- ============================ ABA: INSTAGRAM ============================ -->
+      <section class="painel-aba" id="aba-instagram">
+
+        <!-- Tela de conexão — só aparece se ainda não houver token salvo -->
+        <div class="cartao ig-conexao" id="igConexao">
+          <h3>Conectar sua conta do Instagram</h3>
+          <p class="ig-conexao-texto">
+            Para ver seus dados aqui, cole o <strong>ID da conta comercial do Instagram</strong>
+            e o <strong>token de acesso</strong>, gerados no Meta for Developers.
+            Pergunte pra mim se precisar do passo a passo de como conseguir isso.
+          </p>
+          <form id="formConexaoInstagram" class="ig-form-conexao">
+            <div class="campo">
+              <label for="igUserId">ID da conta comercial do Instagram</label>
+              <input type="text" id="igUserId" placeholder="ex.: 17841400..." required>
+            </div>
+            <div class="campo">
+              <label for="igToken">Token de acesso</label>
+              <input type="text" id="igToken" placeholder="cole aqui o token gerado no Meta" required>
+            </div>
+            <button type="submit" class="botao-salvar-tarefa">Conectar</button>
+          </form>
+        </div>
+
+        <!-- Conteúdo principal — só aparece depois de conectado -->
+        <div id="igConteudo" class="oculto">
+
+          <div class="ig-topo">
+            <div class="filtro-periodo">
+              <button class="botao-periodo" data-ig-periodo="7d">7d</button>
+              <button class="botao-periodo ativo" data-ig-periodo="30d">30d</button>
+              <button class="botao-periodo" data-ig-periodo="90d">90d</button>
+              <button class="botao-periodo" data-ig-periodo="personalizado">Personalizado</button>
+            </div>
+            <div class="ig-periodo-personalizado oculto" id="igPeriodoPersonalizado">
+              <input type="date" id="igDataInicio">
+              <span>até</span>
+              <input type="date" id="igDataFim">
+              <button class="botao-atualizar" id="igAplicarPersonalizado">Aplicar</button>
+            </div>
+            <button class="botao-atualizar" id="botaoSincronizarInstagram" title="Buscar dados novos da Instagram Graph API">
+              <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 12a9 9 0 1 1-3-6.7"/><polyline points="21 3 21 9 15 9"/></svg>
+              Sincronizar
+            </button>
+            <button class="botao-atualizar" id="botaoEditarConexaoInstagram" title="Atualizar o ID da conta ou o token de acesso">
+              Editar conexão
+            </button>
+          </div>
+
+          <p class="ig-ultima-sincronizacao" id="igUltimaSincronizacao"></p>
+
+          <div class="banner-erro" id="igBannerErro"></div>
+
+          <!-- 1. DASHBOARD -->
+          <div class="grade-numeros ig-grade-numeros" id="igDashboard"></div>
+
+          <div class="cartao cartao-grafico" style="margin-bottom:24px;">
+            <h3>Seguidores no período</h3>
+            <div class="barras" id="igGraficoSeguidores"></div>
+          </div>
+
+          <!-- 4. INSIGHTS -->
+          <div class="cartao" style="margin-bottom:24px;">
+            <h3>Insights</h3>
+            <div id="igInsights"></div>
+          </div>
+
+          <!-- 3. MELHORES CONTEÚDOS -->
+          <div class="cartao" style="margin-bottom:24px;">
+            <h3>Melhores conteúdos</h3>
+            <div class="filtro-periodo ig-ranking-abas">
+              <button class="botao-periodo ativo" data-ranking="alcance">Alcance</button>
+              <button class="botao-periodo" data-ranking="engajamento">Engajamento</button>
+              <button class="botao-periodo" data-ranking="compartilhamentos">Compartilhamentos</button>
+              <button class="botao-periodo" data-ranking="salvamentos">Salvamentos</button>
+            </div>
+            <div id="igRanking"></div>
+          </div>
+
+          <!-- 2. ÚLTIMAS POSTAGENS -->
+          <div class="cartao">
+            <h3>Últimas postagens</h3>
+            <div class="ig-grade-posts" id="igPosts"></div>
+          </div>
+
+        </div>
+
+        <!-- Detalhe de uma postagem -->
+        <div class="ig-modal-overlay" id="igModalPost">
+          <div class="ig-modal">
+            <button class="ig-modal-fechar" id="igModalFechar" aria-label="fechar">×</button>
+            <div id="igModalConteudo"></div>
+          </div>
+        </div>
+
+      </section>
+
+    </main>
   </div>
 
-  <!-- ============================== SOBRE ============================== -->
-  <section id="sobre" class="about reveal">
-    <div class="about-collage">
-      <!-- EDITE AQUI: troque por fotos reais mantendo as classes "collage-1"/"collage-2" -->
-      <div class="placeholder-img grad-2 collage-1"><span class="placeholder-label">foto da creator · skincare · 4:5</span></div>
-      <div class="placeholder-img grad-3 collage-2"><span class="placeholder-label">foto da creator · lifestyle · 4:5</span></div>
-    </div>
-    <div class="about-text">
-      <p class="eyebrow">sobre mim</p>
-      <h2 class="section-title">uma creator que une <em>autenticidade</em> e estratégia</h2>
-      <p>Sou uma creator apaixonada por contar histórias reais através dos produtos. Acredito que as pessoas compram quando se identificam, por isso produzo conteúdos leves, naturais e sofisticados que aproximam marcas do seu público. Meu objetivo é criar experiências que geram confiança antes mesmo da venda acontecer.</p>
-      <div class="pills">
-        <span class="pill">anúncios ugc</span><span class="pill">conteúdo de marca</span><span class="pill">roteiros estratégicos</span><span class="pill">narrativa</span><span class="pill">fotografia de produto</span><span class="pill">edição de vídeo</span><span class="pill">direção criativa</span>
-      </div>
-      <p class="signature">Lucimara Reis</p>
-    </div>
-  </section>
+  <script>
+    // ==========================================================================
+    // ESTADO EM MEMÓRIA (cache) — carregado uma vez, refiltrado ao trocar período
+    // ==========================================================================
+    let cacheEventos = [];
+    let cacheLeads = [];
+    let cacheTarefas = [];
+    let periodoAtual = "tudo"; // "tudo" | "7d" | "30d" | "90d"
+    let mesAtual = new Date();
+    mesAtual.setDate(1);
+    let diaSelecionado = new Date();
 
-  <!-- ============================== O QUE AS MARCAS PODEM ESPERAR ============================== -->
-  <section id="esperar" class="expect reveal">
-    <p class="eyebrow center">compromisso</p>
-    <h2 class="section-title center">o que as marcas podem <em>esperar</em></h2>
-    <p class="expect-intro">Minha experiência vai muito além de criar conteúdo. Ao longo dos anos, aprendi que as pessoas se conectam com marcas em que confiam. É por isso que cada vídeo que produzo tem um propósito: mostrar o produto de um jeito verdadeiro, natural e próximo da realidade. Eu gosto de cuidar dos detalhes, porque sei que é isso que faz uma marca ser lembrada e criar uma conexão de verdade com quem está do outro lado da tela.</p>
-    <div class="expect-grid">
-      <div class="expect-item"><span class="check">✓</span>conteúdos que representam a essência da marca com autenticidade.</div>
-      <div class="expect-item"><span class="check">✓</span>narrativas que criam identificação e fortalecem a confiança do consumidor.</div>
-      <div class="expect-item"><span class="check">✓</span>produção visual elegante, atual e pensada para redes sociais e anúncios.</div>
-      <div class="expect-item"><span class="check">✓</span>atenção aos detalhes em todas as etapas, do briefing à entrega final.</div>
-      <div class="expect-item"><span class="check">✓</span>comunicação estratégica, humanizada e alinhada aos objetivos da campanha.</div>
-      <div class="expect-item"><span class="check">✓</span>compromisso com qualidade, agilidade e profissionalismo.</div>
-      <div class="expect-item"><span class="check">✓</span>conteúdos desenvolvidos para gerar conexão, reconhecimento e valor para a marca.</div>
-    </div>
-  </section>
+    const TITULOS_ABA = {
+      "menu-principal": "Menu Principal",
+      "portfolio": "Portfólio",
+      "calendario": "Calendário",
+      "instagram": "Instagram",
+    };
 
-  <!-- ============================== BANDA EDITORIAL ============================== -->
-  <section class="editorial-band">
-    <div class="editorial-overlay">
-      <p class="editorial-sub">conteúdos que aproximam marcas de pessoas reais</p>
-      <h2 class="editorial-title">AUTENTICIDADE. <em>conexão</em>. CONFIANÇA.</h2>
-      <p class="editorial-keywords">autenticidade · conexão · confiança · estratégia</p>
-    </div>
-  </section>
+    const MESES_PT = ["Janeiro","Fevereiro","Março","Abril","Maio","Junho","Julho","Agosto","Setembro","Outubro","Novembro","Dezembro"];
+    const DIAS_SEMANA_LONGO = ["Domingo","Segunda-feira","Terça-feira","Quarta-feira","Quinta-feira","Sexta-feira","Sábado"];
 
-  <!-- ============================== PORTFÓLIO ============================== -->
-  <section id="portfolio" class="portfolio reveal">
-    <p class="eyebrow center">portfólio</p>
-    <h2 class="section-title center">trabalhos <em>selecionados</em></h2>
-    <div class="filters" id="filters"></div>
-    <div class="portfolio-grid" id="portfolioGrid"></div>
-  </section>
+    // --------------------------------------------------------------------------
+    // Escapa texto vindo do banco antes de inserir no HTML (evita XSS, já que
+    // mensagens de contato são digitadas por visitantes do site).
+    // --------------------------------------------------------------------------
+    function escapeHtml(valor) {
+      if (valor === null || valor === undefined) return "";
+      return String(valor)
+        .replace(/&/g, "&amp;")
+        .replace(/</g, "&lt;")
+        .replace(/>/g, "&gt;")
+        .replace(/"/g, "&quot;")
+        .replace(/'/g, "&#39;");
+    }
 
-  <!-- ============================== RESULTADOS ============================== -->
-  <section id="resultados" class="results reveal">
-    <p class="eyebrow light center">resultados</p>
-    <h2 class="section-title light center">resultados que vão <em>além</em> dos números</h2>
-    <!-- EDITE AQUI: métricas reais (o valor em --val controla a barra). Atualize
-         conforme o Instagram @lucimarareis.ugc crescer. -->
-    <div class="metrics-grid">
-      <div class="metric"><strong>2,6 mil</strong><span>compartilhamentos em 1 vídeo</span><div class="bar"><div class="bar-fill" style="--val:92%"></div></div></div>
-      <div class="metric"><strong>712</strong><span>visualizações no mês</span><div class="bar"><div class="bar-fill" style="--val:60%"></div></div></div>
-      <div class="metric"><strong>121</strong><span>interações em 1 vídeo</span><div class="bar"><div class="bar-fill" style="--val:45%"></div></div></div>
-      <div class="metric"><strong>198</strong><span>seguidores</span><div class="bar"><div class="bar-fill" style="--val:30%"></div></div></div>
-    </div>
-    <p class="editorial-quote">"cada conteúdo tem intenção, autenticidade e a <em>essência</em> da marca."</p>
-  </section>
+    function formatarNomeLegivel(nome) {
+      if (!nome) return "";
+      return nome.replace(/_/g, " ").replace(/\b\w/g, (c) => c.toUpperCase());
+    }
 
-  <!-- ============================== SERVIÇOS ============================== -->
-  <section id="servicos" class="services reveal">
-    <p class="eyebrow center">serviços</p>
-    <h2 class="section-title center">como posso <em>ajudar</em> sua marca</h2>
-    <!-- EDITE AQUI: lista de serviços -->
-    <div class="service-list">
-      <div class="service-row"><span class="service-num">01</span><span class="service-name">Anúncios UGC</span><span class="service-desc">vídeos pensados para performance em ads — hook, corpo e CTA que convertem.</span></div>
-      <div class="service-row"><span class="service-num">02</span><span class="service-name">Direção Criativa</span><span class="service-desc">conceito, estética e roteiro alinhados à identidade da sua marca.</span></div>
-      <div class="service-row"><span class="service-num">03</span><span class="service-name">Narrativa</span><span class="service-desc">histórias que conectam antes de vender — storytelling com propósito.</span></div>
-      <div class="service-row"><span class="service-num">04</span><span class="service-name">Fotografia</span><span class="service-desc">still editorial para redes sociais, catálogo e campanhas.</span></div>
-      <div class="service-row"><span class="service-num">05</span><span class="service-name">Edição</span><span class="service-desc">cortes dinâmicos, cor e trilha para um conteúdo cinematográfico.</span></div>
-      <div class="service-row"><span class="service-num">06</span><span class="service-name">Roteiros</span><span class="service-desc">estrutura de roteiro pensada para retenção e clareza da mensagem.</span></div>
-      <div class="service-row"><span class="service-num">07</span><span class="service-name">Conteúdo de Marca</span><span class="service-desc">conteúdo orgânico para redes próprias, com identidade autoral.</span></div>
-      <div class="service-row"><span class="service-num">08</span><span class="service-name">Consultoria</span><span class="service-desc">direcionamento estratégico de conteúdo para creators e marcas.</span></div>
-    </div>
-    <div class="service-cta">
-      <h3>vamos criar juntas o próximo vídeo da sua marca?</h3>
-      <a href="#contato" class="btn btn-solid">vamos criar</a>
-    </div>
-  </section>
+    function chaveDia(data) {
+      const ano = data.getFullYear();
+      const mes = String(data.getMonth() + 1).padStart(2, "0");
+      const dia = String(data.getDate()).padStart(2, "0");
+      return `${ano}-${mes}-${dia}`;
+    }
 
-  <!-- ============================== CONTATO ============================== -->
-  <section id="contato" class="contact reveal">
-    <div class="contact-inner">
-      <p class="eyebrow light">contato</p>
-      <h2 class="contact-title">vamos criar algo <em>lindo</em></h2>
-      <p class="contact-sub">conte um pouco sobre sua marca e vamos desenhar juntas um conteúdo que conecta.</p>
-      <!-- EDITE AQUI: links reais de redes sociais e contato -->
-      <div class="socials">
-        <a href="https://instagram.com/lucimarareis.ugc" target="_blank" rel="noopener">instagram</a>
-        <a href="https://www.tiktok.com/@lucimara.reis.ugc" target="_blank" rel="noopener">tiktok</a>
-        <a href="https://wa.me/5531988229641" target="_blank" rel="noopener">whatsapp</a>
-        <a href="mailto:lucimarareis.ugc@gmail.com">e-mail</a>
-      </div>
-      <!-- TODO: conectar formulário a um serviço real (Formspree, EmailJS, backend próprio) -->
-      <form class="contact-form" id="contactForm">
-        <div class="field"><label for="c-nome">nome</label><input id="c-nome" type="text" placeholder="seu nome" required></div>
-        <div class="field"><label for="c-empresa">empresa</label><input id="c-empresa" type="text" placeholder="nome da marca"></div>
-        <div class="field"><label for="c-email">e-mail</label><input id="c-email" type="email" placeholder="seu@email.com" required></div>
-        <div class="field"><label for="c-whats">whatsapp</label><input id="c-whats" type="tel" placeholder="(00) 00000-0000"></div>
-        <div class="field full"><label for="c-briefing">briefing</label><textarea id="c-briefing" rows="4" placeholder="conte sobre o projeto..."></textarea></div>
-        <button type="submit" class="btn btn-outline">enviar briefing</button>
-      </form>
-    </div>
-  </section>
+    // ==========================================================================
+    // BUSCA COM PAGINAÇÃO — o Supabase limita a 1000 linhas por consulta, então
+    // buscamos em blocos de 1000 até vir um bloco menor (fim dos dados).
+    // ==========================================================================
+    async function buscarTudo(tabela) {
+      const TAMANHO_BLOCO = 1000;
+      let resultado = [];
+      let inicio = 0;
 
-  <footer>© <span id="ano"></span> Lucimara Reis. todos os direitos reservados.</footer>
+      while (true) {
+        const { data, error } = await sb
+          .from(tabela)
+          .select("*")
+          .order("created_at", { ascending: false })
+          .range(inicio, inicio + TAMANHO_BLOCO - 1);
 
-  <!-- ============================== POP-UP ============================== -->
-  <div class="popup-overlay" id="popupOverlay">
-    <div class="popup">
-      <!-- EDITE AQUI: troque por uma foto real mantendo a classe "popup-image" -->
-      <div class="placeholder-img grad-5 popup-image"><span class="placeholder-label">foto da creator · still · 4:5</span></div>
-      <div class="popup-content">
-        <button class="popup-close" id="popupClose" aria-label="fechar">×</button>
-        <p class="eyebrow">amou o portfólio?</p>
-        <h3>vamos criar um conteúdo que a sua audiência realmente <em>conecta</em>.</h3>
-        <!-- TODO: conectar formulário a um serviço real (Formspree, EmailJS, backend próprio) -->
-        <form class="popup-form" id="popupForm">
-          <div class="field"><label for="p-nome">nome</label><input id="p-nome" type="text" placeholder="seu nome" required></div>
-          <div class="field"><label for="p-empresa">empresa</label><input id="p-empresa" type="text" placeholder="nome da marca"></div>
-          <div class="field"><label for="p-email">e-mail</label><input id="p-email" type="email" placeholder="seu@email.com" required></div>
-          <div class="field"><label for="p-whats">whatsapp</label><input id="p-whats" type="tel" placeholder="(00) 00000-0000"></div>
-          <div class="field"><label for="p-briefing">briefing</label><textarea id="p-briefing" rows="2" placeholder="conte sobre o projeto..."></textarea></div>
-          <button type="submit" class="btn btn-solid">quero conversar</button>
-        </form>
-      </div>
-    </div>
-  </div>
+        if (error) throw error;
 
-  <!-- ============================== MODAL DE VÍDEO ============================== -->
-  <div class="video-modal-overlay" id="videoModalOverlay">
-    <div class="video-modal">
-      <button class="video-modal-close" id="videoModalClose" aria-label="fechar vídeo">×</button>
-      <div class="video-modal-frame" id="videoModalFrame"></div>
-    </div>
-  </div>
+        resultado = resultado.concat(data);
+        if (data.length < TAMANHO_BLOCO) break;
+        inicio += TAMANHO_BLOCO;
+      }
 
-<!-- Rastreamento de visitas, cliques e mensagens (Supabase) -->
-<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2/dist/umd/supabase.min.js"></script>
-<script src="/js/tracking.js"></script>
+      return resultado;
+    }
 
-<script>
-  // ============================== NAV: blur ao rolar ==============================
-  const nav = document.getElementById('nav');
-  window.addEventListener('scroll', () => {
-    nav.classList.toggle('scrolled', window.scrollY > 40);
-  });
+    // ==========================================================================
+    // FILTRO DE PERÍODO — refiltra em memória, sem nova consulta ao banco
+    // ==========================================================================
+    function filtrarPorPeriodo(lista) {
+      if (periodoAtual === "tudo") return lista;
+      const dias = { "7d": 7, "30d": 30, "90d": 90 }[periodoAtual];
+      const corte = new Date();
+      corte.setDate(corte.getDate() - dias);
+      return lista.filter((item) => new Date(item.created_at) >= corte);
+    }
 
-  // ============================== FOTO DE CAPA: efeito de paralaxe ao rolar ==============================
-  const heroPhotoBg = document.querySelector('.hero-photo-bg');
-  if (heroPhotoBg) {
-    window.addEventListener('scroll', () => {
-      const deslocamento = Math.min(window.scrollY * 0.4, 90);
-      heroPhotoBg.style.transform = `translateY(${deslocamento}px)`;
-    });
-  }
+    // ==========================================================================
+    // RENDERIZAÇÃO — ABA MENU PRINCIPAL
+    // ==========================================================================
+    function renderizarVisaoGeral(eventosFiltrados, leadsFiltrados) {
+      const pageViews = eventosFiltrados.filter((e) => e.event_type === "page_view");
+      const cliques = eventosFiltrados.filter((e) => e.event_type === "button_click");
+      const videos = eventosFiltrados.filter((e) => e.event_type === "video_view");
+      const contatos = cliques.filter((e) => e.event_name && e.event_name.startsWith("contact_"));
 
-  // ============================== MENU MOBILE ==============================
-  const hamburger = document.getElementById('hamburger');
-  const mobileMenu = document.getElementById('mobileMenu');
-  const mobileClose = document.getElementById('mobileClose');
-  function toggleMenu(open){
-    hamburger.classList.toggle('open', open);
-    mobileMenu.classList.toggle('open', open);
-    document.body.style.overflow = open ? 'hidden' : '';
-  }
-  hamburger.addEventListener('click', () => toggleMenu(!mobileMenu.classList.contains('open')));
-  mobileClose.addEventListener('click', () => toggleMenu(false));
-  mobileMenu.querySelectorAll('a').forEach(a => a.addEventListener('click', () => toggleMenu(false)));
+      document.getElementById("numVisitas").textContent = pageViews.length;
+      document.getElementById("numVisitantes").textContent = new Set(pageViews.map((e) => e.session_id)).size;
+      document.getElementById("numCliques").textContent = cliques.length;
+      document.getElementById("numVideos").textContent = videos.length;
+      document.getElementById("numMensagens").textContent = leadsFiltrados.length;
+      document.getElementById("numContatos").textContent = contatos.length;
 
-  // ============================== REVEAL AO ROLAR ==============================
-  const revealObserver = new IntersectionObserver((entries) => {
-    entries.forEach(entry => { if (entry.isIntersecting) entry.target.classList.add('in-view'); });
-  }, { threshold: 0.15 });
-  document.querySelectorAll('.reveal').forEach(el => revealObserver.observe(el));
+      renderizarGraficoVisitas(pageViews);
+    }
 
-  // ============================== PORTFÓLIO: cards gerados por JS ==============================
-  // EDITE AQUI: adicione, remova ou renomeie os itens do portfólio.
-  // Quando trocar um item por um vídeo real do YouTube, preencha "youtubeId"
-  // com o ID do vídeo (ex.: em youtube.com/watch?v=ABC123, o ID é "ABC123").
-  // Isso faz o card virar automaticamente um "vídeo assistido" rastreável no painel.
-  const PORTFOLIO_ITEMS = [
-    { title: 'Medo de Short', categoria: 'Crwn', youtubeId: 'Ead3KnMdNuY', capa: 'Fotos%20do%20portifolio/crwn.jpeg' },
-    { title: 'Creamy', categoria: 'Skincare', youtubeId: 'AI9EBIH4CQM', capa: 'Fotos%20do%20portifolio/capa-skincare.PNG' },
-    { title: 'Stand Vizzela', categoria: 'Visitas em feiras', youtubeId: 'FYGkstWYD3Q', capa: 'Fotos%20do%20portifolio/capa-vizzela.jpeg' },
-  ];
-  const GRADS = ['grad-1','grad-2','grad-3','grad-4','grad-5'];
-  const grid = document.getElementById('portfolioGrid');
-  const filtersEl = document.getElementById('filters');
-  const categorias = ['todos', ...new Set(PORTFOLIO_ITEMS.map(i => i.categoria))];
+    function renderizarGraficoVisitas(pageViews) {
+      const hoje = new Date();
+      hoje.setHours(0, 0, 0, 0);
 
-  function renderGrid(filtro){
-    grid.innerHTML = '';
-    PORTFOLIO_ITEMS
-      .filter(item => filtro === 'todos' || item.categoria === filtro)
-      .forEach((item, i) => {
-        const temVideo = !!item.youtubeId;
-        const semImagem = !item.capa && !temVideo;
-        const card = document.createElement('div');
-        card.className = `video-card ${semImagem ? 'placeholder-img ' + GRADS[i % GRADS.length] : ''}`;
-        card.dataset.videoId = item.youtubeId || '';
-        // Capa: foto real enviada por você tem prioridade; sem capa, usa a
-        // miniatura automática do YouTube; sem vídeo nenhum, fica o gradiente.
-        const imagemFundo = item.capa || (temVideo ? `https://i.ytimg.com/vi/${item.youtubeId}/hqdefault.jpg` : '');
-        if (imagemFundo) {
-          card.style.backgroundImage = `linear-gradient(0deg, rgba(43,26,31,.6), rgba(43,26,31,.05)), url('${imagemFundo}')`;
-          card.style.backgroundSize = 'cover';
-          card.style.backgroundPosition = 'center';
-        }
-        if (temVideo) {
-          card.style.cursor = 'pointer';
-          card.addEventListener('click', () => abrirVideoModal(item.youtubeId));
-        }
-        // EDITE AQUI: para itens ainda sem vídeo, troque o conteúdo por um <video> real quando integrar seus arquivos
-        card.innerHTML = `
-          <span class="video-tag">${item.categoria}</span>
-          <span class="play-icon">▶</span>
-          <span class="video-title">${item.title}</span>
-        `;
-        grid.appendChild(card);
+      const dias = [];
+      const contagemPorDia = {};
+      for (let i = 13; i >= 0; i--) {
+        const d = new Date(hoje);
+        d.setDate(d.getDate() - i);
+        const chave = chaveDia(d);
+        dias.push({ chave, data: d });
+        contagemPorDia[chave] = 0;
+      }
+
+      pageViews.forEach((e) => {
+        const chave = chaveDia(new Date(e.created_at));
+        if (chave in contagemPorDia) contagemPorDia[chave]++;
       });
-  }
 
-  categorias.forEach(cat => {
-    const btn = document.createElement('button');
-    btn.className = 'filter-btn' + (cat === 'todos' ? ' active' : '');
-    btn.textContent = cat;
-    btn.addEventListener('click', () => {
-      filtersEl.querySelectorAll('.filter-btn').forEach(b => b.classList.remove('active'));
-      btn.classList.add('active');
-      renderGrid(cat);
+      const maximo = Math.max(1, ...Object.values(contagemPorDia));
+      const container = document.getElementById("barrasVisitas");
+      container.innerHTML = "";
+
+      dias.forEach(({ chave, data }) => {
+        const contagem = contagemPorDia[chave];
+        const altura = Math.max(Math.round((contagem / maximo) * 100), contagem > 0 ? 4 : 1);
+        const dataFormatada = data.toLocaleDateString("pt-BR", { day: "2-digit", month: "2-digit" });
+
+        const barraDia = document.createElement("div");
+        barraDia.className = "barra-dia";
+        barraDia.innerHTML = `
+          <div class="barra-tooltip">${dataFormatada}: ${contagem}</div>
+          <div class="barra-coluna" style="height:${altura}%"></div>
+        `;
+        container.appendChild(barraDia);
+      });
+    }
+
+    // ==========================================================================
+    // RENDERIZAÇÃO — ABA PORTFÓLIO
+    // ==========================================================================
+    function renderizarVideos(eventosFiltrados) {
+      const container = document.getElementById("listaVideos");
+      const videos = eventosFiltrados.filter((e) => e.event_type === "video_view");
+
+      if (videos.length === 0) {
+        container.innerHTML = '<p class="estado-vazio">Nenhum vídeo assistido ainda.</p>';
+        return;
+      }
+
+      const mapa = {};
+      videos.forEach((v) => {
+        const id = v.event_name;
+        if (!mapa[id]) {
+          mapa[id] = { contagem: 0, titulo: (v.metadata && v.metadata.title) || id };
+        }
+        mapa[id].contagem++;
+      });
+
+      const ordenado = Object.entries(mapa).sort((a, b) => b[1].contagem - a[1].contagem);
+      const maximo = ordenado[0][1].contagem;
+
+      container.innerHTML = ordenado
+        .map(([id, info]) => {
+          const largura = Math.round((info.contagem / maximo) * 100);
+          const urlAssistir = `https://www.youtube.com/watch?v=${encodeURIComponent(id)}`;
+          const urlThumb = `https://i.ytimg.com/vi/${encodeURIComponent(id)}/mqdefault.jpg`;
+          return `
+            <div class="item-video">
+              <a href="${urlAssistir}" target="_blank" rel="noopener">
+                <img src="${urlThumb}" alt="${escapeHtml(info.titulo)}" class="thumb-video" loading="lazy">
+              </a>
+              <div class="item-video-info">
+                <a href="${urlAssistir}" target="_blank" rel="noopener" class="item-video-titulo">${escapeHtml(info.titulo)}</a>
+                <div class="barra-horizontal"><div class="barra-horizontal-preenchida" style="width:${largura}%"></div></div>
+                <span class="item-video-contagem">${info.contagem} visualiza${info.contagem === 1 ? "ção" : "ções"}</span>
+              </div>
+            </div>`;
+        })
+        .join("");
+    }
+
+    function renderizarBotoes(eventosFiltrados) {
+      const container = document.getElementById("listaBotoes");
+      const cliques = eventosFiltrados.filter((e) => e.event_type === "button_click");
+
+      if (cliques.length === 0) {
+        container.innerHTML = '<p class="estado-vazio">Nenhum clique registrado ainda.</p>';
+        return;
+      }
+
+      const mapa = {};
+      cliques.forEach((e) => { mapa[e.event_name] = (mapa[e.event_name] || 0) + 1; });
+
+      const ordenado = Object.entries(mapa).sort((a, b) => b[1] - a[1]);
+      const maximo = ordenado[0][1];
+
+      container.innerHTML = ordenado
+        .map(([nome, contagem]) => {
+          const largura = Math.round((contagem / maximo) * 100);
+          return `
+            <div class="item-barra-horizontal">
+              <div class="item-barra-cabecalho">
+                <span>${escapeHtml(formatarNomeLegivel(nome))}</span>
+                <strong>${contagem}</strong>
+              </div>
+              <div class="barra-horizontal"><div class="barra-horizontal-preenchida" style="width:${largura}%"></div></div>
+            </div>`;
+        })
+        .join("");
+    }
+
+    function renderizarContatos(eventosFiltrados) {
+      const container = document.getElementById("listaContatos");
+      const contatos = eventosFiltrados.filter(
+        (e) => e.event_type === "button_click" && e.event_name && e.event_name.startsWith("contact_")
+      );
+
+      if (contatos.length === 0) {
+        container.innerHTML = '<p class="estado-vazio">Nenhum clique de contato ainda.</p>';
+        return;
+      }
+
+      const mapa = {};
+      contatos.forEach((e) => { mapa[e.event_name] = (mapa[e.event_name] || 0) + 1; });
+
+      const ordenado = Object.entries(mapa).sort((a, b) => b[1] - a[1]);
+
+      container.innerHTML = ordenado
+        .map(([nome, contagem]) => `
+          <div class="item-contato">
+            <span>${escapeHtml(formatarNomeLegivel(nome.replace(/^contact_/, "")))}</span>
+            <strong>${contagem}</strong>
+          </div>`)
+        .join("");
+    }
+
+    function renderizarLeads(leadsFiltrados) {
+      const container = document.getElementById("listaLeads");
+
+      if (leadsFiltrados.length === 0) {
+        container.innerHTML = '<p class="estado-vazio">Nenhuma mensagem por enquanto.</p>';
+        return;
+      }
+
+      const ordenado = [...leadsFiltrados].sort((a, b) => new Date(b.created_at) - new Date(a.created_at));
+
+      container.innerHTML = ordenado
+        .map((lead, indice) => {
+          const digitosTelefone = lead.phone ? lead.phone.replace(/\D/g, "") : "";
+          const dataFormatada = new Date(lead.created_at).toLocaleDateString("pt-BR", {
+            day: "2-digit", month: "2-digit", year: "numeric", hour: "2-digit", minute: "2-digit",
+          });
+          const origem = lead.source === "popup" ? "Pop-up" : "Contato";
+          const seloClasse = lead.source === "popup" ? "selo-popup" : "selo-contact";
+
+          return `
+            <div class="cartao-lead" data-indice="${indice}">
+              <div class="cartao-lead-cabecalho">
+                <span class="selo ${seloClasse}">${escapeHtml(origem)}</span>
+                <div class="cartao-lead-principal">
+                  <strong>${escapeHtml(lead.name || "Sem nome")}</strong>
+                  <span class="cartao-lead-data">${dataFormatada}</span>
+                </div>
+                <span class="cartao-lead-email">${escapeHtml(lead.email || "")}</span>
+                <span class="cartao-lead-seta">▾</span>
+              </div>
+              <div class="cartao-lead-detalhes">
+                ${lead.phone ? `<p><strong>Telefone:</strong> ${escapeHtml(lead.phone)}</p>` : ""}
+                ${lead.brand ? `<p><strong>Marca:</strong> ${escapeHtml(lead.brand)}</p>` : ""}
+                ${lead.budget ? `<p><strong>Orçamento:</strong> ${escapeHtml(lead.budget)}</p>` : ""}
+                ${lead.message ? `<p><strong>Mensagem:</strong> ${escapeHtml(lead.message)}</p>` : ""}
+                <div class="cartao-lead-acoes">
+                  <a class="botao-acao" href="mailto:${escapeHtml(lead.email || "")}">Responder por e-mail</a>
+                  ${digitosTelefone ? `<a class="botao-acao botao-whatsapp" href="https://wa.me/${digitosTelefone}" target="_blank" rel="noopener">WhatsApp</a>` : ""}
+                </div>
+              </div>
+            </div>`;
+        })
+        .join("");
+
+      container.querySelectorAll(".cartao-lead-cabecalho").forEach((cabecalho) => {
+        cabecalho.addEventListener("click", () => {
+          cabecalho.parentElement.classList.toggle("expandido");
+        });
+      });
+    }
+
+    // ==========================================================================
+    // RENDERIZAÇÃO GERAL — chamada ao carregar e sempre que o período mudar
+    // ==========================================================================
+    function renderizarTudo() {
+      const eventosFiltrados = filtrarPorPeriodo(cacheEventos);
+      const leadsFiltrados = filtrarPorPeriodo(cacheLeads);
+
+      renderizarVisaoGeral(eventosFiltrados, leadsFiltrados);
+      renderizarVideos(eventosFiltrados);
+      renderizarBotoes(eventosFiltrados);
+      renderizarCalendario();
+      renderizarListaTarefas();
+      renderizarStatusTarefas();
+      renderizarContatos(eventosFiltrados);
+      renderizarLeads(leadsFiltrados);
+    }
+
+    // ==========================================================================
+    // CARREGAMENTO DE DADOS — uma única vez, com tratamento de erro
+    // ==========================================================================
+    async function carregarDados() {
+      // Cada tabela é buscada de forma independente: se uma falhar (ex.: a
+      // tabela portfolio_tasks ainda não foi criada no Supabase), as outras
+      // continuam carregando normalmente em vez de tudo travar junto.
+      const [eventos, leads, tarefas] = await Promise.allSettled([
+        buscarTudo("portfolio_events"),
+        buscarTudo("portfolio_leads"),
+        buscarTudo("portfolio_tasks"),
+      ]);
+
+      let houveErro = false;
+
+      if (eventos.status === "fulfilled") cacheEventos = eventos.value;
+      else { console.error(eventos.reason); houveErro = true; }
+
+      if (leads.status === "fulfilled") cacheLeads = leads.value;
+      else { console.error(leads.reason); houveErro = true; }
+
+      if (tarefas.status === "fulfilled") cacheTarefas = tarefas.value;
+      else { console.error(tarefas.reason); houveErro = true; }
+
+      const banner = document.getElementById("bannerErro");
+      if (houveErro) {
+        banner.textContent = "Alguns dados não puderam ser carregados agora. Tente novamente em instantes.";
+        banner.classList.add("visivel");
+      } else {
+        banner.classList.remove("visivel");
+      }
+
+      renderizarTudo();
+    }
+
+    // ==========================================================================
+    // CALENDÁRIO — entregas e pendências (não depende do filtro de período)
+    // ==========================================================================
+    function renderizarCalendario() {
+      const ano = mesAtual.getFullYear();
+      const mes = mesAtual.getMonth();
+      document.getElementById("tituloMes").textContent = `${MESES_PT[mes]} ${ano}`;
+
+      const primeiroDiaSemana = new Date(ano, mes, 1).getDay();
+      const totalDiasMes = new Date(ano, mes + 1, 0).getDate();
+      const hojeChave = chaveDia(new Date());
+      const selecionadoChave = chaveDia(diaSelecionado);
+
+      const tarefasPorDia = {};
+      cacheTarefas.forEach((t) => {
+        (tarefasPorDia[t.data_venc] = tarefasPorDia[t.data_venc] || []).push(t);
+      });
+
+      let html = "";
+      for (let i = 0; i < primeiroDiaSemana; i++) html += `<div class="dia-vazio"></div>`;
+
+      for (let dia = 1; dia <= totalDiasMes; dia++) {
+        const chave = chaveDia(new Date(ano, mes, dia));
+        const tarefasDoDia = tarefasPorDia[chave] || [];
+        const temPendente = tarefasDoDia.some((t) => !t.concluida);
+        const temAtrasada = tarefasDoDia.some((t) => estaAtrasada(t));
+        const classes = ["dia-celula"];
+        if (chave === hojeChave) classes.push("hoje");
+        if (chave === selecionadoChave) classes.push("selecionado");
+        let classePonto = "concluido";
+        if (temAtrasada) classePonto = "atrasado";
+        else if (temPendente) classePonto = "";
+        html += `
+          <button type="button" class="${classes.join(" ")}" data-dia="${chave}">
+            <span>${dia}</span>
+            ${tarefasDoDia.length ? `<span class="dia-ponto ${classePonto}"></span>` : ""}
+          </button>
+        `;
+      }
+      document.getElementById("calendarioGrade").innerHTML = html;
+
+      document.querySelectorAll(".dia-celula").forEach((celula) => {
+        celula.addEventListener("click", () => {
+          const [a, m, d] = celula.dataset.dia.split("-").map(Number);
+          diaSelecionado = new Date(a, m - 1, d);
+          renderizarCalendario();
+          renderizarListaTarefas();
+      renderizarStatusTarefas();
+        });
+      });
+    }
+
+    function renderizarListaTarefas() {
+      const chave = chaveDia(diaSelecionado);
+      const hojeChave = chaveDia(new Date());
+      document.getElementById("diaRotulo").textContent = chave === hojeChave ? "Hoje" : DIAS_SEMANA_LONGO[diaSelecionado.getDay()];
+      document.getElementById("diaData").textContent = `${diaSelecionado.getDate()} de ${MESES_PT[diaSelecionado.getMonth()].toLowerCase()}`;
+
+      const tarefas = cacheTarefas
+        .filter((t) => t.data_venc === chave)
+        .sort((a, b) => Number(a.concluida) - Number(b.concluida));
+
+      const container = document.getElementById("listaTarefas");
+
+      if (!tarefas.length) {
+        container.innerHTML = `<p class="estado-vazio">Nenhuma entrega ou pendência para este dia.</p>`;
+        return;
+      }
+
+      container.innerHTML = tarefas.map((t) => `
+        <div class="item-tarefa ${t.concluida ? "concluida" : ""}">
+          <button type="button" class="tarefa-check" data-acao="alternar" data-id="${t.id}" aria-label="Marcar como concluída">${t.concluida ? "✓" : ""}</button>
+          <div class="tarefa-texto">
+            ${t.marca ? `<p class="tarefa-marca">${escapeHtml(t.marca)}</p>` : ""}
+            <p class="tarefa-titulo">${escapeHtml(t.titulo)}</p>
+            ${formatarHorario(t) ? `<p class="tarefa-horario">${formatarHorario(t)}</p>` : ""}
+            ${t.notas ? `<p class="tarefa-notas">${escapeHtml(t.notas)}</p>` : ""}
+          </div>
+          ${estaAtrasada(t) ? `<span class="tarefa-badge atrasada">Atrasada</span>` : ""}
+          <span class="tarefa-badge ${t.tipo}">${t.tipo === "entrega" ? "Entregar" : "Pendência"}</span>
+          <button type="button" class="tarefa-excluir" data-acao="excluir" data-id="${t.id}" aria-label="Excluir">×</button>
+        </div>
+      `).join("");
+
+      container.querySelectorAll('[data-acao="alternar"]').forEach((botao) => {
+        botao.addEventListener("click", () => alternarConcluida(botao.dataset.id));
+      });
+      container.querySelectorAll('[data-acao="excluir"]').forEach((botao) => {
+        botao.addEventListener("click", () => excluirTarefa(botao.dataset.id));
+      });
+    }
+
+    function formatarDataVenc(dataStr) {
+      const [ano, mes, dia] = dataStr.split("-").map(Number);
+      return `${dia} de ${MESES_PT[mes - 1].toLowerCase()}`;
+    }
+
+    // Uma tarefa está atrasada quando o dia dela já passou e ela não foi concluída.
+    function estaAtrasada(tarefa) {
+      return !tarefa.concluida && tarefa.data_venc < chaveDia(new Date());
+    }
+
+    // Formata "14:00:00" / "16:00:00" em algo como "14:00 - 16:00"
+    function formatarHorario(tarefa) {
+      const inicio = tarefa.hora_inicio ? tarefa.hora_inicio.slice(0, 5) : "";
+      const fim = tarefa.hora_fim ? tarefa.hora_fim.slice(0, 5) : "";
+      if (inicio && fim) return `${inicio} - ${fim}`;
+      if (inicio) return `A partir das ${inicio}`;
+      if (fim) return `Até ${fim}`;
+      return "";
+    }
+
+    // Lista completa de pendências em aberto e concluídas, de todas as datas
+    // (diferente da lista acima, que mostra só o dia selecionado no calendário).
+    function renderizarStatusTarefas() {
+      const abertas = cacheTarefas
+        .filter((t) => !t.concluida)
+        .sort((a, b) => a.data_venc.localeCompare(b.data_venc));
+      const concluidas = cacheTarefas
+        .filter((t) => t.concluida)
+        .sort((a, b) => b.data_venc.localeCompare(a.data_venc));
+
+      montarListaStatus("listaAbertas", abertas, "aberta", "Nenhuma pendência em aberto.");
+      montarListaStatus("listaConcluidas", concluidas, "concluida", "Nenhuma tarefa concluída ainda.");
+    }
+
+    function montarListaStatus(containerId, lista, classe, mensagemVazia) {
+      const container = document.getElementById(containerId);
+
+      if (!lista.length) {
+        container.innerHTML = `<p class="estado-vazio">${mensagemVazia}</p>`;
+        return;
+      }
+
+      container.innerHTML = lista.map((t) => `
+        <div class="item-tarefa-status ${classe}">
+          <button type="button" class="tarefa-check" data-acao="alternar" data-id="${t.id}" aria-label="Marcar como concluída">${t.concluida ? "✓" : ""}</button>
+          <div class="tarefa-texto">
+            ${t.marca ? `<p class="tarefa-marca">${escapeHtml(t.marca)}</p>` : ""}
+            <p class="tarefa-titulo">${escapeHtml(t.titulo)}</p>
+            <p class="tarefa-data">${formatarDataVenc(t.data_venc)}${formatarHorario(t) ? " · " + formatarHorario(t) : ""}</p>
+          </div>
+          ${estaAtrasada(t) ? `<span class="tarefa-badge atrasada">Atrasada</span>` : ""}
+          <span class="tarefa-badge ${t.tipo}">${t.tipo === "entrega" ? "Entregar" : "Pendência"}</span>
+          <button type="button" class="tarefa-excluir" data-acao="excluir" data-id="${t.id}" aria-label="Excluir">×</button>
+        </div>
+      `).join("");
+
+      container.querySelectorAll('[data-acao="alternar"]').forEach((botao) => {
+        botao.addEventListener("click", () => alternarConcluida(botao.dataset.id));
+      });
+      container.querySelectorAll('[data-acao="excluir"]').forEach((botao) => {
+        botao.addEventListener("click", () => excluirTarefa(botao.dataset.id));
+      });
+    }
+
+    async function criarTarefa(titulo, tipo, marca, horaInicio, horaFim) {
+      const { data, error } = await sb
+        .from("portfolio_tasks")
+        .insert({
+          titulo,
+          tipo,
+          marca: marca || null,
+          hora_inicio: horaInicio || null,
+          hora_fim: horaFim || null,
+          data_venc: chaveDia(diaSelecionado),
+        })
+        .select()
+        .single();
+
+      if (error) {
+        console.error(error);
+        const banner = document.getElementById("bannerErro");
+        banner.textContent = "Não foi possível salvar a tarefa. Tente novamente.";
+        banner.classList.add("visivel");
+        return;
+      }
+      cacheTarefas.push(data);
+      renderizarCalendario();
+      renderizarListaTarefas();
+      renderizarStatusTarefas();
+    }
+
+    async function alternarConcluida(id) {
+      const tarefa = cacheTarefas.find((t) => t.id === id);
+      if (!tarefa) return;
+      const novoValor = !tarefa.concluida;
+      tarefa.concluida = novoValor;
+      renderizarListaTarefas();
+      renderizarStatusTarefas();
+      renderizarCalendario();
+
+      const { error } = await sb.from("portfolio_tasks").update({ concluida: novoValor }).eq("id", id);
+      if (error) {
+        console.error(error);
+        tarefa.concluida = !novoValor;
+        renderizarListaTarefas();
+      renderizarStatusTarefas();
+        renderizarCalendario();
+      }
+    }
+
+    async function excluirTarefa(id) {
+      const indice = cacheTarefas.findIndex((t) => t.id === id);
+      if (indice === -1) return;
+      const removida = cacheTarefas.splice(indice, 1)[0];
+      renderizarListaTarefas();
+      renderizarStatusTarefas();
+      renderizarCalendario();
+
+      const { error } = await sb.from("portfolio_tasks").delete().eq("id", id);
+      if (error) {
+        console.error(error);
+        cacheTarefas.splice(indice, 0, removida);
+        renderizarListaTarefas();
+      renderizarStatusTarefas();
+        renderizarCalendario();
+      }
+    }
+
+    // ==========================================================================
+    // INTERAÇÕES — abas, filtro de período, menu mobile, logout
+    // ==========================================================================
+    document.querySelectorAll(".item-menu").forEach((botao) => {
+      botao.addEventListener("click", () => {
+        document.querySelectorAll(".item-menu").forEach((b) => b.classList.remove("ativo"));
+        botao.classList.add("ativo");
+
+        const aba = botao.dataset.tab;
+        document.querySelectorAll(".painel-aba").forEach((p) => p.classList.remove("ativo"));
+        document.getElementById("aba-" + aba).classList.add("ativo");
+        document.getElementById("tituloTopo").textContent = TITULOS_ABA[aba];
+
+        // O filtro de período (Tudo/7d/30d/90d) não se aplica ao calendário nem ao Instagram
+        // (o Instagram tem o próprio filtro, com opção de período personalizado)
+        document.querySelector(".filtro-periodo").style.display = (aba === "calendario" || aba === "instagram") ? "none" : "flex";
+        document.getElementById("botaoAtualizar").style.display = aba === "instagram" ? "none" : "flex";
+
+        if (aba === "instagram" && window.InstagramIntelligence) {
+          window.InstagramIntelligence.iniciar();
+        }
+
+        document.body.classList.remove("menu-aberto");
+      });
     });
-    filtersEl.appendChild(btn);
-  });
-  renderGrid('todos');
 
-  // ============================== RESULTADOS: barras animadas ==============================
-  const resultsSection = document.querySelector('.results');
-  new IntersectionObserver((entries) => {
-    entries.forEach(entry => { if (entry.isIntersecting) resultsSection.classList.add('in-view'); });
-  }, { threshold: 0.3 }).observe(resultsSection);
+    document.getElementById("mesAnterior").addEventListener("click", () => {
+      mesAtual.setMonth(mesAtual.getMonth() - 1);
+      renderizarCalendario();
+    });
+    document.getElementById("mesProximo").addEventListener("click", () => {
+      mesAtual.setMonth(mesAtual.getMonth() + 1);
+      renderizarCalendario();
+    });
 
-  // ============================== POP-UP ==============================
-  const popupOverlay = document.getElementById('popupOverlay');
-  const popupClose = document.getElementById('popupClose');
-  let popupShown = false;
-  function showPopup(){
-    if (popupShown) return;
-    popupShown = true;
-    popupOverlay.classList.add('active');
-    document.body.style.overflow = 'hidden';
-  }
-  function hidePopup(){
-    popupOverlay.classList.remove('active');
-    document.body.style.overflow = '';
-  }
-  setTimeout(showPopup, 8000);
-  window.addEventListener('scroll', () => {
-    const max = document.documentElement.scrollHeight - window.innerHeight;
-    if (max > 0 && window.scrollY / max >= 0.5) showPopup();
-  });
-  popupClose.addEventListener('click', hidePopup);
-  popupOverlay.addEventListener('click', (e) => { if (e.target === popupOverlay) hidePopup(); });
+    document.getElementById("botaoNovaTarefa").addEventListener("click", () => {
+      document.getElementById("formNovaTarefa").classList.toggle("oculto");
+      document.getElementById("tarefaTitulo").focus();
+    });
+    document.getElementById("botaoCancelarTarefa").addEventListener("click", () => {
+      document.getElementById("formNovaTarefa").classList.add("oculto");
+      document.getElementById("formNovaTarefa").reset();
+    });
+    document.getElementById("formNovaTarefa").addEventListener("submit", async (e) => {
+      e.preventDefault();
+      const titulo = document.getElementById("tarefaTitulo").value.trim();
+      const tipo = document.getElementById("tarefaTipo").value;
+      const marca = document.getElementById("tarefaMarca").value.trim();
+      const horaInicio = document.getElementById("tarefaInicio").value;
+      const horaFim = document.getElementById("tarefaFim").value;
+      if (!titulo) return;
+      await criarTarefa(titulo, tipo, marca, horaInicio, horaFim);
+      e.target.reset();
+      document.getElementById("formNovaTarefa").classList.add("oculto");
+    });
 
-  // ============================== MODAL DE VÍDEO ==============================
-  const videoModalOverlay = document.getElementById('videoModalOverlay');
-  const videoModalFrame = document.getElementById('videoModalFrame');
-  const videoModalClose = document.getElementById('videoModalClose');
+    document.querySelectorAll(".botao-periodo").forEach((botao) => {
+      botao.addEventListener("click", () => {
+        document.querySelectorAll(".botao-periodo").forEach((b) => b.classList.remove("ativo"));
+        botao.classList.add("ativo");
+        periodoAtual = botao.dataset.periodo;
+        renderizarTudo();
+      });
+    });
 
-  function abrirVideoModal(youtubeId){
-    videoModalFrame.innerHTML = `<iframe src="https://www.youtube.com/embed/${youtubeId}?autoplay=1&rel=0" title="vídeo do portfólio" allow="autoplay; encrypted-media; picture-in-picture" allowfullscreen></iframe>`;
-    videoModalOverlay.classList.add('active');
-    document.body.style.overflow = 'hidden';
-  }
-  function fecharVideoModal(){
-    videoModalOverlay.classList.remove('active');
-    videoModalFrame.innerHTML = ''; // remove o iframe pra parar o vídeo
-    document.body.style.overflow = '';
-  }
-  videoModalClose.addEventListener('click', fecharVideoModal);
-  videoModalOverlay.addEventListener('click', (e) => { if (e.target === videoModalOverlay) fecharVideoModal(); });
+    document.getElementById("botaoAtualizar").addEventListener("click", async (e) => {
+      const botao = e.currentTarget;
+      botao.disabled = true;
+      botao.classList.add("girando");
+      await carregarDados();
+      botao.classList.remove("girando");
+      botao.disabled = false;
+    });
 
-  // ============================== FORMULÁRIOS (demonstração) ==============================
-  // TODO: conectar a um serviço real (Formspree, EmailJS, backend próprio) para receber as mensagens.
-  function handleSubmit(e){
-    e.preventDefault();
-    alert('Obrigada pelo contato! Este é um formulário de demonstração — conecte-o a um serviço como Formspree ou EmailJS para receber mensagens de verdade.');
-    e.target.reset();
-    hidePopup();
-  }
-  document.getElementById('contactForm').addEventListener('submit', handleSubmit);
-  document.getElementById('popupForm').addEventListener('submit', handleSubmit);
+    document.getElementById("botaoMenuMobile").addEventListener("click", () => {
+      document.body.classList.toggle("menu-aberto");
+    });
+    document.getElementById("overlayMobile").addEventListener("click", () => {
+      document.body.classList.remove("menu-aberto");
+    });
 
-  // ============================== ANO NO RODAPÉ ==============================
-  document.getElementById('ano').textContent = new Date().getFullYear();
-</script>
+    document.getElementById("botaoSair").addEventListener("click", () => {
+      Auth.logout();
+    });
+
+    // ==========================================================================
+    // GUARDA DE AUTENTICAÇÃO — roda antes de mostrar qualquer conteúdo
+    // ==========================================================================
+    (async function iniciar() {
+      const usuario = await Auth.checkAuth();
+      if (!usuario) return; // Auth.checkAuth já redirecionou para /login
+
+      document.getElementById("emailUsuario").textContent = usuario.email;
+      document.body.classList.remove("pre-auth");
+
+      await carregarDados();
+    })();
+  </script>
 </body>
 </html>
