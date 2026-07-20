@@ -328,7 +328,8 @@
       0
     );
     const somaAlcancePosts = postsNoPeriodo.reduce((s, p) => s + (Number(p.alcance) || 0), 0);
-    const taxaEngajamento = somaAlcancePosts > 0 ? ((somaEngajamento / somaAlcancePosts) * 100).toFixed(1) : null;
+    const taxaBruta = somaAlcancePosts > 0 ? (somaEngajamento / somaAlcancePosts) * 100 : NaN;
+    const taxaEngajamento = Number.isFinite(taxaBruta) ? taxaBruta.toFixed(1) : null;
 
     container.innerHTML = [
       cartaoNumero(seguidoresAtuais, "Seguidores atuais", null, true),
