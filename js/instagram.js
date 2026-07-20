@@ -144,20 +144,37 @@
       });
 
       // --- Insights diários da conta (últimos 30 dias, é o limite útil da API) ---
+      // "reach" ainda vem como série por dia (period=day). "profile_views" e
+      // "website_clicks" agora exigem metric_type=total_value (a Meta mudou
+      // isso) e vêm como um total único, não por dia.
       let insightsConta = { data: [] };
       try {
         insightsConta = await chamarGraphApi(`${config.ig_user_id}/insights`, {
-          // "impressions" foi descontinuada pela Meta para métricas de conta — usamos as válidas atuais
-          metric: "reach,profile_views,website_clicks",
+          metric: "reach",
           period: "day",
         });
       } catch (erroInsights) {
-        console.warn("Não foi possível buscar os insights diários da conta:", erroInsights.message);
+        console.warn("Não foi possível buscar o alcance diário da conta:", erroInsights.message);
+      }
+
+      let insightsTotais = { data: [] };
+      try {
+        insightsTotais = await chamarGraphApi(`${config.ig_user_id}/insights`, {
+          metric: "profile_views,website_clicks",
+          metric_type: "total_value",
+          period: "day",
+        });
+      } catch (erroInsights) {
+        console.warn("Não foi possível buscar visitas ao perfil / cliques no link:", erroInsights.message);
       }
 
       const porMetrica = {};
       (insightsConta.data || []).forEach((m) => {
         porMetrica[m.name] = m.values || [];
+      });
+      (insightsTotais.data || []).forEach((m) => {
+        const total = m.total_value?.value ?? null;
+        porMetrica[m.name] = total === null ? [] : [{ value: total }];
       });
 
       // Grava um snapshot de hoje com o valor mais recente de cada métrica
@@ -183,7 +200,7 @@
       );
 
       // --- Publicações recentes ---
-      const midias = await chamarGraphApi(config.ig_user_id, {
+      const midias = await chamarGraphApi(`${config.ig_user_id}/media`, {
         fields: "id,caption,media_type,media_product_type,media_url,thumbnail_url,permalink,timestamp,like_count,comments_count",
         limit: 50,
       });
