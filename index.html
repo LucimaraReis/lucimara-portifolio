@@ -595,11 +595,11 @@
     <h2 class="section-title light center">resultados que vão <em>além</em> dos números</h2>
     <!-- EDITE AQUI: métricas reais (o valor em --val controla a barra). Atualize
          conforme o Instagram @lucimarareis.ugc crescer. -->
-    <div class="metrics-grid">
-      <div class="metric"><strong>2,6 mil</strong><span>compartilhamentos em 1 vídeo</span><div class="bar"><div class="bar-fill" style="--val:92%"></div></div></div>
-      <div class="metric"><strong>712</strong><span>visualizações no mês</span><div class="bar"><div class="bar-fill" style="--val:60%"></div></div></div>
-      <div class="metric"><strong>121</strong><span>interações em 1 vídeo</span><div class="bar"><div class="bar-fill" style="--val:45%"></div></div></div>
-      <div class="metric"><strong>198</strong><span>seguidores</span><div class="bar"><div class="bar-fill" style="--val:30%"></div></div></div>
+    <div class="metrics-grid" id="statsGrid">
+      <div class="metric"><strong id="statCompartilhamentos">2,6 mil</strong><span>compartilhamentos em 1 vídeo</span><div class="bar"><div class="bar-fill" style="--val:92%"></div></div></div>
+      <div class="metric"><strong id="statAlcance">712</strong><span>alcance no mês</span><div class="bar"><div class="bar-fill" style="--val:60%"></div></div></div>
+      <div class="metric"><strong id="statInteracoes">121</strong><span>interações em 1 vídeo</span><div class="bar"><div class="bar-fill" style="--val:45%"></div></div></div>
+      <div class="metric"><strong id="statSeguidores">198</strong><span>seguidores</span><div class="bar"><div class="bar-fill" style="--val:30%"></div></div></div>
     </div>
     <p class="editorial-quote">"cada conteúdo tem intenção, autenticidade e a <em>essência</em> da marca."</p>
   </section>
@@ -685,6 +685,7 @@
 <!-- Rastreamento de visitas, cliques e mensagens (Supabase) -->
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2/dist/umd/supabase.min.js"></script>
 <script src="/js/tracking.js"></script>
+<script src="/js/instagram-stats.js"></script>
 
 <script>
   // ============================== NAV: blur ao rolar ==============================
