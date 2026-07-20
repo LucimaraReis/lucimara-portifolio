@@ -616,6 +616,13 @@
 
     document.getElementById("botaoSincronizarInstagram").addEventListener("click", sincronizar);
 
+    document.getElementById("botaoEditarConexaoInstagram").addEventListener("click", () => {
+      document.getElementById("igUserId").value = config?.ig_user_id || "";
+      document.getElementById("igToken").value = "";
+      document.getElementById("igConexao").classList.remove("oculto");
+      document.getElementById("igConteudo").classList.add("oculto");
+    });
+
     document.querySelectorAll('[data-ig-periodo]').forEach((botao) => {
       botao.addEventListener("click", () => {
         document.querySelectorAll('[data-ig-periodo]').forEach((b) => b.classList.remove("ativo"));
