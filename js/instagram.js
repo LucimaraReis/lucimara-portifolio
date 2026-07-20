@@ -47,6 +47,8 @@
 
   function formatarNumero(valor) {
     if (valor === null || valor === undefined) return "—";
+    // Valores já formatados (ex.: "83.3%") não devem passar por Number()
+    if (typeof valor === "string" && !/^-?\d+(\.\d+)?$/.test(valor)) return valor;
     return Number(valor).toLocaleString("pt-BR");
   }
 
