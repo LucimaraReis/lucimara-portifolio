@@ -236,9 +236,14 @@
       radial-gradient(at 55% 15%, rgba(198,157,140,.12) 0px, transparent 42%),
       radial-gradient(at 30% 85%, rgba(92,31,49,.05) 0px, transparent 40%);
   }
-  .about-collage{ position:relative; }
-  .collage-1{ aspect-ratio: 4/5; width: 78%; border-radius: 32px; }
-  .collage-2{ aspect-ratio: 4/5; width: 58%; position:absolute; right: -6%; bottom: -10%; box-shadow: 0 30px 60px rgba(43,26,31,.22); border-radius: 32px; }
+  .about-collage{
+    display: grid; grid-template-columns: 1fr 1fr; gap: 16px;
+  }
+  .collage-foto{
+    border-radius: 24px; overflow: hidden; box-shadow: 0 20px 40px rgba(43,26,31,.18);
+  }
+  .collage-grande{ grid-column: 1 / -1; aspect-ratio: 16/10; }
+  .collage-pequena{ aspect-ratio: 1/1; }
   .about-text h2{ margin-bottom: 1.4rem; }
   .about-text p{ color: var(--texto-suave); max-width: 480px; margin-bottom: 1.8rem; }
   .pills{ display:flex; flex-wrap:wrap; gap: .6rem; margin-bottom: 2.2rem; }
@@ -450,7 +455,7 @@
     .service-row{ grid-template-columns: 40px 1fr; }
     .service-desc{ grid-column: 1/-1; }
     .contact-form{ grid-template-columns: 1fr; }
-    .collage-2{ width: 68%; right: 0; }
+    .about-collage{ grid-template-columns: 1fr 1fr; }
     .expect-grid{ grid-template-columns: 1fr; }
     .polaroid{ width: 42vw; }
   }
@@ -493,7 +498,7 @@
       <p class="eyebrow">Creator UGC 40+</p>
       <h1 class="hero-title">Lucimara <em>Reis</em></h1>
       <p class="hero-sub">Crio conteúdos que aproximam marcas de pessoas reais, de um jeito leve, natural e verdadeiro. Gosto de mostrar produtos como eles realmente fazem parte da rotina, porque acredito que é assim que nasce a confiança.</p>
-      <p class="hero-position">Produzo conteúdos para marcas de beleza, skincare, haircare, bem-estar, fitness, lifestyle, moda, maternidade, casa, gastronomia e pet. Uno minha experiência com marketing à criação de vídeos que valorizam a identidade de cada marca, sem exageros, com uma comunicação humana, elegante e fácil de se conectar.</p>
+      <p class="hero-position">Produzo conteúdos para marcas de beauty, haircare, lifestyle, wellness, fashion e fitness. Uno minha experiência com marketing à criação de vídeos que valorizam a identidade de cada marca, sem exageros, com uma comunicação humana, elegante e fácil de se conectar.</p>
       <div class="hero-actions">
         <a href="#portfolio" class="btn btn-solid">ver portfólio</a>
         <a href="#contato" class="btn btn-outline">trabalhe comigo</a>
@@ -520,17 +525,18 @@
   <!-- ============================== FAIXA ROLANTE ============================== -->
   <div class="ticker">
     <div class="ticker-track">
-      <span>beleza</span><span>·</span><span>skincare</span><span>·</span><span>haircare</span><span>·</span><span>bem-estar</span><span>·</span><span>lifestyle</span><span>·</span><span>fitness</span><span>·</span><span>moda</span><span>·</span><span>maternidade</span><span>·</span><span>casa</span><span>·</span><span>gastronomia</span><span>·</span><span>pet</span><span>·</span>
-      <span>beleza</span><span>·</span><span>skincare</span><span>·</span><span>haircare</span><span>·</span><span>bem-estar</span><span>·</span><span>lifestyle</span><span>·</span><span>fitness</span><span>·</span><span>moda</span><span>·</span><span>maternidade</span><span>·</span><span>casa</span><span>·</span><span>gastronomia</span><span>·</span><span>pet</span><span>·</span>
+      <span>beauty</span><span>·</span><span>haircare</span><span>·</span><span>lifestyle</span><span>·</span><span>wellness</span><span>·</span><span>fashion</span><span>·</span><span>fitness</span><span>·</span><span>HOME</span><span>·</span>
+      <span>beauty</span><span>·</span><span>haircare</span><span>·</span><span>lifestyle</span><span>·</span><span>wellness</span><span>·</span><span>fashion</span><span>·</span><span>fitness</span><span>·</span><span>HOME</span><span>·</span>
     </div>
   </div>
 
   <!-- ============================== SOBRE ============================== -->
   <section id="sobre" class="about reveal">
     <div class="about-collage">
-      <!-- EDITE AQUI: troque por fotos reais mantendo as classes "collage-1"/"collage-2" -->
-      <div class="placeholder-img collage-1" style="background: url('Fotos%20do%20portifolio/HAIR%20CARE.PNG') center/cover;"></div>
-      <div class="placeholder-img collage-2" style="background: url('Fotos%20do%20portifolio/life%20style.jpeg') center/cover;"></div>
+      <!-- EDITE AQUI: troque por fotos reais mantendo as classes "collage-foto" + "collage-grande"/"collage-pequena" -->
+      <div class="placeholder-img collage-foto collage-grande" style="background: url('Fotos%20do%20portifolio/HAIR%20CARE.PNG') center/cover;"></div>
+      <div class="placeholder-img collage-foto collage-pequena" style="background: url('Fotos%20do%20portifolio/life%20style.jpeg') center/cover;"></div>
+      <div class="placeholder-img collage-foto collage-pequena" style="background: url('Fotos%20do%20portifolio/IMG_1546.PNG') center/cover;"></div>
     </div>
     <div class="about-text">
       <p class="eyebrow">sobre mim</p>
