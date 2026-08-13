@@ -192,9 +192,6 @@
   }
   .hero-sub{ max-width: 420px; color: var(--texto-suave); font-size: 1.05rem; margin-bottom: 2.2rem; }
   .hero-actions{ display:flex; gap: 1rem; margin-bottom: 3rem; flex-wrap:wrap; }
-  .hero-metrics{ display:flex; gap: 2.6rem; }
-  .hero-metrics strong{ display:block; font-family: var(--font-display); font-size: 1.6rem; color: var(--vinho); }
-  .hero-metrics span{ font-size: .74rem; letter-spacing:.06em; color: var(--texto-suave); text-transform:uppercase; }
   .hero-position{ font-size: .85rem; color: var(--texto-suave); max-width: 440px; margin: -0.6rem 0 2.2rem; }
   .handle-tag{ font-size: .72rem; letter-spacing:.18em; text-transform:uppercase; color: var(--vinho); text-align:right; margin-bottom: 1rem; }
 
@@ -202,9 +199,9 @@
     aspect-ratio: 4/5; padding: 2rem; border-radius: 32px;
   }
   .hero-photo-bg{
-    position: absolute; top: -20%; left: 0; width: 100%; height: 140%;
+    position: absolute; top: 0; left: 0; width: 100%; height: 100%;
     background-size: cover; background-position: center;
-    z-index: 0; will-change: transform;
+    z-index: 0;
   }
   .hero-photo-content{ position: relative; z-index: 1; }
   .hero-overlay-text{
@@ -501,18 +498,12 @@
         <a href="#portfolio" class="btn btn-solid">ver portfólio</a>
         <a href="#contato" class="btn btn-outline">trabalhe comigo</a>
       </div>
-      <!-- EDITE AQUI: mini-métricas -->
-      <div class="hero-metrics">
-        <div><strong>2,6 mil</strong><span>compartilhamentos</span></div>
-        <div><strong>712</strong><span>visualizações/mês</span></div>
-        <div><strong>198</strong><span>seguidores</span></div>
-      </div>
     </div>
     <div class="hero-right">
       <p class="handle-tag">@lucimarareis.ugc</p>
       <!-- FOTO DE CAPA: coloque o arquivo de imagem dentro da pasta "Fotos do portifolio" com o nome "capa.jpg" -->
       <div class="hero-photo placeholder-img">
-        <div class="hero-photo-bg" style="background: linear-gradient(180deg, rgba(43,26,31,.1), rgba(43,26,31,.55)), url('Fotos%20do%20portifolio/Capa%20Portifolio.PNG') center/cover;"></div>
+        <div class="hero-photo-bg" style="background: linear-gradient(180deg, rgba(43,26,31,.1), rgba(43,26,31,.55)), url('Fotos%20do%20portifolio/IMG_1546.PNG') center top/cover;"></div>
         <div class="hero-photo-content">
           <p class="hero-overlay-text">autenticidade, <em>conexão</em> & confiança</p>
         </div>
@@ -703,15 +694,6 @@
   window.addEventListener('scroll', () => {
     nav.classList.toggle('scrolled', window.scrollY > 40);
   });
-
-  // ============================== FOTO DE CAPA: efeito de paralaxe ao rolar ==============================
-  const heroPhotoBg = document.querySelector('.hero-photo-bg');
-  if (heroPhotoBg) {
-    window.addEventListener('scroll', () => {
-      const deslocamento = Math.min(window.scrollY * 0.4, 90);
-      heroPhotoBg.style.transform = `translateY(${deslocamento}px)`;
-    });
-  }
 
   // ============================== MENU MOBILE ==============================
   const hamburger = document.getElementById('hamburger');
