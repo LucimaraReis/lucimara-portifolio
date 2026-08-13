@@ -302,13 +302,6 @@
     transition: transform .55s ease, box-shadow .55s ease;
   }
   .video-card:hover{ transform: scale(1.02); box-shadow: 0 26px 50px rgba(43,26,31,.22); }
-  .video-card .play-icon{
-    position:absolute; top:50%; left:50%; transform: translate(-50%,-50%);
-    width: 52px; height:52px; border-radius:50%; border: 1px solid rgba(255,255,255,.8);
-    display:flex; align-items:center; justify-content:center; color:#fff; font-size: .9rem;
-    transition: transform .4s ease;
-  }
-  .video-card:hover .play-icon{ transform: translate(-50%,-50%) scale(1.12); }
   .video-tag{
     position:absolute; top: .9rem; left: .9rem; font-size: .64rem; letter-spacing:.08em; text-transform:uppercase;
     background: rgba(255,255,255,.85); color: var(--vinho); padding: .35rem .7rem; border-radius:999px;
@@ -744,20 +737,30 @@
   // Quando trocar um item por um vídeo real do YouTube, preencha "youtubeId"
   // com o ID do vídeo (ex.: em youtube.com/watch?v=ABC123, o ID é "ABC123").
   // Isso faz o card virar automaticamente um "vídeo assistido" rastreável no painel.
+  //
+  // CATEGORIAS TRAVADAS: só use uma das categorias abaixo (definidas pela
+  // Lucimara). NÃO crie uma categoria nova aqui sem ela pedir explicitamente —
+  // se um item usar uma categoria fora da lista, um aviso aparece no console.
+  const ALLOWED_CATEGORIES = ['Fitness', 'Beauty', 'Hair', 'Fashion', 'Lifestyle'];
   const PORTFOLIO_ITEMS = [
-    { title: 'Medo de Short', categoria: 'Crwn', youtubeId: 'Ead3KnMdNuY', capa: 'Fotos%20do%20portifolio/crwn.jpeg' },
-    { title: 'Creamy', categoria: 'Skincare', youtubeId: 'AI9EBIH4CQM', capa: 'Fotos%20do%20portifolio/capa-skincare.PNG' },
-    { title: 'Stand Vizzela', categoria: 'Visitas em feiras', youtubeId: 'FYGkstWYD3Q', capa: 'Fotos%20do%20portifolio/capa-vizzela.jpeg' },
-    { title: "Hair Care L'Oréal Paris", categoria: 'Haircare', youtubeId: 'a8Ji5Qcw0Ro', capa: "Fotos%20do%20portifolio/Capa%20HAIR%20CARE%20LOREAL-%20PARIS.PNG" },
-    { title: "Protetor Solar L'Oréal", categoria: 'Skincare', youtubeId: 'KHP_UsGQw1Q', capa: "Fotos%20do%20portifolio/IMG_1714.JPEG" },
-    { title: 'Arrume-se comigo', categoria: 'Lifestyle', youtubeId: 'SARRHFW6zyA', capa: "Fotos%20do%20portifolio/Capa%20Arrume-se%20comigo.JPEG" },
-    { title: 'Café - Dolce Gusto', categoria: 'Dolce Gusto', youtubeId: 'KEbSoilLdAw', capa: "Fotos%20do%20portifolio/Capa%20Tomar%20Caf%C3%A9.PNG" },
-    { title: 'Unboxing Dolce Gusto', categoria: 'Dolce Gusto', youtubeId: 'PkcWKAhvmfE', capa: "Fotos%20do%20portifolio/Capa%20Unboxing.PNG" },
+    { title: 'Medo de Short', categoria: 'Fitness', youtubeId: 'Ead3KnMdNuY', capa: 'Fotos%20do%20portifolio/crwn.jpeg' },
+    { title: 'Creamy', categoria: 'Beauty', youtubeId: 'AI9EBIH4CQM', capa: 'Fotos%20do%20portifolio/capa-skincare.PNG' },
+    { title: 'Vizzela – Feira 2026', categoria: 'Beauty', youtubeId: 'FYGkstWYD3Q', capa: 'Fotos%20do%20portifolio/capa-vizzela.jpeg' },
+    { title: "Hair Care L'Oréal Paris", categoria: 'Hair', youtubeId: 'a8Ji5Qcw0Ro', capa: "Fotos%20do%20portifolio/Capa%20HAIR%20CARE%20LOREAL-%20PARIS.PNG" },
+    { title: "L'Oréal – P. Solar", categoria: 'Beauty', youtubeId: 'KHP_UsGQw1Q', capa: "Fotos%20do%20portifolio/IMG_1714.JPEG" },
+    { title: 'Arrume-se comigo', categoria: 'Fashion', youtubeId: 'SARRHFW6zyA', capa: "Fotos%20do%20portifolio/Capa%20Arrume-se%20comigo.JPEG" },
+    { title: 'Café - Dolce Gusto', categoria: 'Lifestyle', youtubeId: 'KEbSoilLdAw', capa: "Fotos%20do%20portifolio/Capa%20Tomar%20Caf%C3%A9.PNG" },
+    { title: 'Unboxing Dolce Gusto', categoria: 'Lifestyle', youtubeId: 'PkcWKAhvmfE', capa: "Fotos%20do%20portifolio/Capa%20Unboxing.PNG" },
   ];
+  PORTFOLIO_ITEMS.forEach(item => {
+    if (!ALLOWED_CATEGORIES.includes(item.categoria)) {
+      console.warn(`Categoria "${item.categoria}" (item "${item.title}") não está na lista travada. Confirme com a Lucimara antes de manter.`);
+    }
+  });
   const GRADS = ['grad-1','grad-2','grad-3','grad-4','grad-5'];
   const grid = document.getElementById('portfolioGrid');
   const filtersEl = document.getElementById('filters');
-  const categorias = ['todos', ...new Set(PORTFOLIO_ITEMS.map(i => i.categoria))];
+  const categorias = ['todos', ...ALLOWED_CATEGORIES];
 
   function renderGrid(filtro){
     grid.innerHTML = '';
@@ -784,7 +787,6 @@
         // EDITE AQUI: para itens ainda sem vídeo, troque o conteúdo por um <video> real quando integrar seus arquivos
         card.innerHTML = `
           <span class="video-tag">${item.categoria}</span>
-          <span class="play-icon">▶</span>
         `;
         grid.appendChild(card);
       });
