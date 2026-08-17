@@ -150,15 +150,18 @@
   // ==========================================================================
   // SINCRONIZAÇÃO — busca dados novos na TikTok API
   // ==========================================================================
-  async function chamarTikTokApi(caminho, corpo) {
-    const resposta = await fetch(`${TIKTOK_API_BASE}/${caminho}`, {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-        Authorization: `Bearer ${config.access_token}`,
-      },
-      body: JSON.stringify(corpo || {}),
-    });
+  async function chamarTikTokApi(caminho, corpo, metodo) {
+    // "user/info/" só aceita GET; "video/list/" só aceita POST — por isso o
+    // método vem por parâmetro em vez de ser sempre POST.
+    const opcoes = {
+      method: metodo || "POST",
+      headers: { Authorization: `Bearer ${config.access_token}` },
+    };
+    if (opcoes.method !== "GET") {
+      opcoes.headers["Content-Type"] = "application/json";
+      opcoes.body = JSON.stringify(corpo || {});
+    }
+    const resposta = await fetch(`${TIKTOK_API_BASE}/${caminho}`, opcoes);
     const dados = await resposta.json();
     if (dados.error && dados.error.code !== "ok") throw new Error(dados.error.message || "Erro na API do TikTok");
     return dados;
@@ -182,7 +185,9 @@
 
       // --- Dados básicos + estatísticas da conta ---
       const conta = await chamarTikTokApi(
-        "user/info/?fields=open_id,display_name,follower_count,following_count,likes_count,video_count"
+        "user/info/?fields=open_id,display_name,follower_count,following_count,likes_count,video_count",
+        null,
+        "GET"
       );
       const campos = conta.data?.user || {};
 
