@@ -117,7 +117,10 @@
           email: document.getElementById("c-email")?.value || null,
           phone: document.getElementById("c-whats")?.value || null,
           brand: document.getElementById("c-empresa")?.value || null,
-          message: document.getElementById("c-briefing")?.value || null,
+          instagram_marca: document.getElementById("c-instagram")?.value || null,
+          produto_campanha: document.getElementById("c-produto")?.value || null,
+          objetivo_conteudo: document.getElementById("c-objetivo")?.value || null,
+          prazo_desejado: document.getElementById("c-prazo")?.value || null,
           source: "contact",
         });
       });

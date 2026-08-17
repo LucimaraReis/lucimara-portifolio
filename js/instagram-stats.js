@@ -6,9 +6,8 @@
 // HTML continuam aparecendo normalmente — nada quebra.
 //
 // COMO COMBINA INSTAGRAM + TIKTOK: quando as duas redes têm o dado, o número
-// mostrado é a MÉDIA entre elas (não mostramos separado). Quando só o
-// Instagram tem o dado (ex.: "alcance", que o TikTok não expõe pela API
-// pública), mostramos só o valor do Instagram.
+// mostrado é a MÉDIA entre elas (não mostramos separado). Quando só uma rede
+// tem o dado, mostramos só esse valor.
 // ============================================================================
 (function () {
   const SUPABASE_URL = "https://eeoevhxlykbbauqvvtbv.supabase.co";
@@ -34,9 +33,16 @@
     return null;
   }
 
+  function publicadoNosUltimos30Dias(dataIso) {
+    if (!dataIso) return false;
+    const corte = new Date();
+    corte.setDate(corte.getDate() - 30);
+    return new Date(dataIso) >= corte;
+  }
+
   document.addEventListener("DOMContentLoaded", async () => {
     const statSeguidores = document.getElementById("statSeguidores");
-    const statAlcance = document.getElementById("statAlcance");
+    const statVisualizacoes = document.getElementById("statVisualizacoes");
     const statCompartilhamentos = document.getElementById("statCompartilhamentos");
     const statInteracoes = document.getElementById("statInteracoes");
     if (!statSeguidores) return; // esta página não tem a seção de resultados
@@ -52,13 +58,13 @@
       ] = await Promise.all([
         sbStats
           .from("instagram_snapshots")
-          .select("seguidores,alcance,data")
+          .select("seguidores,data")
           .eq("perfil", PERFIL)
           .order("data", { ascending: false })
-          .limit(31),
+          .limit(1),
         sbStats
           .from("instagram_posts")
-          .select("curtidas,comentarios,salvamentos,compartilhamentos")
+          .select("curtidas,comentarios,salvamentos,compartilhamentos,plays,publicado_em")
           .eq("perfil", PERFIL),
         sbStats
           .from("tiktok_snapshots")
@@ -68,7 +74,7 @@
           .limit(1),
         sbStats
           .from("tiktok_posts")
-          .select("curtidas,comentarios,compartilhamentos")
+          .select("curtidas,comentarios,compartilhamentos,visualizacoes,publicado_em")
           .eq("perfil", PERFIL),
       ]);
 
@@ -78,11 +84,21 @@
       const seguidoresCombinado = combinar(seguidoresIg, seguidoresTt);
       if (seguidoresCombinado !== null) statSeguidores.textContent = formatarMil(seguidoresCombinado);
 
-      // --- Alcance: só o Instagram expõe esse dado pela API pública ---
-      if (snapshotsIg && snapshotsIg.length) {
-        const alcance30d = snapshotsIg.reduce((soma, s) => soma + (Number(s.alcance) || 0), 0);
-        statAlcance.textContent = formatarMil(alcance30d);
+      // --- Visualizações nos últimos 30 dias: soma das publicações recentes de cada rede ---
+      let visualizacoesIg = null;
+      if (postsIg && postsIg.length) {
+        visualizacoesIg = postsIg
+          .filter((p) => publicadoNosUltimos30Dias(p.publicado_em))
+          .reduce((soma, p) => soma + (Number(p.plays) || 0), 0);
       }
+      let visualizacoesTt = null;
+      if (postsTt && postsTt.length) {
+        visualizacoesTt = postsTt
+          .filter((p) => publicadoNosUltimos30Dias(p.publicado_em))
+          .reduce((soma, p) => soma + (Number(p.visualizacoes) || 0), 0);
+      }
+      const visualizacoesCombinado = combinar(visualizacoesIg, visualizacoesTt);
+      if (visualizacoesCombinado !== null) statVisualizacoes.textContent = formatarMil(visualizacoesCombinado);
 
       // --- Compartilhamentos e interações: melhor vídeo de cada rede, depois média ---
       let melhorCompartilhamentoIg = null;
