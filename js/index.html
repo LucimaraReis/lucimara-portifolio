@@ -1,0 +1,1045 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Lucimara Reis · Creator de UGC</title>
+<meta name="description" content="Lucimara Reis — Creator UGC especializada em beleza, skincare, haircare, bem-estar, lifestyle, fitness, moda, maternidade, casa, gastronomia e pet.">
+
+<!--
+  ============================================================================
+  COMO EDITAR ESTE PORTFÓLIO
+  ============================================================================
+  1. Busque por "EDITE AQUI" no código — cada trecho marcado é um texto,
+     dado ou imagem para você substituir pelo seu conteúdo real.
+  2. Fotos/vídeos: procure por elementos com a classe "placeholder-img".
+     Troque a <div class="placeholder-img ..."> por uma tag real, ex.:
+       <img src="fotos/minha-foto.jpg" alt="descrição da foto" class="real-img">
+     ou para vídeo:
+       <video src="videos/meu-video.mp4" controls class="real-img"></video>
+     Mantenha a classe do container (ex.: "hero-photo") para preservar o layout.
+  3. O array PORTFOLIO_ITEMS (dentro do <script>) gera os cards da seção de
+     portfólio automaticamente — edite título, categoria e proporção ali.
+  4. O formulário de contato e o pop-up estão configurados para apenas
+     mostrar uma confirmação (não há backend). Procure por "TODO: conectar
+     formulário" para integrar com Formspree, EmailJS, WhatsApp ou seu backend.
+  ============================================================================
+-->
+
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,500;1,400;1,500&family=Fraunces:ital,opsz,wght@0,9..144,300;0,9..144,400;0,9..144,600;1,9..144,300;1,9..144,400&family=Jost:wght@300;400;500;600&display=swap" rel="stylesheet">
+
+<style>
+  /* ============================== VARIÁVEIS ============================== */
+  :root{
+    --vinho: #5c1f31;
+    --vinho-escuro: #401621;
+    --vinho-suave: #7a3245;
+    --rosa-claro: #f2d9dd;
+    --rosa-2: #eccdd3;
+    --nude: #e9d6c9;
+    --bege-rosado: #f1e0d6;
+    --off-white: #faf5f1;
+    --texto: #2b1a1f;
+    --texto-suave: #6b4b52;
+
+    --font-display: 'Fraunces', serif;
+    --font-italic: 'Cormorant Garamond', serif;
+    --font-sans: 'Jost', sans-serif;
+  }
+
+  *{ box-sizing: border-box; margin:0; padding:0; }
+  html{ scroll-behavior: smooth; }
+  body{
+    font-family: var(--font-sans);
+    color: var(--texto);
+    background: var(--off-white);
+    overflow-x: hidden;
+    font-weight: 300;
+    line-height: 1.6;
+  }
+  img, video{ max-width:100%; display:block; }
+  a{ text-decoration:none; color:inherit; }
+  em{ font-family: var(--font-italic); font-style: italic; color: var(--vinho); }
+  section{ padding: 7rem 6vw; position: relative; }
+  @media (max-width: 768px){ section{ padding: 5rem 6vw; } }
+
+  .eyebrow{
+    font-family: var(--font-sans);
+    text-transform: uppercase;
+    letter-spacing: 0.28em;
+    font-size: 0.72rem;
+    color: var(--vinho);
+    margin-bottom: 1.2rem;
+  }
+  .eyebrow.light{ color: var(--rosa-claro); }
+  .center{ text-align:center; }
+  .section-title{
+    font-family: var(--font-display);
+    font-weight: 300;
+    font-size: clamp(2.1rem, 4.2vw, 3.4rem);
+    line-height: 1.1;
+    margin-bottom: 2.5rem;
+  }
+  .section-title.light{ color: var(--off-white); }
+
+  .btn{
+    display:inline-block;
+    padding: 0.95rem 2.1rem;
+    font-size: 0.82rem;
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+    border-radius: 999px;
+    transition: all .45s ease;
+    border: 1px solid var(--vinho);
+    cursor: pointer;
+  }
+  .btn-solid{ background: var(--vinho); color: var(--off-white); }
+  .btn-solid:hover{ background: var(--vinho-escuro); transform: translateY(-2px); box-shadow: 0 12px 26px rgba(92,31,49,.28); }
+  .btn-outline{ background: transparent; color: var(--vinho); }
+  .btn-outline:hover{ background: var(--vinho); color: var(--off-white); transform: translateY(-2px); }
+
+  /* ============================== REVEAL SCROLL ============================== */
+  .reveal{ opacity:0; transform: translateY(40px); transition: opacity .9s ease, transform .9s ease; }
+  .reveal.in-view{ opacity:1; transform:none; }
+
+  /* ============================== PLACEHOLDERS DE FOTO/VÍDEO ============================== */
+  .placeholder-img{
+    position: relative;
+    width:100%;
+    display:flex;
+    align-items:flex-end;
+    overflow:hidden;
+    border-radius: 2px;
+  }
+  .placeholder-label{
+    font-size: 0.66rem;
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+    color: rgba(255,255,255,.85);
+    background: rgba(43,26,31,.28);
+    padding: 0.5rem 0.8rem;
+    margin: 0.9rem;
+    border-radius: 999px;
+    backdrop-filter: blur(4px);
+  }
+  .grad-1{ background: linear-gradient(135deg, var(--vinho) 0%, var(--rosa-2) 55%, var(--nude) 100%); }
+  .grad-2{ background: linear-gradient(160deg, var(--nude), var(--rosa-claro)); }
+  .grad-3{ background: linear-gradient(200deg, var(--vinho-suave), var(--bege-rosado)); }
+  .grad-4{ background: linear-gradient(200deg, var(--vinho), var(--nude)); }
+  .grad-5{ background: linear-gradient(135deg, var(--rosa-claro), var(--nude)); }
+
+  /* ============================== NAV ============================== */
+  .nav{
+    position: fixed; top:0; left:0; right:0; z-index: 500;
+    display:flex; align-items:center;
+    padding: 1.6rem 6vw;
+    transition: background .4s ease, box-shadow .4s ease, padding .4s ease;
+  }
+  .nav.scrolled{
+    background: rgba(250,245,241,.82);
+    backdrop-filter: blur(14px);
+    box-shadow: 0 8px 30px rgba(43,26,31,.06);
+    padding: 1rem 6vw;
+  }
+  .nav-inner{ display:flex; align-items:center; justify-content:space-between; width:100%; }
+  .logo{ font-family: var(--font-display); font-size: 1.35rem; font-weight:400; letter-spacing:.02em; }
+  .nav-links{ display:flex; gap: 2.4rem; }
+  .nav-links a{
+    font-size: .82rem; letter-spacing: .1em; text-transform: uppercase;
+    position: relative; padding-bottom: 4px;
+  }
+  .nav-links a::after{
+    content:''; position:absolute; left:0; bottom:0; width:0; height:1px;
+    background: var(--vinho); transition: width .35s ease;
+  }
+  .nav-links a:hover::after{ width:100%; }
+  .nav-cta{ margin-left: 2rem; padding: .7rem 1.6rem; font-size: .72rem; }
+  .hamburger{
+    display:none; flex-direction:column; gap:5px; background:none; border:none; cursor:pointer; z-index: 600;
+  }
+  .hamburger span{ width: 26px; height:1px; background: var(--vinho); transition: all .35s ease; }
+  .hamburger.open span:nth-child(1){ transform: translateY(6px) rotate(45deg); }
+  .hamburger.open span:nth-child(2){ opacity:0; }
+  .hamburger.open span:nth-child(3){ transform: translateY(-6px) rotate(-45deg); }
+
+  .mobile-menu{
+    position: fixed; inset:0; background: var(--vinho-escuro);
+    display:flex; flex-direction:column; align-items:center; justify-content:center; gap: 1.9rem;
+    transform: translateY(-100%); transition: transform .5s cubic-bezier(.77,0,.18,1);
+    z-index: 550;
+  }
+  .mobile-menu.open{ transform: translateY(0); }
+  .mobile-menu a{
+    font-family: var(--font-display); font-size: 1.7rem; color: var(--off-white); font-weight:300;
+  }
+  .mobile-menu .btn{ margin-top: 1rem; border-color: var(--off-white); color: var(--off-white); }
+  .mobile-close{
+    position:absolute; top: 1.8rem; right: 6vw; background:none; border:none;
+    font-size: 2rem; color: var(--off-white); cursor:pointer;
+  }
+
+  /* ============================== HERO ============================== */
+  .hero{
+    padding-top: 9rem;
+    display:grid; grid-template-columns: 1.1fr 1fr; gap: 4vw; align-items:center;
+    min-height: 92vh;
+  }
+  .hero-title{
+    font-family: var(--font-display); font-weight:300;
+    font-size: clamp(3rem, 7.4vw, 6rem); line-height: .98; margin-bottom: 1.6rem;
+  }
+  .hero-sub{ max-width: 420px; color: var(--texto-suave); font-size: 1.05rem; margin-bottom: 2.2rem; }
+  .hero-actions{ display:flex; gap: 1rem; margin-bottom: 3rem; flex-wrap:wrap; }
+  .hero-position{ font-size: .85rem; color: var(--texto-suave); max-width: 440px; margin: -0.6rem 0 2.2rem; }
+  .handle-tag{ font-size: .72rem; letter-spacing:.18em; text-transform:uppercase; color: var(--vinho); text-align:right; margin-bottom: 1rem; }
+
+  .hero-photo{
+    aspect-ratio: 4/5; padding: 2rem; border-radius: 32px;
+  }
+  .hero-photo-bg{
+    position: absolute; top: 0; left: 0; width: 100%; height: 100%;
+    background-size: cover; background-position: center;
+    z-index: 0;
+  }
+  .hero-photo-content{ position: relative; z-index: 1; }
+  .hero-overlay-text{
+    font-family: var(--font-display); font-weight:300; font-style: italic;
+    font-size: clamp(1.3rem, 2.2vw, 1.9rem); color: var(--off-white); margin-bottom: 1.6rem;
+  }
+
+  /* ============================== TICKER ============================== */
+  .ticker{
+    background: var(--vinho); overflow:hidden; padding: 1rem 0; white-space: nowrap;
+  }
+  .ticker-track{
+    display:inline-flex; gap: 1.2rem; animation: rolar 26s linear infinite;
+  }
+  .ticker-track span{
+    font-family: var(--font-italic); font-style:italic; font-size: 1.05rem;
+    color: var(--rosa-claro); letter-spacing: .02em;
+  }
+  @keyframes rolar{ 0%{ transform: translateX(0); } 100%{ transform: translateX(-50%); } }
+
+  /* ============================== SOBRE ============================== */
+  .about{
+    display:grid; grid-template-columns: 1.3fr 1fr; gap: 5vw; align-items:center;
+    background-color: var(--off-white);
+    /* textura sutil de mármore nude simulada só com CSS, sem imagem */
+    background-image:
+      radial-gradient(at 18% 25%, rgba(198,157,140,.14) 0px, transparent 50%),
+      radial-gradient(at 82% 68%, rgba(92,31,49,.07) 0px, transparent 45%),
+      radial-gradient(at 55% 15%, rgba(198,157,140,.12) 0px, transparent 42%),
+      radial-gradient(at 30% 85%, rgba(92,31,49,.05) 0px, transparent 40%);
+  }
+  .about-intro{
+    grid-column: 1 / -1; max-width: 640px; margin: 0 auto 1.5rem; text-align: center;
+  }
+  .about-intro .section-title{ margin-bottom: 1rem; }
+  .about-intro p{ color: var(--texto-suave); }
+  .about-collage{
+    display: grid; grid-template-columns: repeat(2, 1fr); gap: 16px;
+  }
+  .collage-foto{
+    border-radius: 24px; overflow: hidden; box-shadow: 0 20px 40px rgba(43,26,31,.18);
+  }
+  .collage-grande{ grid-column: 1 / -1; aspect-ratio: 4/5; }
+  .collage-pequena{ aspect-ratio: 1/1; }
+  .about-text h2{ margin-bottom: 1.4rem; }
+  .about-text p{ color: var(--texto-suave); max-width: 480px; margin-bottom: 1.8rem; }
+  .pills{ display:flex; flex-wrap:wrap; gap: .6rem; margin-bottom: 2.2rem; }
+  .pill{
+    font-size: .72rem; letter-spacing:.08em; text-transform:uppercase;
+    padding: .5rem 1rem; border: 1px solid var(--vinho-suave); border-radius: 999px; color: var(--vinho);
+  }
+  .signature{ font-family: var(--font-italic); font-style:italic; font-size: 1.9rem; color: var(--vinho); }
+
+  /* ============================== O QUE AS MARCAS PODEM ESPERAR ============================== */
+  .expect{ background: var(--bege-rosado); }
+  .expect-intro{ max-width: 720px; margin: 0 auto 3rem; text-align:center; color: var(--texto-suave); }
+  .expect-grid{ display:grid; grid-template-columns: repeat(2, 1fr); gap: 1.4rem 2.4rem; max-width: 900px; margin: 0 auto; }
+  .expect-item{ display:flex; gap: .9rem; align-items:flex-start; font-size: .96rem; color: var(--texto); }
+  .expect-item .check{
+    flex-shrink:0; width: 26px; height:26px; border-radius:50%; background: var(--vinho); color: var(--off-white);
+    display:flex; align-items:center; justify-content:center; font-size: .74rem; margin-top: 2px;
+  }
+
+  /* ============================== BANDA EDITORIAL ============================== */
+  .editorial-band{
+    min-height: 100vh; display:flex; align-items:center; justify-content:center;
+    padding: 0 6vw;
+    /* EDITE AQUI: troque o gradiente abaixo por uma foto real de pilates/wellness.
+       Mantenha o gradiente escuro por cima para garantir legibilidade do título:
+       background: linear-gradient(180deg, rgba(43,26,31,.55), rgba(43,26,31,.75)), url('sua-foto.jpg') center/cover; */
+    background:
+      linear-gradient(180deg, rgba(43,26,31,.55), rgba(43,26,31,.78)),
+      linear-gradient(135deg, var(--vinho) 0%, var(--vinho-suave) 60%, var(--nude) 130%);
+    background-size: cover; background-position:center;
+  }
+  .editorial-overlay{ text-align:center; max-width: 900px; }
+  .editorial-sub{ font-family: var(--font-italic); font-style:italic; color: var(--rosa-claro); font-size: 1.2rem; margin-bottom: 1.4rem; }
+  .editorial-title{
+    font-family: var(--font-display); font-weight:300; color: var(--off-white);
+    font-size: clamp(2.6rem, 8.6vw, 6.6rem); letter-spacing: .02em; line-height: 1.02;
+  }
+  .editorial-keywords{
+    margin-top: 1.8rem; text-transform:uppercase; letter-spacing:.3em; font-size:.78rem; color: var(--rosa-claro);
+  }
+  .editorial-title em{ color: var(--rosa-claro); }
+
+  /* ============================== PORTFÓLIO ============================== */
+  .portfolio-intro{ max-width: 620px; margin: -1.5rem auto 3rem; text-align:center; color: var(--texto-suave); }
+  .filters{ display:flex; flex-wrap:wrap; gap: .7rem; justify-content:center; margin-bottom: 3rem; }
+  .filter-btn{
+    font-size: .72rem; letter-spacing:.1em; text-transform:uppercase;
+    padding: .55rem 1.2rem; border-radius:999px; border: 1px solid var(--vinho-suave);
+    background:transparent; color: var(--vinho); cursor:pointer; transition: all .3s ease;
+  }
+  .filter-btn.active, .filter-btn:hover{ background: var(--vinho); color: var(--off-white); }
+  .portfolio-grid{
+    display:grid; grid-template-columns: repeat(3, 1fr); gap: 1.6rem;
+  }
+  .video-card{
+    position:relative; aspect-ratio: 4/5; border-radius: 32px; overflow:hidden; cursor:pointer;
+    transition: transform .55s ease, box-shadow .55s ease;
+  }
+  .video-card:hover{ transform: scale(1.02); box-shadow: 0 26px 50px rgba(43,26,31,.22); }
+  .video-tag{
+    position:absolute; top: .9rem; left: .9rem; font-size: .64rem; letter-spacing:.08em; text-transform:uppercase;
+    background: rgba(255,255,255,.85); color: var(--vinho); padding: .35rem .7rem; border-radius:999px;
+  }
+  .video-title{
+    position:absolute; bottom: 0; left:0; right:0; padding: 1.2rem;
+    font-family: var(--font-display); font-size: 1.05rem; color:#fff;
+    background: linear-gradient(0deg, rgba(43,26,31,.55), transparent);
+  }
+  .portfolio-caption{ margin-top: .9rem; }
+  .portfolio-caption-titulo{ font-size: .82rem; font-weight:500; letter-spacing:.02em; margin-bottom: .3rem; }
+  .portfolio-caption-texto{ font-size: .82rem; color: var(--texto-suave); margin-bottom: .3rem; }
+  .portfolio-caption-objetivo{ font-size: .78rem; color: var(--vinho-suave); font-style:italic; }
+
+  /* ============================== FOTOS UGC ============================== */
+  .fotos-ugc{ background: var(--off-white); }
+  .polaroid-grade{
+    display: flex; flex-wrap: wrap; justify-content: center; align-items: flex-start; gap: 2rem 2.4rem;
+    max-width: 1000px; margin: 3rem auto 0;
+  }
+  .polaroid-item{ width: 200px; display:flex; flex-direction:column; align-items:center; }
+  .polaroid-caption{ margin-top: .8rem; text-align:center; }
+  .polaroid-caption-titulo{
+    font-size: .68rem; letter-spacing:.08em; text-transform:uppercase;
+    color: var(--vinho); font-weight:500; margin-bottom: .3rem;
+  }
+  .polaroid-caption-texto{ font-size: .74rem; color: var(--texto-suave); line-height:1.45; }
+  .polaroid{
+    background: var(--off-white); padding: .8rem .8rem 2.2rem; border-radius: 3px;
+    box-shadow: 0 20px 40px rgba(43,26,31,.18); width: 200px;
+    transition: transform .3s ease;
+  }
+  .polaroid:hover{ transform: scale(1.04) rotate(0deg) !important; }
+  .polaroid-img{ width: 100%; aspect-ratio: 1/1.1; background-size: cover; background-position: center; border-radius: 2px; }
+  .p1{ transform: rotate(-4deg); }
+  .p2{ transform: rotate(3deg); }
+  .p3{ transform: rotate(-2deg); }
+  .p4{ transform: rotate(4deg); }
+  .p5{ transform: rotate(-3deg); }
+  .p6{ transform: rotate(2deg); }
+  .p7{ transform: rotate(-5deg); }
+  .p8{ transform: rotate(3deg); }
+  .p9{ transform: rotate(-2deg); }
+  .p10{ transform: rotate(4deg); }
+  .p11{ transform: rotate(-3deg); }
+  .p12{ transform: rotate(2deg); }
+  .p13{ transform: rotate(-4deg); }
+  .p14{ transform: rotate(3deg); }
+
+  /* ============================== VIVÊNCIA COMERCIAL ============================== */
+  .vivencia{
+    display:grid; grid-template-columns: .9fr 1.1fr; gap: 5vw; align-items:center;
+    background: var(--off-white);
+  }
+  .vivencia-foto{
+    position:relative; aspect-ratio: 4/5; border-radius: 24px; overflow:hidden;
+    box-shadow: 0 20px 40px rgba(43,26,31,.18); display:flex; align-items:flex-end;
+    background-size: cover; background-position: center;
+  }
+  .vivencia-legenda{
+    font-size: .78rem; color: var(--off-white); padding: 1.4rem;
+    background: linear-gradient(0deg, rgba(43,26,31,.65), transparent); width:100%;
+  }
+  .vivencia-texto p{ color: var(--texto-suave); max-width: 480px; margin-top: 1rem; }
+
+  /* ============================== RESULTADOS ============================== */
+  .results{ background: var(--vinho); color: var(--off-white); }
+  .results em{ color: var(--rosa-claro); }
+  .metrics-grid{
+    display:grid; grid-template-columns: repeat(4, 1fr); gap: 2.4rem 2rem; margin-bottom: 3rem;
+  }
+  .metric strong{ font-family: var(--font-display); font-weight:300; font-size: 2.2rem; display:block; }
+  .metric span{ font-size: .74rem; letter-spacing:.08em; text-transform:uppercase; color: var(--rosa-claro); }
+  .bar{ height:2px; background: rgba(255,255,255,.2); margin-top: .9rem; border-radius: 2px; overflow:hidden; }
+  .bar-fill{ height:100%; width:0; background: var(--rosa-claro); transition: width 1.5s cubic-bezier(.16,.84,.44,1); }
+  .results.in-view .bar-fill{ width: var(--val); }
+  .editorial-quote{ font-family: var(--font-italic); font-style:italic; font-size: 1.4rem; text-align:center; color: var(--rosa-claro); }
+
+  /* ============================== SERVIÇOS ============================== */
+  .service-row{
+    display:grid; grid-template-columns: 60px 1fr 1.4fr; gap: 2rem; align-items:center;
+    padding: 1.8rem 1rem; border-bottom: 1px solid rgba(92,31,49,.15);
+    transition: background .4s ease, color .4s ease;
+  }
+  .service-row:hover{ background: var(--vinho); color: var(--off-white); }
+  .service-row:hover .service-num{ color: var(--rosa-claro); }
+  .service-num{ font-family: var(--font-display); font-style:italic; color: var(--vinho-suave); transition: color .4s ease; }
+  .service-name{ font-family: var(--font-display); font-size: 1.3rem; font-weight:400; }
+  .service-desc{ color: inherit; opacity:.75; font-size: .92rem; }
+  .service-cta{
+    margin-top: 2.4rem; padding: 2.4rem; background: var(--nude); border-radius: 3px;
+    display:flex; align-items:center; justify-content:space-between; gap: 1.5rem; flex-wrap:wrap;
+  }
+  .service-cta-texto{ max-width: 520px; }
+  .service-cta h3{ font-family: var(--font-display); font-weight:400; font-size: 1.5rem; }
+  .service-cta p{ color: var(--texto-suave); font-size: .92rem; margin-top: .6rem; }
+
+  /* ============================== PROCESSO CRIATIVO ============================== */
+  .processo{ background: var(--bege-rosado); }
+  .processo-grid{
+    display:grid; grid-template-columns: repeat(3, 1fr); gap: 2rem 2.4rem; max-width: 980px; margin: 0 auto;
+  }
+  .processo-item{ text-align:left; }
+  .processo-num{ font-family: var(--font-display); font-style:italic; font-size: 1.3rem; color: var(--vinho-suave); display:block; margin-bottom: .4rem; }
+  .processo-nome{ font-family: var(--font-display); font-weight:400; font-size: 1.2rem; margin-bottom: .5rem; }
+  .processo-desc{ color: var(--texto-suave); font-size: .9rem; }
+
+  /* ============================== CONTATO ============================== */
+  .contact{ background: var(--vinho-escuro); color: var(--off-white); }
+  .contact-inner{ max-width: 780px; margin: 0 auto; text-align:center; }
+  .contact-title{ font-family: var(--font-display); font-weight:300; font-size: clamp(2.4rem, 6vw, 4.2rem); margin-bottom: 1.2rem; }
+  .contact-sub{ color: var(--rosa-claro); max-width: 480px; margin: 0 auto 2.4rem; }
+  .socials{ display:flex; gap: 1.6rem; justify-content:center; margin-bottom: 3rem; flex-wrap:wrap; }
+  .socials a{ font-size: .78rem; letter-spacing:.1em; text-transform:uppercase; border-bottom: 1px solid rgba(255,255,255,.35); padding-bottom: 3px; }
+  .contact-form-titulo{ font-family: var(--font-display); font-weight:400; font-size: 1.3rem; margin-bottom: .6rem; }
+  .contact-form-texto{ color: var(--rosa-claro); max-width: 560px; margin: 0 auto 2rem; font-size: .92rem; }
+  .contact-form{ display:grid; grid-template-columns: 1fr 1fr; gap: 1.6rem; text-align:left; }
+  .field{ display:flex; flex-direction:column; gap: .5rem; }
+  .field.full{ grid-column: 1 / -1; }
+  .field label{ font-size: .68rem; letter-spacing:.12em; text-transform:uppercase; color: var(--rosa-claro); }
+  .field input, .field textarea{
+    background:transparent; border:none; border-bottom: 1px solid rgba(255,255,255,.35);
+    color: var(--off-white); font-family: var(--font-sans); font-size: .95rem; padding: .5rem 0; resize:none;
+  }
+  .field input::placeholder, .field textarea::placeholder{ color: rgba(250,245,241,.4); }
+  .field input:focus, .field textarea:focus{ outline:none; border-color: var(--rosa-claro); }
+  .contact-form .btn{ grid-column: 1/-1; justify-self:center; margin-top: 1rem; border-color: var(--off-white); color: var(--off-white); }
+  .contact-form .btn:hover{ background: var(--off-white); color: var(--vinho-escuro); }
+
+  footer{ text-align:center; padding: 2.2rem; font-size: .74rem; color: var(--texto-suave); letter-spacing:.05em; }
+
+  /* ============================== POP-UP ============================== */
+  .popup-overlay{
+    position: fixed; inset:0; background: rgba(43,26,31,.55); backdrop-filter: blur(4px);
+    display:flex; align-items:center; justify-content:center; z-index: 900;
+    opacity:0; visibility:hidden; transition: opacity .5s ease, visibility .5s ease;
+    padding: 2rem;
+  }
+  .popup-overlay.active{ opacity:1; visibility:visible; }
+  .popup{
+    background: var(--off-white); max-width: 780px; width:100%; display:grid; grid-template-columns: .9fr 1.1fr;
+    border-radius: 4px; overflow:hidden; box-shadow: 0 40px 80px rgba(43,26,31,.35);
+    transform: translateY(30px); transition: transform .5s ease;
+  }
+  .popup-overlay.active .popup{ transform: translateY(0); }
+  .popup-image{ min-height: 100%; }
+  .popup-content{ padding: 2.6rem; position:relative; }
+  .popup-content h3{ font-family: var(--font-display); font-weight:400; font-size: 1.5rem; margin: .8rem 0 1.6rem; }
+  .popup-close{
+    position:absolute; top: 1rem; right: 1.2rem; background:none; border:none; font-size: 1.4rem; cursor:pointer; color: var(--vinho);
+  }
+  .popup-form{ display:flex; flex-direction:column; gap: 1rem; }
+  .popup-form .field label{ color: var(--texto-suave); }
+  .popup-form .field input, .popup-form .field textarea{
+    border-bottom: 1px solid rgba(92,31,49,.25); color: var(--texto);
+  }
+  .popup-form .btn{ align-self:flex-start; margin-top: .6rem; }
+
+  /* ============================== MODAL DE VÍDEO ============================== */
+  .video-modal-overlay{
+    position: fixed; inset:0; background: rgba(20,10,13,.9);
+    display:flex; align-items:center; justify-content:center; z-index: 950;
+    opacity:0; visibility:hidden; transition: opacity .3s ease, visibility .3s ease;
+    padding: 2rem;
+  }
+  .video-modal-overlay.active{ opacity:1; visibility:visible; }
+  .video-modal{
+    position: relative; width: 100%; max-width: 380px; max-height: 85vh;
+    aspect-ratio: 9/16; background:#000; border-radius: 20px; overflow:hidden;
+    box-shadow: 0 40px 80px rgba(0,0,0,.5);
+  }
+  .video-modal-frame{ width:100%; height:100%; }
+  .video-modal-frame iframe{ width:100%; height:100%; border:0; display:block; }
+  .video-modal-close{
+    position:absolute; top:-2.6rem; right:0; background:none; border:none;
+    color:#fff; font-size: 1.8rem; line-height:1; cursor:pointer;
+  }
+
+  /* ============================== RESPONSIVO ============================== */
+  @media (max-width: 900px){
+    .hero{ grid-template-columns: 1fr; padding-top: 7.5rem; }
+    .hero-photo{ order:-1; }
+    .about{ grid-template-columns: 1fr; }
+    .about-collage{ margin-bottom: 5rem; }
+    .vivencia{ grid-template-columns: 1fr; }
+    .vivencia-foto{ order:-1; margin-bottom: 2.5rem; }
+    .portfolio-grid{ grid-template-columns: repeat(2, 1fr); }
+    .metrics-grid{ grid-template-columns: repeat(2, 1fr); }
+    .processo-grid{ grid-template-columns: repeat(2, 1fr); }
+    .popup{ grid-template-columns: 1fr; }
+    .popup-image{ min-height: 180px; }
+  }
+  @media (max-width: 640px){
+    .nav-links, .nav-cta{ display:none; }
+    .hamburger{ display:flex; }
+    .portfolio-grid{ grid-template-columns: 1fr; }
+    .metrics-grid{ grid-template-columns: repeat(2, 1fr); }
+    .processo-grid{ grid-template-columns: 1fr; }
+    .service-row{ grid-template-columns: 40px 1fr; }
+    .service-desc{ grid-column: 1/-1; }
+    .contact-form{ grid-template-columns: 1fr; }
+    .about-collage{ grid-template-columns: 1fr 1fr; }
+    .expect-grid{ grid-template-columns: 1fr; }
+    .polaroid{ width: 42vw; }
+  }
+</style>
+</head>
+<body>
+
+  <!-- ============================== NAV ============================== -->
+  <header class="nav" id="nav">
+    <div class="nav-inner">
+      <!-- EDITE AQUI: nome/handle da creator -->
+      <a href="#" class="logo">Lucimara Reis</a>
+      <nav class="nav-links">
+        <a href="#sobre">sobre</a>
+        <a href="#portfolio">portfólio</a>
+        <a href="#servicos">serviços</a>
+        <a href="#resultados">resultados</a>
+        <a href="#contato">contato</a>
+      </nav>
+      <a href="#contato" class="btn btn-outline nav-cta">trabalhe comigo</a>
+      <button class="hamburger" id="hamburger" aria-label="abrir menu">
+        <span></span><span></span><span></span>
+      </button>
+    </div>
+  </header>
+
+  <div class="mobile-menu" id="mobileMenu">
+    <button class="mobile-close" id="mobileClose" aria-label="fechar menu">×</button>
+    <a href="#sobre">sobre</a>
+    <a href="#portfolio">portfólio</a>
+    <a href="#servicos">serviços</a>
+    <a href="#resultados">resultados</a>
+    <a href="#contato">contato</a>
+    <a href="#contato" class="btn btn-outline">trabalhe comigo</a>
+  </div>
+
+  <!-- ============================== HERO ============================== -->
+  <section class="hero">
+    <div class="hero-left">
+      <p class="eyebrow">UGC Creator | Beauty • Wellness • Lifestyle</p>
+      <h1 class="hero-title">Lucimara <em>Reis</em></h1>
+      <p class="hero-sub">Crio conteúdos UGC para marcas de beauty, wellness e lifestyle que querem se aproximar de pessoas reais com naturalidade, estética e confiança.</p>
+      <p class="hero-position">Minha força está em transformar produtos em cenas de rotina, com narrativa leve, comunicação humana e olhar estratégico.</p>
+      <div class="hero-actions">
+        <a href="#portfolio" class="btn btn-solid">ver portfólio</a>
+        <a href="#contato" class="btn btn-outline">criar comigo</a>
+      </div>
+    </div>
+    <div class="hero-right">
+      <p class="handle-tag">@lucimarareis.ugc</p>
+      <!-- FOTO DE CAPA: coloque o arquivo de imagem dentro da pasta "Fotos do portifolio" com o nome "capa.jpg" -->
+      <div class="hero-photo placeholder-img">
+        <div class="hero-photo-bg" style="background: linear-gradient(180deg, rgba(43,26,31,.1), rgba(43,26,31,.55)), url('Fotos%20do%20portifolio/Capa%20Portifolio.PNG') center top/cover;"></div>
+        <div class="hero-photo-content">
+          <p class="hero-overlay-text">rotina real, <em>narrativa</em> & confiança</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============================== FAIXA ROLANTE ============================== -->
+  <div class="ticker">
+    <div class="ticker-track">
+      <span>HOME</span><span>·</span><span>BEAUTY</span><span>·</span><span>WELLNESS</span><span>·</span><span>LIFESTYLE</span><span>·</span><span>CONTATO</span><span>·</span>
+      <span>HOME</span><span>·</span><span>BEAUTY</span><span>·</span><span>WELLNESS</span><span>·</span><span>LIFESTYLE</span><span>·</span><span>CONTATO</span><span>·</span>
+    </div>
+  </div>
+
+  <!-- ============================== SOBRE ============================== -->
+  <section id="sobre" class="about reveal">
+    <div class="about-intro">
+      <h2 class="section-title center">UGC com estética, contexto e verdade</h2>
+      <p>Conteúdos pensados para apresentar produtos dentro de cenas reais: rotina, autocuidado, beleza, bem-estar e momentos de consumo com naturalidade.</p>
+    </div>
+    <div class="about-collage">
+      <!-- EDITE AQUI: troque por fotos reais mantendo as classes "collage-foto" + "collage-grande"/"collage-pequena" -->
+      <div class="placeholder-img collage-foto collage-grande" style="background: url('Fotos%20do%20portifolio/IMG_1546.PNG') center bottom/cover;"></div>
+      <div class="placeholder-img collage-foto collage-pequena" style="background: url('Fotos%20do%20portifolio/life%20style.jpeg') center/cover;"></div>
+      <div class="placeholder-img collage-foto collage-pequena" style="background: url('Fotos%20do%20portifolio/Foto%20UGC-%20Creator.PNG') center/cover;"></div>
+    </div>
+    <div class="about-text">
+      <p class="eyebrow">sobre mim</p>
+      <h2 class="section-title">uma creator que transforma rotina real em <em>confiança</em> para marcas</h2>
+      <p>Sou Lucimara Reis, UGC Creator 40+, mãe, profissional e uma mulher vivendo uma nova fase. Minha trajetória com atendimento, vendas, relacionamento com clientes e apresentação de produtos me ensinou algo essencial: pessoas confiam antes de comprar.</p>
+      <p>Por isso, crio conteúdos leves, elegantes e naturais, colocando produtos dentro de histórias reais, com contexto, intenção e verdade. Minha comunicação une maturidade, acolhimento e estratégia para aproximar marcas de pessoas reais.</p>
+      <div class="pills">
+        <span class="pill">anúncios ugc</span><span class="pill">conteúdo de marca</span><span class="pill">narrativa</span><span class="pill">fotografia de produto</span><span class="pill">edição de vídeo</span><span class="pill">direção criativa</span>
+      </div>
+      <p class="signature">Lucimara Reis</p>
+    </div>
+  </section>
+
+  <!-- ============================== O QUE AS MARCAS PODEM ESPERAR ============================== -->
+  <section id="esperar" class="expect reveal">
+    <p class="eyebrow center">compromisso</p>
+    <h2 class="section-title center">o que sua marca pode <em>esperar</em></h2>
+    <p class="expect-intro">Cada conteúdo que produzo nasce de uma intenção: representar a essência da marca de forma natural, humana e alinhada ao comportamento de quem está do outro lado da tela.</p>
+    <div class="expect-grid">
+      <div class="expect-item"><span class="check">✓</span>conteúdos que apresentam produtos com autenticidade e contexto real.</div>
+      <div class="expect-item"><span class="check">✓</span>narrativas que criam identificação antes da venda.</div>
+      <div class="expect-item"><span class="check">✓</span>produção visual elegante, atual e pensada para redes sociais.</div>
+      <div class="expect-item"><span class="check">✓</span>comunicação humanizada, clara e alinhada ao objetivo da campanha.</div>
+      <div class="expect-item"><span class="check">✓</span>atenção aos detalhes do briefing à entrega final.</div>
+      <div class="expect-item"><span class="check">✓</span>conteúdos desenvolvidos para gerar conexão, reconhecimento e desejo pela marca.</div>
+    </div>
+  </section>
+
+  <!-- ============================== BANDA EDITORIAL ============================== -->
+  <section class="editorial-band">
+    <div class="editorial-overlay">
+      <p class="editorial-sub">conteúdos que aproximam marcas de pessoas reais</p>
+      <h2 class="editorial-title">AUTENTICIDADE.<br><em>narrativa</em>.<br>CONFIANÇA.</h2>
+      <p class="editorial-keywords">BEAUTY · WELLNESS · LIFESTYLE · UGC</p>
+    </div>
+  </section>
+
+  <!-- ============================== PORTFÓLIO ============================== -->
+  <section id="portfolio" class="portfolio reveal">
+    <p class="eyebrow center">portfólio</p>
+    <h2 class="section-title center">trabalhos <em>selecionados</em></h2>
+    <p class="portfolio-intro">Uma seleção de conteúdos criados para mostrar produtos com estética, rotina, narrativa e intenção comercial.</p>
+    <div class="filters" id="filters"></div>
+    <div class="portfolio-grid" id="portfolioGrid"></div>
+  </section>
+
+  <!-- ============================== FOTOS UGC ============================== -->
+  <section id="fotos-ugc" class="fotos-ugc reveal">
+    <p class="eyebrow center">registros</p>
+    <h2 class="section-title center">fotografia <em>UGC</em> & lifestyle</h2>
+    <p class="portfolio-intro">Fotos pensadas para apresentar produtos em uso, em contexto e em cenas que traduzem desejo, rotina e identificação.</p>
+    <div class="filters" id="fotosFiltros">
+      <button class="filter-btn active" data-fotos-cat="todas">todas</button>
+      <button class="filter-btn" data-fotos-cat="produto em uso">produto em uso</button>
+      <button class="filter-btn" data-fotos-cat="still de produto">still de produto</button>
+      <button class="filter-btn" data-fotos-cat="lifestyle com marca">lifestyle com marca</button>
+      <button class="filter-btn" data-fotos-cat="rotina e consumo">rotina e consumo</button>
+    </div>
+    <!-- EDITE AQUI: adicione mais fotos suas mantendo a classe "polaroid-item" e o data-categoria -->
+    <div class="polaroid-grade" id="polaroidGrade">
+      <div class="polaroid-item" data-categoria="produto em uso">
+        <div class="polaroid p2"><div class="polaroid-img" style="background:url('Fotos%20do%20portifolio/loreal%20chuveiro.jpeg') center/cover;"></div></div>
+        <div class="polaroid-caption"><p class="polaroid-caption-titulo">Produto em uso</p><p class="polaroid-caption-texto">Aplicação, textura e demonstração real de produto.</p></div>
+      </div>
+      <div class="polaroid-item" data-categoria="produto em uso">
+        <div class="polaroid p10"><div class="polaroid-img" style="background:url('Fotos%20do%20portifolio/Solar%20uso.jpeg') center/cover;"></div></div>
+        <div class="polaroid-caption"><p class="polaroid-caption-titulo">Produto em uso</p><p class="polaroid-caption-texto">Aplicação, textura e demonstração real de produto.</p></div>
+      </div>
+      <div class="polaroid-item" data-categoria="rotina e consumo">
+        <div class="polaroid p9"><div class="polaroid-img" style="background:url('Fotos%20do%20portifolio/Foto%20UGC-capsula.jpeg') center/cover;"></div></div>
+        <div class="polaroid-caption"><p class="polaroid-caption-titulo">Rotina e consumo</p><p class="polaroid-caption-texto">Produtos inseridos em momentos reais de rotina e consumo.</p></div>
+      </div>
+      <div class="polaroid-item" data-categoria="produto em uso">
+        <div class="polaroid p7"><div class="polaroid-img" style="background:url('Fotos%20do%20portifolio/Foto%20UGC-%20skincare.jpeg') center/cover;"></div></div>
+        <div class="polaroid-caption"><p class="polaroid-caption-titulo">Produto em uso</p><p class="polaroid-caption-texto">Aplicação, textura e demonstração real de produto.</p></div>
+      </div>
+      <div class="polaroid-item" data-categoria="produto em uso">
+        <div class="polaroid p8"><div class="polaroid-img" style="background:url('Fotos%20do%20portifolio/solar%20aberto.jpeg') center/cover;"></div></div>
+        <div class="polaroid-caption"><p class="polaroid-caption-titulo">Produto em uso</p><p class="polaroid-caption-texto">Aplicação, textura e demonstração real de produto.</p></div>
+      </div>
+      <div class="polaroid-item" data-categoria="produto em uso">
+        <div class="polaroid p5"><div class="polaroid-img" style="background:url('Fotos%20do%20portifolio/Foto%20UGC-%20Mo%C3%A7a.jpeg') center/cover;"></div></div>
+        <div class="polaroid-caption"><p class="polaroid-caption-titulo">Produto em uso</p><p class="polaroid-caption-texto">Aplicação, textura e demonstração real de produto.</p></div>
+      </div>
+      <div class="polaroid-item" data-categoria="produto em uso">
+        <div class="polaroid p1"><div class="polaroid-img" style="background:url('Fotos%20do%20portifolio/IMG_1714.JPEG') center/cover;"></div></div>
+        <div class="polaroid-caption"><p class="polaroid-caption-titulo">Produto em uso</p><p class="polaroid-caption-texto">Aplicação, textura e demonstração real de produto.</p></div>
+      </div>
+      <div class="polaroid-item" data-categoria="lifestyle com marca">
+        <div class="polaroid p3"><div class="polaroid-img" style="background:url('Fotos%20do%20portifolio/Fotos%20UGC%20%20academia.JPEG') center/cover;"></div></div>
+        <div class="polaroid-caption"><p class="polaroid-caption-titulo">Lifestyle com marca</p><p class="polaroid-caption-texto">Cenas cotidianas com potencial de identificação e desejo.</p></div>
+      </div>
+      <div class="polaroid-item" data-categoria="rotina e consumo">
+        <div class="polaroid p11"><div class="polaroid-img" style="background:url('Fotos%20do%20portifolio/IMG_2140.PNG') center/cover;"></div></div>
+        <div class="polaroid-caption"><p class="polaroid-caption-titulo">Rotina e consumo</p><p class="polaroid-caption-texto">Produtos inseridos em momentos reais de rotina e consumo.</p></div>
+      </div>
+      <div class="polaroid-item" data-categoria="rotina e consumo">
+        <div class="polaroid p12"><div class="polaroid-img" style="background:url('Fotos%20do%20portifolio/moca.jpeg') center/cover;"></div></div>
+        <div class="polaroid-caption"><p class="polaroid-caption-titulo">Rotina e consumo</p><p class="polaroid-caption-texto">Produtos inseridos em momentos reais de rotina e consumo.</p></div>
+      </div>
+      <div class="polaroid-item" data-categoria="rotina e consumo">
+        <div class="polaroid p13"><div class="polaroid-img" style="background:url('Fotos%20do%20portifolio/IMG_2165.JPEG') center/cover;"></div></div>
+        <div class="polaroid-caption"><p class="polaroid-caption-titulo">Rotina e consumo</p><p class="polaroid-caption-texto">Produtos inseridos em momentos reais de rotina e consumo.</p></div>
+      </div>
+      <div class="polaroid-item" data-categoria="lifestyle com marca">
+        <div class="polaroid p14"><div class="polaroid-img" style="background:url('Fotos%20do%20portifolio/dr%20penaut.jpeg') center/cover;"></div></div>
+        <div class="polaroid-caption"><p class="polaroid-caption-titulo">Lifestyle com marca</p><p class="polaroid-caption-texto">Cenas cotidianas com potencial de identificação e desejo.</p></div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============================== VIVÊNCIA COMERCIAL ============================== -->
+  <section id="vivencia" class="vivencia reveal">
+    <div class="vivencia-foto" style="background:url('Fotos%20do%20portifolio/cheema.jpeg') center top/cover;">
+      <span class="vivencia-legenda">Vivência real com atendimento, apresentação de produtos e relacionamento com clientes.</span>
+    </div>
+    <div class="vivencia-texto">
+      <p class="eyebrow">experiência</p>
+      <h2 class="section-title">vivência comercial que fortalece minha <em>criação</em></h2>
+      <p>Minha experiência profissional com apresentação de produtos, atendimento e relacionamento com clientes me ajuda a criar conteúdos mais conscientes, humanos e estratégicos. Eu entendo que vender não começa no produto — começa na confiança.</p>
+    </div>
+  </section>
+
+  <!-- ============================== RESULTADOS ============================== -->
+  <section id="resultados" class="results reveal">
+    <p class="eyebrow light center">resultados</p>
+    <h2 class="section-title light center">resultados que mostram <em>conexão</em> real</h2>
+    <!-- EDITE AQUI: métricas reais (o valor em --val controla a barra). Atualize
+         conforme o Instagram @lucimarareis.ugc crescer. -->
+    <div class="metrics-grid" id="statsGrid">
+      <div class="metric"><strong id="statCompartilhamentos">2,8 mil</strong><span>compartilhamentos em um vídeo de rotina real</span><div class="bar"><div class="bar-fill" style="--val:92%"></div></div></div>
+      <div class="metric"><strong id="statVisualizacoes">6,3 mil</strong><span>visualizações nos últimos 30 dias</span><div class="bar"><div class="bar-fill" style="--val:60%"></div></div></div>
+      <div class="metric"><strong id="statInteracoes">3 mil</strong><span>interações em um conteúdo</span><div class="bar"><div class="bar-fill" style="--val:45%"></div></div></div>
+      <div class="metric"><strong>+<span id="statSeguidores">330</span></strong><span>seguidores em fase inicial de posicionamento</span><div class="bar"><div class="bar-fill" style="--val:30%"></div></div></div>
+    </div>
+    <p class="editorial-quote">"Quando o conteúdo nasce de uma verdade, ele deixa de parecer anúncio e começa a gerar <em>identificação</em>."</p>
+  </section>
+
+  <!-- ============================== SERVIÇOS ============================== -->
+  <section id="servicos" class="services reveal">
+    <p class="eyebrow center">serviços</p>
+    <h2 class="section-title center">como posso <em>ajudar</em> sua marca</h2>
+    <!-- EDITE AQUI: lista de serviços -->
+    <div class="service-list">
+      <div class="service-row"><span class="service-num">01</span><span class="service-name">Vídeos UGC para anúncios</span><span class="service-desc">vídeos com gancho, narrativa, demonstração e CTA pensados para campanhas pagas.</span></div>
+      <div class="service-row"><span class="service-num">02</span><span class="service-name">Conteúdo orgânico para redes sociais</span><span class="service-desc">conteúdos naturais e estratégicos para aproximar a marca do público nas redes sociais.</span></div>
+      <div class="service-row"><span class="service-num">03</span><span class="service-name">Roteiros e narrativa</span><span class="service-desc">histórias que inserem o produto em contextos reais, criando identificação antes da venda.</span></div>
+      <div class="service-row"><span class="service-num">04</span><span class="service-name">Fotografia de produto e lifestyle</span><span class="service-desc">fotos para redes sociais, campanhas e apresentação de produtos com estética e intenção.</span></div>
+      <div class="service-row"><span class="service-num">05</span><span class="service-name">Direção criativa e edição</span><span class="service-desc">conceito, cenas, cortes, trilha e ritmo alinhados à identidade da marca e ao objetivo da campanha.</span></div>
+    </div>
+    <div class="service-cta">
+      <div class="service-cta-texto">
+        <h3>vamos criar um conteúdo com verdade para sua marca?</h3>
+        <p>Me conte sobre sua campanha, produto ou objetivo. Vamos transformar sua ideia em um conteúdo natural, estratégico e pronto para conectar com pessoas reais.</p>
+      </div>
+      <a href="#contato" class="btn btn-solid">fale comigo</a>
+    </div>
+  </section>
+
+  <!-- ============================== PROCESSO CRIATIVO ============================== -->
+  <section id="processo" class="processo reveal">
+    <p class="eyebrow center">processo</p>
+    <h2 class="section-title center">meu processo <em>criativo</em></h2>
+    <p class="portfolio-intro">Meu processo começa entendendo a essência da marca, o objetivo da campanha e o comportamento do público. A partir disso, desenvolvo roteiro, cenas, captação e edição para criar conteúdos naturais, estratégicos e alinhados ao briefing.</p>
+    <div class="processo-grid">
+      <div class="processo-item"><span class="processo-num">01</span><h3 class="processo-nome">Briefing</h3><p class="processo-desc">Entendimento da marca, produto, objetivo e público.</p></div>
+      <div class="processo-item"><span class="processo-num">02</span><h3 class="processo-nome">Pesquisa</h3><p class="processo-desc">Análise da linguagem da marca, referências e oportunidades criativas.</p></div>
+      <div class="processo-item"><span class="processo-num">03</span><h3 class="processo-nome">Roteiro</h3><p class="processo-desc">Criação da narrativa, gancho, cenas, falas e CTA.</p></div>
+      <div class="processo-item"><span class="processo-num">04</span><h3 class="processo-nome">Gravação</h3><p class="processo-desc">Captação dos vídeos e fotos com atenção à luz, cenário, enquadramento e naturalidade.</p></div>
+      <div class="processo-item"><span class="processo-num">05</span><h3 class="processo-nome">Edição</h3><p class="processo-desc">Cortes, ritmo, legendas, trilha e ajustes para deixar o conteúdo mais claro e envolvente.</p></div>
+      <div class="processo-item"><span class="processo-num">06</span><h3 class="processo-nome">Entrega</h3><p class="processo-desc">Envio final do conteúdo conforme briefing, prazo e formato combinado.</p></div>
+    </div>
+  </section>
+
+  <!-- ============================== CONTATO ============================== -->
+  <section id="contato" class="contact reveal">
+    <div class="contact-inner">
+      <p class="eyebrow light">contato</p>
+      <h2 class="contact-title">vamos criar um conteúdo com <em>verdade</em> para sua marca?</h2>
+      <p class="contact-sub">Me conte sobre sua campanha, produto ou objetivo. Vamos transformar sua ideia em um conteúdo natural, estratégico e pronto para conectar com pessoas reais.</p>
+      <!-- EDITE AQUI: links reais de redes sociais e contato -->
+      <div class="socials">
+        <a href="https://instagram.com/lucimarareis.ugc" target="_blank" rel="noopener">instagram</a>
+        <a href="https://www.tiktok.com/@lucimara.reis.ugc" target="_blank" rel="noopener">tiktok</a>
+        <a href="https://wa.me/5531988229641" target="_blank" rel="noopener">whatsapp</a>
+        <a href="mailto:lucimarareis.ugc@gmail.com">e-mail</a>
+      </div>
+      <p class="contact-form-titulo">vamos criar algo com intenção</p>
+      <p class="contact-form-texto">Preencha os dados abaixo ou entre em contato pelo canal que preferir. Vou entender sua marca, seu objetivo e o melhor caminho para transformar seu produto em conteúdo real, estratégico e conectado com o público.</p>
+      <!-- TODO: conectar formulário a um serviço real (Formspree, EmailJS, backend próprio) -->
+      <form class="contact-form" id="contactForm">
+        <div class="field"><label for="c-nome">nome</label><input id="c-nome" type="text" placeholder="seu nome" required></div>
+        <div class="field"><label for="c-empresa">marca/empresa</label><input id="c-empresa" type="text" placeholder="nome da marca"></div>
+        <div class="field"><label for="c-email">e-mail</label><input id="c-email" type="email" placeholder="seu@email.com" required></div>
+        <div class="field"><label for="c-whats">whatsapp</label><input id="c-whats" type="tel" placeholder="(00) 00000-0000"></div>
+        <div class="field"><label for="c-instagram">instagram da marca</label><input id="c-instagram" type="text" placeholder="@suamarca"></div>
+        <div class="field"><label for="c-produto">produto ou campanha</label><input id="c-produto" type="text" placeholder="qual produto ou campanha"></div>
+        <div class="field full"><label for="c-objetivo">objetivo do conteúdo</label><textarea id="c-objetivo" rows="4" placeholder="conte sobre o objetivo do conteúdo..."></textarea></div>
+        <div class="field"><label for="c-prazo">prazo desejado</label><input id="c-prazo" type="text" placeholder="ex.: 2 semanas"></div>
+        <button type="submit" class="btn btn-outline">fale comigo</button>
+      </form>
+    </div>
+  </section>
+
+  <footer>© <span id="ano"></span> Lucimara Reis. todos os direitos reservados.</footer>
+
+  <!-- ============================== POP-UP ============================== -->
+  <div class="popup-overlay" id="popupOverlay">
+    <div class="popup">
+      <div class="placeholder-img popup-image" style="background: url('Fotos%20do%20portifolio/IMG_1900.PNG') center/cover;"></div>
+      <div class="popup-content">
+        <button class="popup-close" id="popupClose" aria-label="fechar">×</button>
+        <p class="eyebrow">amou o portfólio?</p>
+        <h3>vamos criar um conteúdo que a sua audiência realmente <em>conecta</em>.</h3>
+        <!-- TODO: conectar formulário a um serviço real (Formspree, EmailJS, backend próprio) -->
+        <form class="popup-form" id="popupForm">
+          <div class="field"><label for="p-nome">nome</label><input id="p-nome" type="text" placeholder="seu nome" required></div>
+          <div class="field"><label for="p-empresa">empresa</label><input id="p-empresa" type="text" placeholder="nome da marca"></div>
+          <div class="field"><label for="p-email">e-mail</label><input id="p-email" type="email" placeholder="seu@email.com" required></div>
+          <div class="field"><label for="p-whats">whatsapp</label><input id="p-whats" type="tel" placeholder="(00) 00000-0000"></div>
+          <div class="field"><label for="p-briefing">briefing</label><textarea id="p-briefing" rows="2" placeholder="conte sobre o projeto..."></textarea></div>
+          <button type="submit" class="btn btn-solid">quero conversar</button>
+        </form>
+      </div>
+    </div>
+  </div>
+
+  <!-- ============================== MODAL DE VÍDEO ============================== -->
+  <div class="video-modal-overlay" id="videoModalOverlay">
+    <div class="video-modal">
+      <button class="video-modal-close" id="videoModalClose" aria-label="fechar vídeo">×</button>
+      <div class="video-modal-frame" id="videoModalFrame"></div>
+    </div>
+  </div>
+
+<!-- Rastreamento de visitas, cliques e mensagens (Supabase) -->
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2/dist/umd/supabase.min.js"></script>
+<script src="/js/tracking.js"></script>
+<script src="/js/instagram-stats.js"></script>
+
+<script>
+  // ============================== NAV: blur ao rolar ==============================
+  const nav = document.getElementById('nav');
+  window.addEventListener('scroll', () => {
+    nav.classList.toggle('scrolled', window.scrollY > 40);
+  });
+
+  // ============================== MENU MOBILE ==============================
+  const hamburger = document.getElementById('hamburger');
+  const mobileMenu = document.getElementById('mobileMenu');
+  const mobileClose = document.getElementById('mobileClose');
+  function toggleMenu(open){
+    hamburger.classList.toggle('open', open);
+    mobileMenu.classList.toggle('open', open);
+    document.body.style.overflow = open ? 'hidden' : '';
+  }
+  hamburger.addEventListener('click', () => toggleMenu(!mobileMenu.classList.contains('open')));
+  mobileClose.addEventListener('click', () => toggleMenu(false));
+  mobileMenu.querySelectorAll('a').forEach(a => a.addEventListener('click', () => toggleMenu(false)));
+
+  // ============================== REVEAL AO ROLAR ==============================
+  const revealObserver = new IntersectionObserver((entries) => {
+    entries.forEach(entry => { if (entry.isIntersecting) entry.target.classList.add('in-view'); });
+  }, { threshold: 0.15 });
+  document.querySelectorAll('.reveal').forEach(el => revealObserver.observe(el));
+
+  // ============================== PORTFÓLIO: cards gerados por JS ==============================
+  // EDITE AQUI: adicione, remova ou renomeie os itens do portfólio.
+  // Quando trocar um item por um vídeo real do YouTube, preencha "youtubeId"
+  // com o ID do vídeo (ex.: em youtube.com/watch?v=ABC123, o ID é "ABC123").
+  // Isso faz o card virar automaticamente um "vídeo assistido" rastreável no painel.
+  //
+  // CATEGORIAS TRAVADAS: só use uma das categorias abaixo (definidas pela
+  // Lucimara). NÃO crie uma categoria nova aqui sem ela pedir explicitamente —
+  // se um item usar uma categoria fora da lista, um aviso aparece no console.
+  const ALLOWED_CATEGORIES = ['Beauty', 'Wellness', 'Lifestyle', 'UGC Ads'];
+  // Descrição exibida abaixo de cada vídeo (modelo definido pela Lucimara por tipo de conteúdo).
+  const MODELO_SKINCARE = {
+    linha: 'Beauty | Skincare real',
+    texto: 'Conteúdo com foco em rotina de autocuidado, textura do produto e experiência de uso.',
+    objetivo: 'Objetivo: gerar identificação e desejo de teste através de uma comunicação natural.',
+  };
+  const MODELO_HAIRCARE = {
+    linha: 'Beauty | Haircare',
+    texto: 'Conteúdo criado para apresentar o produto dentro de um momento real de cuidado capilar.',
+    objetivo: 'Objetivo: mostrar aplicação, sensorialidade e resultado de forma leve e confiável.',
+  };
+  const MODELO_ROTINA_CONSUMO = {
+    linha: 'Lifestyle | Rotina e consumo',
+    texto: 'Conteúdo com foco em ritual, aconchego e experiência de marca dentro da rotina.',
+    objetivo: 'Objetivo: conectar o produto a momentos reais de pausa, prazer e identificação.',
+  };
+  const MODELO_ROTINA_ATIVA = {
+    linha: 'Wellness | Rotina ativa',
+    texto: 'Conteúdo criado para mostrar bem-estar, movimento e autocuidado na vida real.',
+    objetivo: 'Objetivo: aproximar marcas de um público que busca leveza, constância e identificação.',
+  };
+  const MODELO_GRWM = {
+    linha: 'Lifestyle | GRWM',
+    texto: 'Conteúdo em formato arrume-se comigo, conectando produto, estilo e rotina.',
+    objetivo: 'Objetivo: gerar proximidade e mostrar como a marca pode fazer parte de um momento real.',
+  };
+  const PORTFOLIO_ITEMS = [
+    { title: "Hair Care L'Oréal Paris", categoria: 'Beauty', youtubeId: 'a8Ji5Qcw0Ro', capa: "Fotos%20do%20portifolio/Capa%20HAIR%20CARE%20LOREAL-%20PARIS.PNG", descricao: MODELO_HAIRCARE },
+    { title: "L'Oréal – P. Solar", categoria: 'Beauty', youtubeId: 'KHP_UsGQw1Q', capa: "Fotos%20do%20portifolio/IMG_1714.JPEG", descricao: MODELO_SKINCARE },
+    { title: 'Creamy', categoria: 'Beauty', youtubeId: 'AI9EBIH4CQM', capa: 'Fotos%20do%20portifolio/capa-skincare.PNG', descricao: MODELO_SKINCARE },
+    { title: 'Café - Dolce Gusto', categoria: 'Lifestyle', youtubeId: 'KEbSoilLdAw', capa: "Fotos%20do%20portifolio/Capa%20video%20Lifestyle.jpeg", descricao: MODELO_ROTINA_CONSUMO },
+    { title: 'Unboxing Dolce Gusto', categoria: 'Lifestyle', youtubeId: 'PkcWKAhvmfE', capa: "Fotos%20do%20portifolio/Capa%20video%20umboxing.jpeg", descricao: MODELO_ROTINA_CONSUMO },
+    { title: 'Vizzela – Feira 2026', categoria: 'Beauty', youtubeId: 'FYGkstWYD3Q', capa: 'Fotos%20do%20portifolio/capa-vizzela.jpeg' },
+    { title: 'Arrume-se comigo', categoria: 'Lifestyle', youtubeId: 'SARRHFW6zyA', capa: "Fotos%20do%20portifolio/Capa%20Arrume-se%20comigo.JPEG", descricao: MODELO_GRWM },
+    { title: 'Medo de Short', categoria: 'Wellness', youtubeId: 'Ead3KnMdNuY', capa: 'Fotos%20do%20portifolio/crwn.jpeg', descricao: MODELO_ROTINA_ATIVA },
+  ];
+  PORTFOLIO_ITEMS.forEach(item => {
+    if (!ALLOWED_CATEGORIES.includes(item.categoria)) {
+      console.warn(`Categoria "${item.categoria}" (item "${item.title}") não está na lista travada. Confirme com a Lucimara antes de manter.`);
+    }
+  });
+  const GRADS = ['grad-1','grad-2','grad-3','grad-4','grad-5'];
+  const grid = document.getElementById('portfolioGrid');
+  const filtersEl = document.getElementById('filters');
+  const categorias = ['todos', ...ALLOWED_CATEGORIES];
+
+  function renderGrid(filtro){
+    grid.innerHTML = '';
+    PORTFOLIO_ITEMS
+      .filter(item => filtro === 'todos' || item.categoria === filtro)
+      .forEach((item, i) => {
+        const temVideo = !!item.youtubeId;
+        const semImagem = !item.capa && !temVideo;
+        const card = document.createElement('div');
+        card.className = `video-card ${semImagem ? 'placeholder-img ' + GRADS[i % GRADS.length] : ''}`;
+        card.dataset.videoId = item.youtubeId || '';
+        // Capa: foto real enviada por você tem prioridade; sem capa, usa a
+        // miniatura automática do YouTube; sem vídeo nenhum, fica o gradiente.
+        const imagemFundo = item.capa || (temVideo ? `https://i.ytimg.com/vi/${item.youtubeId}/hqdefault.jpg` : '');
+        if (imagemFundo) {
+          card.style.backgroundImage = `linear-gradient(0deg, rgba(43,26,31,.6), rgba(43,26,31,.05)), url('${imagemFundo}')`;
+          card.style.backgroundSize = 'cover';
+          card.style.backgroundPosition = 'center';
+        }
+        if (temVideo) {
+          card.style.cursor = 'pointer';
+          card.addEventListener('click', () => abrirVideoModal(item.youtubeId));
+        }
+        // EDITE AQUI: para itens ainda sem vídeo, troque o conteúdo por um <video> real quando integrar seus arquivos
+        card.innerHTML = `
+          <span class="video-tag">${item.categoria}</span>
+        `;
+
+        const wrapper = document.createElement('div');
+        wrapper.className = 'portfolio-item';
+        wrapper.appendChild(card);
+
+        if (item.descricao) {
+          const legenda = document.createElement('div');
+          legenda.className = 'portfolio-caption';
+          legenda.innerHTML = `
+            <p class="portfolio-caption-titulo">${item.descricao.linha}</p>
+            <p class="portfolio-caption-texto">${item.descricao.texto}</p>
+            <p class="portfolio-caption-objetivo">${item.descricao.objetivo}</p>
+          `;
+          wrapper.appendChild(legenda);
+        }
+
+        grid.appendChild(wrapper);
+      });
+  }
+
+  categorias.forEach(cat => {
+    const btn = document.createElement('button');
+    btn.className = 'filter-btn' + (cat === 'todos' ? ' active' : '');
+    btn.textContent = cat;
+    btn.addEventListener('click', () => {
+      filtersEl.querySelectorAll('.filter-btn').forEach(b => b.classList.remove('active'));
+      btn.classList.add('active');
+      renderGrid(cat);
+    });
+    filtersEl.appendChild(btn);
+  });
+  renderGrid('todos');
+
+  // ============================== FOTOS UGC: filtro por categoria ==============================
+  const fotosFiltrosEl = document.getElementById('fotosFiltros');
+  const polaroids = document.querySelectorAll('#polaroidGrade .polaroid-item');
+  fotosFiltrosEl.querySelectorAll('.filter-btn').forEach(btn => {
+    btn.addEventListener('click', () => {
+      fotosFiltrosEl.querySelectorAll('.filter-btn').forEach(b => b.classList.remove('active'));
+      btn.classList.add('active');
+      const cat = btn.dataset.fotosCat;
+      polaroids.forEach(p => {
+        p.style.display = (cat === 'todas' || p.dataset.categoria === cat) ? '' : 'none';
+      });
+    });
+  });
+
+  // ============================== RESULTADOS: barras animadas ==============================
+  const resultsSection = document.querySelector('.results');
+  new IntersectionObserver((entries) => {
+    entries.forEach(entry => { if (entry.isIntersecting) resultsSection.classList.add('in-view'); });
+  }, { threshold: 0.3 }).observe(resultsSection);
+
+  // ============================== POP-UP ==============================
+  const popupOverlay = document.getElementById('popupOverlay');
+  const popupClose = document.getElementById('popupClose');
+  let popupShown = false;
+  function showPopup(){
+    if (popupShown) return;
+    popupShown = true;
+    popupOverlay.classList.add('active');
+    document.body.style.overflow = 'hidden';
+  }
+  function hidePopup(){
+    popupOverlay.classList.remove('active');
+    document.body.style.overflow = '';
+  }
+  setTimeout(showPopup, 8000);
+  window.addEventListener('scroll', () => {
+    const max = document.documentElement.scrollHeight - window.innerHeight;
+    if (max > 0 && window.scrollY / max >= 0.5) showPopup();
+  });
+  popupClose.addEventListener('click', hidePopup);
+  popupOverlay.addEventListener('click', (e) => { if (e.target === popupOverlay) hidePopup(); });
+
+  // ============================== MODAL DE VÍDEO ==============================
+  const videoModalOverlay = document.getElementById('videoModalOverlay');
+  const videoModalFrame = document.getElementById('videoModalFrame');
+  const videoModalClose = document.getElementById('videoModalClose');
+
+  function abrirVideoModal(youtubeId){
+    videoModalFrame.innerHTML = `<iframe src="https://www.youtube.com/embed/${youtubeId}?autoplay=1&rel=0" title="vídeo do portfólio" allow="autoplay; encrypted-media; picture-in-picture" allowfullscreen></iframe>`;
+    videoModalOverlay.classList.add('active');
+    document.body.style.overflow = 'hidden';
+  }
+  function fecharVideoModal(){
+    videoModalOverlay.classList.remove('active');
+    videoModalFrame.innerHTML = ''; // remove o iframe pra parar o vídeo
+    document.body.style.overflow = '';
+  }
+  videoModalClose.addEventListener('click', fecharVideoModal);
+  videoModalOverlay.addEventListener('click', (e) => { if (e.target === videoModalOverlay) fecharVideoModal(); });
+
+  // ============================== FORMULÁRIOS (demonstração) ==============================
+  // TODO: conectar a um serviço real (Formspree, EmailJS, backend próprio) para receber as mensagens.
+  function handleSubmit(e){
+    e.preventDefault();
+    alert('Obrigada pelo contato! Este é um formulário de demonstração — conecte-o a um serviço como Formspree ou EmailJS para receber mensagens de verdade.');
+    e.target.reset();
+    hidePopup();
+  }
+  document.getElementById('contactForm').addEventListener('submit', handleSubmit);
+  document.getElementById('popupForm').addEventListener('submit', handleSubmit);
+
+  // ============================== ANO NO RODAPÉ ==============================
+  document.getElementById('ano').textContent = new Date().getFullYear();
+</script>
+</body>
+</html>
