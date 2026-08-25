@@ -859,6 +859,13 @@
     entries.forEach(entry => { if (entry.isIntersecting) entry.target.classList.add('in-view'); });
   }, { threshold: 0.15 });
   document.querySelectorAll('.reveal').forEach(el => revealObserver.observe(el));
+  // Rede de segurança: se por qualquer motivo o navegador não detectar a
+  // rolagem (alguns navegadores de celular têm esse problema), a seção
+  // aparece de qualquer jeito depois de um tempo curto, em vez de ficar
+  // invisível para sempre.
+  setTimeout(() => {
+    document.querySelectorAll('.reveal').forEach(el => el.classList.add('in-view'));
+  }, 2500);
 
   // ============================== PORTFÓLIO: cards gerados por JS ==============================
   // EDITE AQUI: adicione, remova ou renomeie os itens do portfólio.
@@ -912,6 +919,7 @@
     { title: 'Medo de Short', categoria: 'Wellness', youtubeId: 'Ead3KnMdNuY', capa: 'Fotos%20do%20portifolio/crwn.jpeg', descricao: MODELO_ROTINA_ATIVA },
     { title: 'Allfit', categoria: 'Wellness', youtubeId: 'I86MxvOp4sA', capa: 'Fotos%20do%20portifolio/Capa%203%20looks.jpeg', posicao: 'center top', descricao: MODELO_ROTINA_ATIVA },
   ];
+  try {
   PORTFOLIO_ITEMS.forEach(item => {
     if (!ALLOWED_CATEGORIES.includes(item.categoria)) {
       console.warn(`Categoria "${item.categoria}" (item "${item.title}") não está na lista travada. Confirme com a Lucimara antes de manter.`);
@@ -980,6 +988,9 @@
     filtersEl.appendChild(btn);
   });
   renderGrid('todos');
+  } catch (erro) {
+    console.error('Erro ao montar a seção de Trabalhos Selecionados:', erro);
+  }
 
   // ============================== FOTOS UGC: filtro por categoria ==============================
   const fotosFiltrosEl = document.getElementById('fotosFiltros');
