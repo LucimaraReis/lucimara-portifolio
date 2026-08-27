@@ -255,16 +255,6 @@
   }
   .signature{ font-family: var(--font-italic); font-style:italic; font-size: 1.9rem; color: var(--vinho); }
 
-  /* ============================== O QUE AS MARCAS PODEM ESPERAR ============================== */
-  .expect{ background: var(--bege-rosado); }
-  .expect-intro{ max-width: 720px; margin: 0 auto 3rem; text-align:center; color: var(--texto-suave); }
-  .expect-grid{ display:grid; grid-template-columns: repeat(2, 1fr); gap: 1.4rem 2.4rem; max-width: 900px; margin: 0 auto; }
-  .expect-item{ display:flex; gap: .9rem; align-items:flex-start; font-size: .96rem; color: var(--texto); }
-  .expect-item .check{
-    flex-shrink:0; width: 26px; height:26px; border-radius:50%; background: var(--vinho); color: var(--off-white);
-    display:flex; align-items:center; justify-content:center; font-size: .74rem; margin-top: 2px;
-  }
-
   /* ============================== BANDA EDITORIAL ============================== */
   .editorial-band{
     min-height: 100vh; display:flex; align-items:center; justify-content:center;
@@ -406,15 +396,6 @@
   .service-cta h3{ font-family: var(--font-display); font-weight:400; font-size: 1.5rem; }
   .service-cta p{ color: var(--texto-suave); font-size: .92rem; margin-top: .6rem; }
 
-  /* ============================== PROCESSO CRIATIVO ============================== */
-  .processo{ background: var(--bege-rosado); }
-  .processo-grid{
-    display:grid; grid-template-columns: repeat(3, 1fr); gap: 2rem 2.4rem; max-width: 980px; margin: 0 auto;
-  }
-  .processo-item{ text-align:left; }
-  .processo-num{ font-family: var(--font-display); font-style:italic; font-size: 1.3rem; color: var(--vinho-suave); display:block; margin-bottom: .4rem; }
-  .processo-nome{ font-family: var(--font-display); font-weight:400; font-size: 1.2rem; margin-bottom: .5rem; }
-  .processo-desc{ color: var(--texto-suave); font-size: .9rem; }
 
   /* ============================== CONTATO ============================== */
   .contact{ background: var(--vinho-escuro); color: var(--off-white); }
@@ -497,7 +478,6 @@
     .vivencia-foto{ order:-1; margin-bottom: 2.5rem; }
     .portfolio-grid{ grid-template-columns: repeat(2, 1fr); }
     .metrics-grid{ grid-template-columns: repeat(2, 1fr); }
-    .processo-grid{ grid-template-columns: repeat(2, 1fr); }
     .popup{ grid-template-columns: 1fr; }
     .popup-image{ min-height: 180px; }
   }
@@ -506,12 +486,10 @@
     .hamburger{ display:flex; }
     .portfolio-grid{ grid-template-columns: 1fr; }
     .metrics-grid{ grid-template-columns: repeat(2, 1fr); }
-    .processo-grid{ grid-template-columns: 1fr; }
     .service-row{ grid-template-columns: 40px 1fr; }
     .service-desc{ grid-column: 1/-1; }
     .contact-form{ grid-template-columns: 1fr; }
     .about-collage{ grid-template-columns: 1fr 1fr; }
-    .expect-grid{ grid-template-columns: 1fr; }
     .polaroid-item{ width: 42vw; }
     .polaroid{ width: 42vw; }
   }
@@ -606,21 +584,6 @@
     </div>
   </section>
 
-  <!-- ============================== O QUE AS MARCAS PODEM ESPERAR ============================== -->
-  <section id="esperar" class="expect reveal">
-    <p class="eyebrow center">compromisso</p>
-    <h2 class="section-title center">o que sua marca pode <em>esperar</em></h2>
-    <p class="expect-intro">Cada conteúdo que produzo nasce de uma intenção: representar a essência da marca de forma natural, humana e alinhada ao comportamento de quem está do outro lado da tela.</p>
-    <div class="expect-grid">
-      <div class="expect-item"><span class="check">✓</span>conteúdos que apresentam produtos com autenticidade e contexto real.</div>
-      <div class="expect-item"><span class="check">✓</span>produção visual elegante e atual, especialmente para beauty, wellness e lifestyle.</div>
-      <div class="expect-item"><span class="check">✓</span>atenção aos detalhes, do briefing à entrega final.</div>
-      <div class="expect-item"><span class="check">✓</span>narrativas que criam identificação antes da venda.</div>
-      <div class="expect-item"><span class="check">✓</span>comunicação humanizada e alinhada ao objetivo de cada campanha.</div>
-      <div class="expect-item"><span class="check">✓</span>conteúdos pensados para gerar conexão, reconhecimento e desejo pela marca.</div>
-    </div>
-  </section>
-
   <!-- ============================== BANDA EDITORIAL ============================== -->
   <section class="editorial-band">
     <div class="editorial-overlay">
@@ -704,18 +667,6 @@
     </div>
   </section>
 
-  <!-- ============================== VIVÊNCIA COMERCIAL ============================== -->
-  <section id="vivencia" class="vivencia reveal">
-    <div class="vivencia-foto" style="background:url('Fotos%20do%20portifolio/cheema.jpeg') center top/cover;">
-      <span class="vivencia-legenda">Vivência real com atendimento, apresentação de produtos e relacionamento com clientes.</span>
-    </div>
-    <div class="vivencia-texto">
-      <p class="eyebrow">experiência</p>
-      <h2 class="section-title">vivência comercial que fortalece minha <em>criação</em></h2>
-      <p>Minha experiência profissional com apresentação de produtos, atendimento e relacionamento com clientes me ajuda a criar conteúdos mais conscientes, humanos e alinhados a cada marca. Eu entendo que vender não começa no produto — começa na confiança.</p>
-    </div>
-  </section>
-
   <!-- ============================== RESULTADOS ============================== -->
   <section id="resultados" class="results reveal">
     <p class="eyebrow light center">resultados</p>
@@ -730,6 +681,18 @@
       <div class="metric"><strong>+<span id="statSeguidores">330</span></strong><span>seguidores em fase inicial de posicionamento</span><div class="bar"><div class="bar-fill" style="--val:30%"></div></div></div>
     </div>
     <p class="editorial-quote">"Quando o conteúdo nasce de uma verdade, ele deixa de parecer anúncio e começa a gerar <em>identificação</em>."</p>
+  </section>
+
+  <!-- ============================== VIVÊNCIA COMERCIAL ============================== -->
+  <section id="vivencia" class="vivencia reveal">
+    <div class="vivencia-foto" style="background:url('Fotos%20do%20portifolio/cheema.jpeg') center top/cover;">
+      <span class="vivencia-legenda">Vivência real com atendimento, apresentação de produtos e relacionamento com clientes.</span>
+    </div>
+    <div class="vivencia-texto">
+      <p class="eyebrow">experiência</p>
+      <h2 class="section-title">vivência comercial que fortalece minha <em>criação</em></h2>
+      <p>Minha experiência profissional com apresentação de produtos, atendimento e relacionamento com clientes me ajuda a criar conteúdos mais conscientes, humanos e alinhados a cada marca. Eu entendo que vender não começa no produto — começa na confiança.</p>
+    </div>
   </section>
 
   <!-- ============================== SERVIÇOS ============================== -->
@@ -750,21 +713,6 @@
         <p>Me conte sobre sua campanha, produto ou objetivo. Vamos transformar sua ideia em um conteúdo natural, bem pensado e pronto para conectar com pessoas reais.</p>
       </div>
       <a href="#contato" class="btn btn-solid">fale comigo</a>
-    </div>
-  </section>
-
-  <!-- ============================== PROCESSO CRIATIVO ============================== -->
-  <section id="processo" class="processo reveal">
-    <p class="eyebrow center">processo</p>
-    <h2 class="section-title center">meu processo <em>criativo</em></h2>
-    <p class="portfolio-intro">Meu processo começa entendendo a essência da marca, o objetivo da campanha e o comportamento do público. A partir disso, desenvolvo roteiro, cenas, captação e edição para criar conteúdos naturais, bem estruturados e alinhados ao briefing.</p>
-    <div class="processo-grid">
-      <div class="processo-item"><span class="processo-num">01</span><h3 class="processo-nome">Briefing</h3><p class="processo-desc">Entendimento da marca, produto, objetivo e público.</p></div>
-      <div class="processo-item"><span class="processo-num">02</span><h3 class="processo-nome">Pesquisa</h3><p class="processo-desc">Análise da linguagem da marca, referências e oportunidades criativas.</p></div>
-      <div class="processo-item"><span class="processo-num">03</span><h3 class="processo-nome">Roteiro</h3><p class="processo-desc">Desenvolvimento da narrativa, gancho, falas, cenas, ações, elementos visuais e CTA de acordo com o objetivo da campanha.</p></div>
-      <div class="processo-item"><span class="processo-num">04</span><h3 class="processo-nome">Gravação</h3><p class="processo-desc">Captação dos vídeos e fotos com atenção à luz, cenário, enquadramento e naturalidade.</p></div>
-      <div class="processo-item"><span class="processo-num">05</span><h3 class="processo-nome">Edição</h3><p class="processo-desc">Cortes, ritmo, legendas, trilha e ajustes para deixar o conteúdo mais claro e envolvente.</p></div>
-      <div class="processo-item"><span class="processo-num">06</span><h3 class="processo-nome">Entrega</h3><p class="processo-desc">Envio final do conteúdo conforme briefing, prazo e formato combinado.</p></div>
     </div>
   </section>
 
@@ -876,48 +824,41 @@
   // CATEGORIAS TRAVADAS: só use uma das categorias abaixo (definidas pela
   // Lucimara). NÃO crie uma categoria nova aqui sem ela pedir explicitamente —
   // se um item usar uma categoria fora da lista, um aviso aparece no console.
-  const ALLOWED_CATEGORIES = ['Beauty', 'Wellness', 'Lifestyle', 'UGC Ads'];
+  const ALLOWED_CATEGORIES = ['Beleza', 'Alimentação', 'Fitness'];
   // Descrição exibida abaixo de cada vídeo (modelo definido pela Lucimara por tipo de conteúdo).
   const MODELO_SKINCARE = {
-    linha: 'Beauty | Skincare real',
+    linha: 'Beleza | Skincare real',
     texto: 'Conteúdo com foco em rotina de autocuidado, textura do produto e experiência de uso.',
     objetivo: 'Objetivo: gerar identificação e desejo de teste através de uma comunicação natural.',
   };
   const MODELO_HAIRCARE = {
-    linha: 'Beauty | Haircare',
+    linha: 'Beleza | Haircare',
     texto: 'Conteúdo criado para apresentar o produto dentro de um momento real de cuidado capilar.',
     objetivo: 'Objetivo: mostrar aplicação, sensorialidade e resultado de forma leve e confiável.',
   };
   const MODELO_ROTINA_CONSUMO = {
-    linha: 'Lifestyle | Rotina e consumo',
+    linha: 'Alimentação | Rotina e consumo',
     texto: 'Conteúdo com foco em ritual, aconchego e experiência de marca dentro da rotina.',
     objetivo: 'Objetivo: conectar o produto a momentos reais de pausa, prazer e identificação.',
   };
   const MODELO_UNBOXING = {
-    linha: 'Lifestyle | Unboxing e rotina de consumo',
+    linha: 'Alimentação | Unboxing e rotina de consumo',
     texto: 'Conteúdo com foco em experiência de recebimento, surpresa e introdução do produto na rotina.',
     objetivo: 'Objetivo: transmitir a experiência real de receber e apresentar o produto pela primeira vez.',
   };
   const MODELO_ROTINA_ATIVA = {
-    linha: 'Wellness | Rotina ativa',
+    linha: 'Fitness | Rotina ativa',
     texto: 'Conteúdo criado para mostrar bem-estar, movimento e autocuidado na vida real.',
     objetivo: 'Objetivo: aproximar marcas de um público que busca leveza, constância e identificação.',
   };
-  const MODELO_GRWM = {
-    linha: 'Lifestyle | GRWM',
-    texto: 'Conteúdo em formato arrume-se comigo, conectando produto, estilo e rotina.',
-    objetivo: 'Objetivo: gerar proximidade e mostrar como a marca pode fazer parte de um momento real.',
-  };
   const PORTFOLIO_ITEMS = [
-    { title: "Hair Care L'Oréal Paris", categoria: 'Beauty', youtubeId: 'a8Ji5Qcw0Ro', capa: "Fotos%20do%20portifolio/Capa%20HAIR%20CARE%20LOREAL-%20PARIS.PNG", descricao: MODELO_HAIRCARE },
-    { title: "L'Oréal – P. Solar", categoria: 'Beauty', youtubeId: 'KHP_UsGQw1Q', capa: "Fotos%20do%20portifolio/IMG_1714.JPEG", descricao: MODELO_SKINCARE },
-    { title: 'Creamy', categoria: 'Beauty', youtubeId: 'AI9EBIH4CQM', capa: 'Fotos%20do%20portifolio/capa-skincare.PNG', descricao: MODELO_SKINCARE },
-    { title: 'Café - Dolce Gusto', categoria: 'Lifestyle', youtubeId: 'KEbSoilLdAw', capa: "Fotos%20do%20portifolio/Capa%20video%20Lifestyle.jpeg", descricao: MODELO_ROTINA_CONSUMO },
-    { title: 'Unboxing Dolce Gusto', categoria: 'Lifestyle', youtubeId: 'PkcWKAhvmfE', capa: "Fotos%20do%20portifolio/Capa%20video%20umboxing.jpeg", descricao: MODELO_UNBOXING },
-    { title: 'Vizzela – Feira 2026', categoria: 'Beauty', youtubeId: 'FYGkstWYD3Q', capa: 'Fotos%20do%20portifolio/capa-vizzela.jpeg' },
-    { title: 'Arrume-se comigo', categoria: 'Lifestyle', youtubeId: 'SARRHFW6zyA', capa: "Fotos%20do%20portifolio/Capa%20Arrume-se%20comigo.JPEG", descricao: MODELO_GRWM },
-    { title: 'Medo de Short', categoria: 'Wellness', youtubeId: 'Ead3KnMdNuY', capa: 'Fotos%20do%20portifolio/crwn.jpeg', descricao: MODELO_ROTINA_ATIVA },
-    { title: 'Allfit', categoria: 'Wellness', youtubeId: 'I86MxvOp4sA', capa: 'Fotos%20do%20portifolio/Capa%203%20looks.jpeg', posicao: 'center top', descricao: MODELO_ROTINA_ATIVA },
+    { title: "Hair Care L'Oréal Paris", categoria: 'Beleza', youtubeId: 'a8Ji5Qcw0Ro', capa: "Fotos%20do%20portifolio/Capa%20HAIR%20CARE%20LOREAL-%20PARIS.PNG", descricao: MODELO_HAIRCARE },
+    { title: "L'Oréal – P. Solar", categoria: 'Beleza', youtubeId: 'KHP_UsGQw1Q', capa: "Fotos%20do%20portifolio/IMG_1714.JPEG", descricao: MODELO_SKINCARE },
+    { title: 'Creamy', categoria: 'Beleza', youtubeId: 'AI9EBIH4CQM', capa: 'Fotos%20do%20portifolio/capa-skincare.PNG', descricao: MODELO_SKINCARE },
+    { title: 'Café - Dolce Gusto', categoria: 'Alimentação', youtubeId: 'KEbSoilLdAw', capa: "Fotos%20do%20portifolio/Capa%20video%20Lifestyle.jpeg", descricao: MODELO_ROTINA_CONSUMO },
+    { title: 'Unboxing Dolce Gusto', categoria: 'Alimentação', youtubeId: 'PkcWKAhvmfE', capa: "Fotos%20do%20portifolio/Capa%20video%20umboxing.jpeg", descricao: MODELO_UNBOXING },
+    { title: 'Medo de Short', categoria: 'Fitness', youtubeId: 'Ead3KnMdNuY', capa: 'Fotos%20do%20portifolio/crwn.jpeg', descricao: MODELO_ROTINA_ATIVA },
+    { title: 'Allfit', categoria: 'Fitness', youtubeId: 'I86MxvOp4sA', capa: 'Fotos%20do%20portifolio/Capa%203%20looks.jpeg', posicao: 'center top', descricao: MODELO_ROTINA_ATIVA },
   ];
   try {
   PORTFOLIO_ITEMS.forEach(item => {
