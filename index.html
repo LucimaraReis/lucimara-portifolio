@@ -4,7 +4,7 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Lucimara Reis · Criadora UGC</title>
-<meta name="description" content="Lucimara Reis — Criadora UGC especializada em beleza, bem-estar, lifestyle, moda, casa & decoração, tecnologia e pet.">
+<meta name="description" content="Lucimara Reis — Criadora UGC especializada em beleza, bem-estar, lifestyle, moda, casa & decoração, tecnologia, pet e maternidade.">
 
 <!--
   ============================================================================
@@ -178,6 +178,25 @@
   .mobile-close{
     position:absolute; top: 1.8rem; right: 6vw; background:none; border:none;
     font-size: 2rem; color: var(--off-white); cursor:pointer;
+  }
+
+  /* ============================== VOLTAR AO INÍCIO ============================== */
+  .back-to-top{
+    position: fixed; top: 5.4rem; right: 6vw; z-index: 480;
+    display:inline-flex; align-items:center; gap:.4rem;
+    padding: .55rem 1rem; border-radius: 999px;
+    background: rgba(250,245,241,.9); backdrop-filter: blur(10px);
+    border: 1px solid var(--vinho-suave); color: var(--vinho);
+    font-family: var(--font-sans); font-size: .66rem; letter-spacing:.1em; text-transform:uppercase;
+    box-shadow: 0 8px 20px rgba(43,26,31,.1);
+    opacity:0; visibility:hidden; transform: translateY(-8px);
+    transition: opacity .4s ease, transform .4s ease, visibility .4s ease, background .3s ease, color .3s ease;
+    cursor:pointer;
+  }
+  .back-to-top.visible{ opacity:1; visibility:visible; transform:none; }
+  .back-to-top:hover{ background: var(--vinho); color: var(--off-white); }
+  @media (max-width: 640px){
+    .back-to-top{ top: 4.4rem; right: 4vw; padding:.45rem .85rem; font-size: .6rem; }
   }
 
   /* ============================== HERO ============================== */
@@ -506,22 +525,24 @@
         <a href="#home">home</a>
         <a href="#sobre">sobre</a>
         <a href="#portfolio">trabalhos</a>
-        <a href="#contato">contato</a>
+        <a href="https://wa.me/5531988229641" target="_blank" rel="noopener">contato</a>
       </nav>
-      <a href="#contato" class="btn btn-outline nav-cta">trabalhe comigo</a>
+      <a href="https://wa.me/5531988229641" target="_blank" rel="noopener" class="btn btn-outline nav-cta">trabalhe comigo</a>
       <button class="hamburger" id="hamburger" aria-label="abrir menu">
         <span></span><span></span><span></span>
       </button>
     </div>
   </header>
 
+  <button class="back-to-top" id="backToTop" aria-label="voltar ao início">← voltar ao início</button>
+
   <div class="mobile-menu" id="mobileMenu">
     <button class="mobile-close" id="mobileClose" aria-label="fechar menu">×</button>
     <a href="#home">home</a>
     <a href="#sobre">sobre</a>
     <a href="#portfolio">trabalhos</a>
-    <a href="#contato">contato</a>
-    <a href="#contato" class="btn btn-outline">trabalhe comigo</a>
+    <a href="https://wa.me/5531988229641" target="_blank" rel="noopener">contato</a>
+    <a href="https://wa.me/5531988229641" target="_blank" rel="noopener" class="btn btn-outline">trabalhe comigo</a>
   </div>
 
   <!-- ============================== HERO ============================== -->
@@ -529,11 +550,11 @@
     <div class="hero-left">
       <p class="eyebrow">Criadora UGC | Conteúdo · Estética · Estratégia</p>
       <h1 class="hero-title">Lucimara <em>Reis</em></h1>
-      <p class="hero-sub">Crio conteúdos UGC para marcas de beleza, bem-estar, lifestyle, moda, casa & decoração, tecnologia e pet, transformando produtos em experiências reais, naturais e visualmente envolventes.</p>
+      <p class="hero-sub">Crio conteúdos UGC para marcas de beleza, bem-estar, lifestyle, moda, casa & decoração, tecnologia, pet e maternidade, transformando produtos em experiências reais, naturais e visualmente envolventes.</p>
       <p class="hero-position">Meu conteúdo une estética, identificação e estratégia para aproximar marcas de pessoas reais e transformar produtos em histórias que despertam conexão, confiança e desejo.</p>
       <div class="hero-actions">
         <a href="#portfolio" class="btn btn-solid">conheça meu trabalho</a>
-        <a href="#contato" class="btn btn-outline">propor uma campanha</a>
+        <a href="https://wa.me/5531988229641" target="_blank" rel="noopener" class="btn btn-outline">propor uma campanha</a>
       </div>
     </div>
     <div class="hero-right">
@@ -551,8 +572,8 @@
   <!-- ============================== FAIXA ROLANTE ============================== -->
   <div class="ticker">
     <div class="ticker-track">
-      <span>BELEZA</span><span>·</span><span>BEM-ESTAR</span><span>·</span><span>LIFESTYLE</span><span>·</span><span>MODA</span><span>·</span><span>CASA &amp; DECORAÇÃO</span><span>·</span><span>TECNOLOGIA</span><span>·</span><span>PET</span><span>·</span>
-      <span>BELEZA</span><span>·</span><span>BEM-ESTAR</span><span>·</span><span>LIFESTYLE</span><span>·</span><span>MODA</span><span>·</span><span>CASA &amp; DECORAÇÃO</span><span>·</span><span>TECNOLOGIA</span><span>·</span><span>PET</span><span>·</span>
+      <span>BELEZA</span><span>·</span><span>BEM-ESTAR</span><span>·</span><span>LIFESTYLE</span><span>·</span><span>MODA</span><span>·</span><span>CASA &amp; DECORAÇÃO</span><span>·</span><span>TECNOLOGIA</span><span>·</span><span>PET</span><span>·</span><span>MATERNIDADE</span><span>·</span>
+      <span>BELEZA</span><span>·</span><span>BEM-ESTAR</span><span>·</span><span>LIFESTYLE</span><span>·</span><span>MODA</span><span>·</span><span>CASA &amp; DECORAÇÃO</span><span>·</span><span>TECNOLOGIA</span><span>·</span><span>PET</span><span>·</span><span>MATERNIDADE</span><span>·</span>
     </div>
   </div>
 
@@ -708,7 +729,7 @@
         <h3>vamos criar um conteúdo com verdade para sua marca?</h3>
         <p>Me conte sobre sua campanha, produto ou objetivo. Vamos transformar sua ideia em um conteúdo natural, bem pensado e pronto para conectar com pessoas reais.</p>
       </div>
-      <a href="#contato" class="btn btn-solid">fale comigo</a>
+      <a href="https://wa.me/5531988229641" target="_blank" rel="noopener" class="btn btn-solid">fale comigo</a>
     </div>
   </section>
 
@@ -783,6 +804,15 @@
   const nav = document.getElementById('nav');
   window.addEventListener('scroll', () => {
     nav.classList.toggle('scrolled', window.scrollY > 40);
+  });
+
+  // ============================== VOLTAR AO INÍCIO ==============================
+  const backToTop = document.getElementById('backToTop');
+  window.addEventListener('scroll', () => {
+    backToTop.classList.toggle('visible', window.scrollY > window.innerHeight * 0.6);
+  });
+  backToTop.addEventListener('click', () => {
+    document.getElementById('home').scrollIntoView({ behavior: 'smooth' });
   });
 
   // ============================== MENU MOBILE ==============================
