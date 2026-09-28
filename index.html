@@ -28,7 +28,7 @@
 
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,500;1,400;1,500&family=Fraunces:ital,opsz,wght@0,9..144,300;0,9..144,400;0,9..144,600;1,9..144,300;1,9..144,400&family=Jost:wght@300;400;500;600&family=Dancing+Script:wght@500;600&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,500;1,400;1,500&family=Fraunces:ital,opsz,wght@0,9..144,300;0,9..144,400;0,9..144,600;1,9..144,300;1,9..144,400&family=Jost:wght@300;400;500;600&display=swap" rel="stylesheet">
 
 <style>
   /* ============================== VARIÁVEIS ============================== */
@@ -203,36 +203,42 @@
 
   /* ============================== HERO ============================== */
   .hero{
-    padding-top: 8rem; padding-bottom: 4rem;
-    display:flex; justify-content:center;
-  }
-  .hero-stage{ position: relative; max-width: 640px; width:100%; text-align:center; }
-  .hero-greeting{
-    font-family: var(--font-italic); font-style: italic; font-size: 1.3rem;
-    color: var(--vinho-suave); margin-bottom: .3rem;
+    padding-top: 9rem;
+    display:grid; grid-template-columns: 1.1fr 1fr; gap: 4vw; align-items:center;
+    min-height: 92vh;
   }
   .hero-title{
-    position: relative; z-index: 2;
     font-family: var(--font-display); font-weight:300;
-    font-size: clamp(3.6rem, 11vw, 7.4rem); line-height: .92; letter-spacing: -.01em;
-    margin-bottom: -3rem;
+    font-size: clamp(3rem, 7.4vw, 6rem); line-height: .98; margin-bottom: 1.6rem;
   }
-  .handle-tag{
-    position: relative; z-index: 2;
-    font-size: .72rem; letter-spacing:.18em; text-transform:uppercase; color: var(--off-white);
-    margin-bottom: -1.6rem;
+  .hero-greeting{
+    font-family: var(--font-italic); font-style: italic; font-size: 1.4rem;
+    color: var(--vinho-suave); margin-bottom: .4rem;
   }
-  .hero-photo-wrap{ position: relative; width: 74%; margin: 0 auto; z-index: 1; }
+  .hero-role{
+    display:inline-block; font-family: var(--font-sans); font-weight: 500; text-transform: uppercase;
+    letter-spacing: .22em; font-size: .82rem; color: var(--vinho);
+    margin: .7rem 0 1.5rem; padding-bottom: 1.3rem; border-bottom: 1px solid rgba(74,90,52,.25);
+  }
+  .hero-tagline{
+    font-family: var(--font-italic); font-style: italic; font-size: 1.5rem;
+    color: var(--texto); max-width: 460px; margin-bottom: 1.6rem; line-height: 1.3;
+  }
+  .hero-sub{ max-width: 560px; color: var(--texto-suave); font-size: .95rem; margin-bottom: 2.4rem; }
+  .hero-actions{ display:flex; gap: 1rem; margin-bottom: 3rem; flex-wrap:wrap; }
+  .handle-tag{ font-size: .72rem; letter-spacing:.18em; text-transform:uppercase; color: var(--vinho); text-align:right; margin-bottom: 1rem; }
+
+  .hero-right{ position: relative; }
   .hero-ring{
-    position: absolute; width: 58%; aspect-ratio: 1; border: 1px solid rgba(74,90,52,.3);
-    border-radius: 50%; top: -8%; right: -14%; z-index: 0;
+    position: absolute; width: 62%; aspect-ratio: 1; border: 1px solid rgba(74,90,52,.3);
+    border-radius: 50%; top: -6%; left: -9%; z-index: 0;
   }
   .hero-sparkle{
-    position: absolute; top: -1rem; left: -1.2rem; font-size: 1.6rem; color: var(--rosa-2);
+    position: absolute; top: -1rem; right: 2.4rem; font-size: 1.6rem; color: var(--rosa-2);
     z-index: 2;
   }
   .hero-photo{
-    position: relative; aspect-ratio: 4/5; padding: 0;
+    aspect-ratio: 4/5; padding: 2rem;
     border-radius: 70px 70px 24px 24px;
   }
   .hero-photo-bg{
@@ -240,33 +246,11 @@
     background-size: cover; background-position: center;
     z-index: 0;
   }
-  .hero-photo-content{ position: relative; z-index: 1; height:100%; display:flex; flex-direction:column; justify-content:flex-end; }
+  .hero-photo-content{ position: relative; z-index: 1; }
   .hero-overlay-text{
     font-family: var(--font-display); font-weight:300; font-style: italic;
-    font-size: clamp(1.1rem, 2vw, 1.5rem); color: var(--off-white); margin-bottom: 1.6rem; padding: 0 1.6rem;
+    font-size: clamp(1.3rem, 2.2vw, 1.9rem); color: var(--off-white); margin-bottom: 1.6rem;
   }
-  .hero-role{
-    display:inline-block; font-family: var(--font-sans); font-weight: 500; text-transform: uppercase;
-    letter-spacing: .22em; font-size: .8rem; color: var(--vinho);
-    margin: 1.8rem 0 0; padding-bottom: 1rem; border-bottom: 1px solid rgba(74,90,52,.25);
-  }
-  .hero-tagline{
-    font-family: var(--font-italic); font-style: italic; font-size: 1.4rem;
-    color: var(--texto); max-width: 460px; margin: 1.6rem auto .5rem; line-height: 1.35;
-  }
-  .hero-tagline::before{ content:'“'; } .hero-tagline::after{ content:'”'; }
-  .hero-signature{
-    font-family: 'Dancing Script', var(--font-italic); font-weight:600; font-size: 1.7rem;
-    color: var(--vinho); margin-bottom: 2.2rem;
-  }
-  .hero-about-card{
-    background: var(--vinho); color: var(--off-white); border-radius: 28px;
-    padding: 1.6rem 1.9rem; max-width: 420px; margin: 0 auto 2.2rem; text-align:left;
-  }
-  .hero-about-label{ font-size:.66rem; letter-spacing:.2em; text-transform:uppercase; color: var(--rosa-claro); margin-bottom:.5rem; }
-  .hero-about-text{ font-size:.9rem; line-height:1.55; }
-  .hero-sub{ max-width: 520px; margin: 0 auto 2.4rem; color: var(--texto-suave); font-size: .88rem; }
-  .hero-actions{ display:flex; gap: 1rem; justify-content:center; flex-wrap:wrap; }
 
   /* ============================== TICKER ============================== */
   .ticker{
@@ -529,8 +513,8 @@
 
   /* ============================== RESPONSIVO ============================== */
   @media (max-width: 900px){
-    .hero{ padding-top: 7.5rem; }
-    .hero-title{ font-size: clamp(3rem, 14vw, 5.5rem); margin-bottom: -2rem; }
+    .hero{ grid-template-columns: 1fr; padding-top: 7.5rem; }
+    .hero-photo{ order:-1; }
     .about{ grid-template-columns: 1fr; }
     .about-collage{ margin-bottom: 5rem; }
     .vivencia{ grid-template-columns: 1fr; }
@@ -587,32 +571,27 @@
 
   <!-- ============================== HERO ============================== -->
   <section id="home" class="hero">
-    <div class="hero-stage">
+    <div class="hero-left">
       <p class="hero-greeting">Olá, eu sou</p>
       <h1 class="hero-title">Lucimara <em>Reis</em></h1>
-      <div class="hero-photo-wrap">
-        <p class="handle-tag">@lucimarareis.ugc</p>
-        <div class="hero-ring"></div>
-        <span class="hero-sparkle">✦</span>
-        <!-- FOTO DE CAPA: coloque o arquivo de imagem dentro da pasta "Fotos do portifolio" com o nome "capa.jpg" -->
-        <div class="hero-photo placeholder-img">
-          <div class="hero-photo-bg" style="background: linear-gradient(180deg, rgba(43,46,34,.1), rgba(43,46,34,.55)), url('Fotos%20do%20portifolio/Capa%20Portifolio.PNG') center top/cover;"></div>
-          <div class="hero-photo-content">
-            <p class="hero-overlay-text">rotina real, <em>narrativa</em> & confiança</p>
-          </div>
-        </div>
-      </div>
       <p class="hero-role">UGC Creator 40+</p>
       <p class="hero-tagline">Conteúdo com elegância, verdade e intenção.</p>
-      <p class="hero-signature">Lucimara Reis</p>
-      <div class="hero-about-card">
-        <p class="hero-about-label">Sobre mim</p>
-        <p class="hero-about-text">Crio conteúdos UGC que unem estética, identificação e estratégia para aproximar marcas de pessoas reais.</p>
-      </div>
       <p class="hero-sub">Crio conteúdos UGC para marcas de beleza, bem-estar, lifestyle, moda, casa & decoração, tecnologia, pet e maternidade, transformando produtos em experiências reais, naturais e visualmente envolventes.</p>
       <div class="hero-actions">
         <a href="#portfolio" class="btn btn-solid">conheça meu trabalho</a>
         <a href="https://wa.me/5531988229641" target="_blank" rel="noopener" class="btn btn-outline">propor uma campanha</a>
+      </div>
+    </div>
+    <div class="hero-right">
+      <p class="handle-tag">@lucimarareis.ugc</p>
+      <div class="hero-ring"></div>
+      <span class="hero-sparkle">✦</span>
+      <!-- FOTO DE CAPA: coloque o arquivo de imagem dentro da pasta "Fotos do portifolio" com o nome "capa.jpg" -->
+      <div class="hero-photo placeholder-img">
+        <div class="hero-photo-bg" style="background: linear-gradient(180deg, rgba(43,46,34,.1), rgba(43,46,34,.55)), url('Fotos%20do%20portifolio/Capa%20Portifolio.PNG') center top/cover;"></div>
+        <div class="hero-photo-content">
+          <p class="hero-overlay-text">rotina real, <em>narrativa</em> & confiança</p>
+        </div>
       </div>
     </div>
   </section>
