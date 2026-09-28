@@ -654,7 +654,9 @@
       </div>
       <div class="placeholder-img collage-foto collage-pequena" style="background: url('Fotos%20do%20portifolio/life%20style.jpeg') center/cover;"></div>
       <div class="placeholder-img collage-foto collage-pequena" style="background: url('Fotos%20do%20portifolio/Foto%20UGC-%20Creator.PNG') center/cover;"></div>
-      <div class="placeholder-img collage-foto collage-pequena" style="background: url('Fotos%20do%20portifolio/IMG_1546.PNG') center bottom/cover; cursor:pointer;" onclick="abrirVideoModal('5ppX1Oc9Jdw')"></div>
+      <div class="placeholder-img collage-foto collage-pequena" style="background: url('Fotos%20do%20portifolio/IMG_1546.PNG') center bottom/cover; cursor:pointer;" onclick="abrirVideoModal('5ppX1Oc9Jdw')">
+        <span class="about-video-badge">▶</span>
+      </div>
     </div>
     <div class="vivencia-texto">
       <p class="eyebrow">experiência</p>
@@ -972,6 +974,7 @@
         // EDITE AQUI: para itens ainda sem vídeo, troque o conteúdo por um <video> real quando integrar seus arquivos
         card.innerHTML = `
           <span class="video-tag">${item.categoria}</span>
+          ${temVideo ? '<span class="about-video-badge">▶</span>' : ''}
         `;
 
         const wrapper = document.createElement('div');
