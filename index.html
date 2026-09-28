@@ -267,7 +267,6 @@
 
   /* ============================== SOBRE ============================== */
   .about{
-    display:grid; grid-template-columns: 1.3fr 1fr; gap: 5vw; align-items:center;
     background-color: var(--off-white);
     /* textura sutil de mármore nude simulada só com CSS, sem imagem */
     background-image:
@@ -289,6 +288,7 @@
   }
   .collage-grande{ grid-column: 1 / -1; aspect-ratio: 4/5; }
   .collage-pequena{ aspect-ratio: 1/1; }
+  .about-text{ max-width: 640px; margin: 0 auto; }
   .about-text h2{ margin-bottom: 1.4rem; }
   .about-text p{ color: var(--texto-suave); max-width: 480px; margin-bottom: 1.8rem; }
   .pills{ display:flex; flex-wrap:wrap; gap: .6rem; margin-bottom: 2.2rem; }
@@ -389,9 +389,11 @@
 
   /* ============================== VIVÊNCIA COMERCIAL ============================== */
   .vivencia{
-    display:grid; grid-template-columns: .9fr 1.1fr; gap: 5vw; align-items:center;
+    display:grid; grid-template-columns: 1.15fr 1fr; gap: 5vw; align-items:center;
     background: var(--off-white);
   }
+  .vivencia-collage{ display:grid; grid-template-columns: repeat(3, 1fr); gap: 14px; }
+  .vivencia-collage .collage-grande{ grid-column: 1 / -1; }
   .vivencia-foto{
     position:relative; aspect-ratio: 4/5; border-radius: 24px; overflow:hidden;
     box-shadow: 0 20px 40px rgba(43,46,34,.18); display:flex; align-items:flex-end;
@@ -515,10 +517,8 @@
   @media (max-width: 900px){
     .hero{ grid-template-columns: 1fr; padding-top: 7.5rem; }
     .hero-photo{ order:-1; }
-    .about{ grid-template-columns: 1fr; }
-    .about-collage{ margin-bottom: 5rem; }
     .vivencia{ grid-template-columns: 1fr; }
-    .vivencia-foto{ order:-1; margin-bottom: 2.5rem; }
+    .vivencia-collage{ order:-1; margin-bottom: 2.5rem; grid-template-columns: repeat(2, 1fr); }
     .portfolio-grid{ grid-template-columns: repeat(2, 1fr); }
     .metrics-grid{ grid-template-columns: repeat(2, 1fr); }
     .popup{ grid-template-columns: 1fr; }
@@ -532,7 +532,6 @@
     .service-row{ grid-template-columns: 40px 1fr; }
     .service-desc{ grid-column: 1/-1; }
     .contact-form{ grid-template-columns: 1fr; }
-    .about-collage{ grid-template-columns: 1fr 1fr; }
     .polaroid-item{ width: 42vw; }
     .polaroid{ width: 42vw; }
   }
@@ -608,13 +607,6 @@
     <div class="about-intro">
       <h2 class="section-title center">Conteúdo pensado para conectar produto, contexto e consumidor.</h2>
     </div>
-    <div class="about-collage">
-      <!-- EDITE AQUI: troque por fotos reais mantendo as classes "collage-foto" + "collage-grande"/"collage-pequena" -->
-      <div class="placeholder-img collage-foto collage-grande" style="background: url('Fotos%20do%20portifolio/IMG_1546.PNG') center bottom/cover;"></div>
-      <div class="placeholder-img collage-foto collage-pequena" style="background: url('Fotos%20do%20portifolio/life%20style.jpeg') center/cover;"></div>
-      <div class="placeholder-img collage-foto collage-pequena" style="background: url('Fotos%20do%20portifolio/Foto%20UGC-%20Creator.PNG') center/cover;"></div>
-      <div class="placeholder-img collage-foto collage-pequena" style="background: linear-gradient(0deg, rgba(43,46,34,.55), rgba(43,46,34,.05)), url('https://i.ytimg.com/vi/5ppX1Oc9Jdw/hqdefault.jpg') center/cover; cursor:pointer;" onclick="abrirVideoModal('5ppX1Oc9Jdw')"></div>
-    </div>
     <div class="about-text">
       <p class="eyebrow">sobre mim</p>
       <p>Sou Lucimara Reis, criadora UGC 40+ com experiência profissional em vendas e apresentação de produtos. Levo essa visão comercial para a criação de conteúdo, unindo comunicação natural, estética e estratégia para apresentar produtos de uma forma que desperte interesse e faça sentido na vida real.</p>
@@ -627,8 +619,13 @@
 
   <!-- ============================== VIVÊNCIA COMERCIAL ============================== -->
   <section id="vivencia" class="vivencia reveal">
-    <div class="vivencia-foto" style="background:url('Fotos%20do%20portifolio/cheema.jpeg') center top/cover;">
-      <span class="vivencia-legenda">Vivência real com atendimento, apresentação de produtos e relacionamento com clientes.</span>
+    <div class="vivencia-collage">
+      <div class="placeholder-img collage-foto collage-grande vivencia-foto" style="background:url('Fotos%20do%20portifolio/cheema.jpeg') center top/cover;">
+        <span class="vivencia-legenda">Vivência real com atendimento, apresentação de produtos e relacionamento com clientes.</span>
+      </div>
+      <div class="placeholder-img collage-foto collage-pequena" style="background: url('Fotos%20do%20portifolio/life%20style.jpeg') center/cover;"></div>
+      <div class="placeholder-img collage-foto collage-pequena" style="background: url('Fotos%20do%20portifolio/Foto%20UGC-%20Creator.PNG') center/cover;"></div>
+      <div class="placeholder-img collage-foto collage-pequena" style="background: url('Fotos%20do%20portifolio/IMG_1546.PNG') center bottom/cover; cursor:pointer;" onclick="abrirVideoModal('5ppX1Oc9Jdw')"></div>
     </div>
     <div class="vivencia-texto">
       <p class="eyebrow">experiência</p>
