@@ -267,7 +267,7 @@
 
   /* ============================== SOBRE ============================== */
   .about{
-    display:grid; grid-template-columns: 1fr 1.2fr; gap: 5vw; align-items:center;
+    display:grid; grid-template-columns: 1fr 1.2fr; gap: 3rem; align-items:center;
     background-color: var(--off-white);
     /* textura sutil de mármore nude simulada só com CSS, sem imagem */
     background-image:
@@ -375,6 +375,16 @@
   .portfolio-caption-titulo{ font-size: .82rem; font-weight:500; letter-spacing:.02em; margin-bottom: .3rem; }
   .portfolio-caption-texto{ font-size: .82rem; color: var(--texto-suave); margin-bottom: .3rem; }
   .portfolio-caption-objetivo{ font-size: .78rem; color: var(--vinho-suave); font-style:italic; }
+
+  .portfolio-categoria{ margin-bottom: 3.6rem; }
+  .portfolio-categoria:last-child{ margin-bottom: 0; }
+  .portfolio-categoria-header{ max-width: 620px; margin: 0 auto 1.8rem; text-align:center; }
+  .portfolio-categoria-titulo{
+    font-family: var(--font-display); font-weight:400; font-size: 1.5rem;
+    color: var(--vinho); margin-bottom: .5rem;
+  }
+  .portfolio-categoria-texto{ font-size: .92rem; color: var(--texto-suave); margin-bottom: .3rem; }
+  .portfolio-categoria-objetivo{ font-size: .85rem; color: var(--vinho-suave); font-style:italic; }
 
   /* ============================== FOTOS UGC ============================== */
   .fotos-ugc{ background: var(--off-white); }
@@ -542,7 +552,7 @@
     .hero{ grid-template-columns: 1fr; padding-top: 7.5rem; }
     .hero-photo{ order:-1; }
     .about{ grid-template-columns: 1fr; }
-    .about-video{ order:-1; margin-bottom: 2rem; }
+    .about-video{ order:-1; margin-bottom: 1.4rem; }
     .vivencia{ grid-template-columns: 1fr; }
     .vivencia-collage{ order:-1; margin-bottom: 2.5rem; grid-template-columns: repeat(2, 1fr); }
     .portfolio-grid{ grid-template-columns: repeat(2, 1fr); }
@@ -670,8 +680,7 @@
     <p class="eyebrow center">portfólio</p>
     <h2 class="section-title center">trabalhos <em>selecionados</em></h2>
     <p class="portfolio-intro">Uma seleção de conteúdos criados para mostrar produtos com estética, rotina, narrativa e intenção comercial.</p>
-    <div class="filters" id="filters"></div>
-    <div class="portfolio-grid" id="portfolioGrid"></div>
+    <div id="portfolioGrid"></div>
   </section>
 
   <!-- ============================== ABORDAGEM ============================== -->
@@ -946,14 +955,44 @@
   });
   const GRADS = ['grad-1','grad-2','grad-3','grad-4','grad-5'];
   const grid = document.getElementById('portfolioGrid');
-  const filtersEl = document.getElementById('filters');
-  const categorias = ['todos', ...ALLOWED_CATEGORIES];
 
-  function renderGrid(filtro){
+  // Texto de cada categoria (definido pela Lucimara). Aparece uma única vez
+  // acima dos vídeos daquela categoria — não repetir por vídeo.
+  const CATEGORIA_INFO = {
+    'Beleza': {
+      texto: 'Conteúdo com foco em rotina de autocuidado, textura do produto e experiência de uso.',
+    },
+    'Bem-estar': {
+      texto: 'Conteúdo criado para mostrar bem-estar, movimento e autocuidado na vida real.',
+      objetivo: 'Objetivo: aproximar marcas de um público que busca leveza, constância e identificação.',
+    },
+    'Lifestyle': {
+      texto: 'Conteúdo com foco em ritual, aconchego e experiência de marca dentro da rotina.',
+      objetivo: 'Objetivo: conectar o produto a momentos reais de pausa, prazer e identificação.',
+    },
+  };
+
+  function renderGrid(){
     grid.innerHTML = '';
-    PORTFOLIO_ITEMS
-      .filter(item => filtro === 'todos' || item.categoria === filtro)
-      .forEach((item, i) => {
+    ALLOWED_CATEGORIES.forEach(categoria => {
+      const itens = PORTFOLIO_ITEMS.filter(item => item.categoria === categoria);
+      if (!itens.length) return; // só mostra categoria com vídeo real
+      const info = CATEGORIA_INFO[categoria] || {};
+
+      const grupo = document.createElement('div');
+      grupo.className = 'portfolio-categoria';
+      grupo.innerHTML = `
+        <div class="portfolio-categoria-header">
+          <h3 class="portfolio-categoria-titulo">${categoria}</h3>
+          <p class="portfolio-categoria-texto">${info.texto || ''}</p>
+          ${info.objetivo ? `<p class="portfolio-categoria-objetivo">${info.objetivo}</p>` : ''}
+        </div>
+      `;
+
+      const subgrid = document.createElement('div');
+      subgrid.className = 'portfolio-grid';
+
+      itens.forEach((item, i) => {
         const temVideo = !!item.youtubeId;
         const semImagem = !item.capa && !temVideo;
         const card = document.createElement('div');
@@ -971,43 +1010,19 @@
           card.style.cursor = 'pointer';
           card.addEventListener('click', () => abrirVideoModal(item.youtubeId));
         }
-        // EDITE AQUI: para itens ainda sem vídeo, troque o conteúdo por um <video> real quando integrar seus arquivos
         card.innerHTML = `
           <span class="video-tag">${item.categoria}</span>
           ${temVideo ? '<span class="about-video-badge">▶</span>' : ''}
         `;
-
-        const wrapper = document.createElement('div');
-        wrapper.className = 'portfolio-item';
-        wrapper.appendChild(card);
-
-        if (item.descricao) {
-          const legenda = document.createElement('div');
-          legenda.className = 'portfolio-caption';
-          legenda.innerHTML = `
-            <p class="portfolio-caption-titulo">${item.descricao.linha}</p>
-            <p class="portfolio-caption-texto">${item.descricao.texto}</p>
-            <p class="portfolio-caption-objetivo">${item.descricao.objetivo}</p>
-          `;
-          wrapper.appendChild(legenda);
-        }
-
-        grid.appendChild(wrapper);
+        subgrid.appendChild(card);
       });
+
+      grupo.appendChild(subgrid);
+      grid.appendChild(grupo);
+    });
   }
 
-  categorias.forEach(cat => {
-    const btn = document.createElement('button');
-    btn.className = 'filter-btn' + (cat === 'todos' ? ' active' : '');
-    btn.textContent = cat;
-    btn.addEventListener('click', () => {
-      filtersEl.querySelectorAll('.filter-btn').forEach(b => b.classList.remove('active'));
-      btn.classList.add('active');
-      renderGrid(cat);
-    });
-    filtersEl.appendChild(btn);
-  });
-  renderGrid('todos');
+  renderGrid();
   } catch (erro) {
     console.error('Erro ao montar a seção de Trabalhos Selecionados:', erro);
   }
