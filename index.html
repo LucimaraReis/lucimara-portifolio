@@ -392,6 +392,7 @@
     display: flex; flex-wrap: wrap; justify-content: center; align-items: flex-start; gap: 2rem 2.4rem;
     max-width: 1000px; margin: 3rem auto 0;
   }
+  .portfolio-categoria .polaroid-grade{ margin-top: 0; }
   .polaroid-item{ width: 200px; display:flex; flex-direction:column; align-items:center; }
   .polaroid-caption{ margin-top: .8rem; text-align:center; }
   .polaroid-caption-titulo{
@@ -680,7 +681,8 @@
     <p class="eyebrow center">portfólio</p>
     <h2 class="section-title center">trabalhos <em>selecionados</em></h2>
     <p class="portfolio-intro">Uma seleção de conteúdos criados para mostrar produtos com estética, rotina, narrativa e intenção comercial.</p>
-    <div id="portfolioGrid"></div>
+    <div class="filters" id="filters"></div>
+    <div class="portfolio-grid" id="portfolioGrid"></div>
   </section>
 
   <!-- ============================== ABORDAGEM ============================== -->
@@ -697,62 +699,44 @@
     <p class="eyebrow center">registros</p>
     <h2 class="section-title center">fotografia <em>UGC</em> & lifestyle</h2>
     <p class="portfolio-intro">Imagens pensadas para social media, campanhas e outros canais digitais da marca.</p>
-    <div class="filters" id="fotosFiltros">
-      <button class="filter-btn active" data-fotos-cat="todas">todas</button>
-      <button class="filter-btn" data-fotos-cat="produto em uso">produto em uso</button>
-      <button class="filter-btn" data-fotos-cat="still de produto">still de produto</button>
-      <button class="filter-btn" data-fotos-cat="lifestyle com marca">lifestyle com marca</button>
-      <button class="filter-btn" data-fotos-cat="rotina e consumo">rotina e consumo</button>
+    <div class="portfolio-categoria">
+      <div class="portfolio-categoria-header">
+        <h3 class="portfolio-categoria-titulo">Beleza</h3>
+        <p class="portfolio-categoria-texto">Conteúdo com foco em rotina de autocuidado, textura do produto e experiência de uso.</p>
+      </div>
+      <div class="polaroid-grade">
+        <div class="polaroid-item"><div class="polaroid p2"><div class="polaroid-img" style="background:url('Fotos%20do%20portifolio/loreal%20chuveiro.jpeg') center/cover;"></div></div></div>
+        <div class="polaroid-item"><div class="polaroid p10"><div class="polaroid-img" style="background:url('Fotos%20do%20portifolio/Solar%20uso.jpeg') center/cover;"></div></div></div>
+        <div class="polaroid-item"><div class="polaroid p7"><div class="polaroid-img" style="background:url('Fotos%20do%20portifolio/Foto%20UGC-%20skincare.jpeg') center/cover;"></div></div></div>
+        <div class="polaroid-item"><div class="polaroid p8"><div class="polaroid-img" style="background:url('Fotos%20do%20portifolio/solar%20aberto.jpeg') center/cover;"></div></div></div>
+        <div class="polaroid-item"><div class="polaroid p1"><div class="polaroid-img" style="background:url('Fotos%20do%20portifolio/IMG_1714.JPEG') center/cover;"></div></div></div>
+      </div>
     </div>
-    <!-- EDITE AQUI: adicione mais fotos suas mantendo a classe "polaroid-item" e o data-categoria -->
-    <div class="polaroid-grade" id="polaroidGrade">
-      <div class="polaroid-item" data-categoria="produto em uso">
-        <div class="polaroid p2"><div class="polaroid-img" style="background:url('Fotos%20do%20portifolio/loreal%20chuveiro.jpeg') center/cover;"></div></div>
-        <div class="polaroid-caption"><p class="polaroid-caption-titulo">Produto em uso</p><p class="polaroid-caption-texto">Sensorialidade, contexto real de banho e demonstração do produto em ação.</p></div>
+
+    <div class="portfolio-categoria">
+      <div class="portfolio-categoria-header">
+        <h3 class="portfolio-categoria-titulo">Lifestyle</h3>
+        <p class="portfolio-categoria-texto">Conteúdo com foco em ritual, aconchego e experiência de marca dentro da rotina.</p>
+        <p class="portfolio-categoria-objetivo">Objetivo: conectar o produto a momentos reais de pausa, prazer e identificação.</p>
       </div>
-      <div class="polaroid-item" data-categoria="produto em uso">
-        <div class="polaroid p10"><div class="polaroid-img" style="background:url('Fotos%20do%20portifolio/Solar%20uso.jpeg') center/cover;"></div></div>
-        <div class="polaroid-caption"><p class="polaroid-caption-titulo">Produto em uso</p><p class="polaroid-caption-texto">Aplicação real do produto dentro de uma rotina de beleza prática e natural.</p></div>
+      <div class="polaroid-grade">
+        <div class="polaroid-item"><div class="polaroid p9"><div class="polaroid-img" style="background:url('Fotos%20do%20portifolio/Foto%20UGC-capsula.jpeg') center/cover;"></div></div></div>
+        <div class="polaroid-item"><div class="polaroid p5"><div class="polaroid-img" style="background:url('Fotos%20do%20portifolio/Foto%20UGC-%20Mo%C3%A7a.jpeg') center/cover;"></div></div></div>
+        <div class="polaroid-item"><div class="polaroid p11"><div class="polaroid-img" style="background:url('Fotos%20do%20portifolio/IMG_2140.PNG') center/cover;"></div></div></div>
+        <div class="polaroid-item"><div class="polaroid p12"><div class="polaroid-img" style="background:url('Fotos%20do%20portifolio/moca.jpeg') center/cover;"></div></div></div>
+        <div class="polaroid-item"><div class="polaroid p13"><div class="polaroid-img" style="background:url('Fotos%20do%20portifolio/IMG_2165.JPEG') center/cover;"></div></div></div>
       </div>
-      <div class="polaroid-item" data-categoria="rotina e consumo">
-        <div class="polaroid p9"><div class="polaroid-img" style="background:url('Fotos%20do%20portifolio/Foto%20UGC-capsula.jpeg') center/cover;"></div></div>
-        <div class="polaroid-caption"><p class="polaroid-caption-titulo">Rotina e consumo</p><p class="polaroid-caption-texto">Produto presente em um momento real de preparo, pausa e experiência.</p></div>
+    </div>
+
+    <div class="portfolio-categoria">
+      <div class="portfolio-categoria-header">
+        <h3 class="portfolio-categoria-titulo">Bem-estar</h3>
+        <p class="portfolio-categoria-texto">Conteúdo criado para mostrar bem-estar, movimento e autocuidado na vida real.</p>
+        <p class="portfolio-categoria-objetivo">Objetivo: aproximar marcas de um público que busca leveza, constância e identificação.</p>
       </div>
-      <div class="polaroid-item" data-categoria="produto em uso">
-        <div class="polaroid p7"><div class="polaroid-img" style="background:url('Fotos%20do%20portifolio/Foto%20UGC-%20skincare.jpeg') center/cover;"></div></div>
-        <div class="polaroid-caption"><p class="polaroid-caption-titulo">Produto em uso</p><p class="polaroid-caption-texto">Skincare inserido em uma rotina de autocuidado leve, próxima e confiável.</p></div>
-      </div>
-      <div class="polaroid-item" data-categoria="still de produto">
-        <div class="polaroid p8"><div class="polaroid-img" style="background:url('Fotos%20do%20portifolio/solar%20aberto.jpeg') center/cover;"></div></div>
-        <div class="polaroid-caption"><p class="polaroid-caption-titulo">Still de produto</p><p class="polaroid-caption-texto">Detalhe de textura, embalagem e composição visual com intenção comercial.</p></div>
-      </div>
-      <div class="polaroid-item" data-categoria="lifestyle com marca">
-        <div class="polaroid p5"><div class="polaroid-img" style="background:url('Fotos%20do%20portifolio/Foto%20UGC-%20Mo%C3%A7a.jpeg') center/cover;"></div></div>
-        <div class="polaroid-caption"><p class="polaroid-caption-titulo">Lifestyle com marca</p><p class="polaroid-caption-texto">Produto apresentado em contexto de casa, proximidade e identificação.</p></div>
-      </div>
-      <div class="polaroid-item" data-categoria="still de produto">
-        <div class="polaroid p1"><div class="polaroid-img" style="background:url('Fotos%20do%20portifolio/IMG_1714.JPEG') center/cover;"></div></div>
-        <div class="polaroid-caption"><p class="polaroid-caption-titulo">Still de produto</p><p class="polaroid-caption-texto">Imagem objetiva para destacar embalagem, nome do produto e benefício visual.</p></div>
-      </div>
-      <div class="polaroid-item" data-categoria="rotina e consumo">
-        <div class="polaroid p11"><div class="polaroid-img" style="background:url('Fotos%20do%20portifolio/IMG_2140.PNG') center/cover;"></div></div>
-        <div class="polaroid-caption"><p class="polaroid-caption-titulo">Rotina e consumo</p><p class="polaroid-caption-texto">Produtos inseridos em momentos reais de rotina e consumo.</p></div>
-      </div>
-      <div class="polaroid-item" data-categoria="rotina e consumo">
-        <div class="polaroid p12"><div class="polaroid-img" style="background:url('Fotos%20do%20portifolio/moca.jpeg') center/cover;"></div></div>
-        <div class="polaroid-caption"><p class="polaroid-caption-titulo">Rotina e consumo</p><p class="polaroid-caption-texto">Produtos inseridos em momentos reais de rotina e consumo.</p></div>
-      </div>
-      <div class="polaroid-item" data-categoria="rotina e consumo">
-        <div class="polaroid p13"><div class="polaroid-img" style="background:url('Fotos%20do%20portifolio/IMG_2165.JPEG') center/cover;"></div></div>
-        <div class="polaroid-caption"><p class="polaroid-caption-titulo">Rotina e consumo</p><p class="polaroid-caption-texto">Produtos inseridos em momentos reais de rotina e consumo.</p></div>
-      </div>
-      <div class="polaroid-item" data-categoria="lifestyle com marca">
-        <div class="polaroid p3"><div class="polaroid-img" style="background:url('Fotos%20do%20portifolio/Fotos%20UGC%20%20academia.JPEG') center/cover;"></div></div>
-        <div class="polaroid-caption"><p class="polaroid-caption-titulo">Lifestyle com marca</p><p class="polaroid-caption-texto">Cenas cotidianas com potencial de identificação e desejo.</p></div>
-      </div>
-      <div class="polaroid-item" data-categoria="rotina e consumo">
-        <div class="polaroid p14"><div class="polaroid-img" style="background:url('Fotos%20do%20portifolio/dr%20penaut.jpeg') center/cover;"></div></div>
-        <div class="polaroid-caption"><p class="polaroid-caption-titulo">Rotina e consumo</p><p class="polaroid-caption-texto">Produto inserido em uma cena real de treino, com foco em bem-estar, praticidade e identificação.</p></div>
+      <div class="polaroid-grade">
+        <div class="polaroid-item"><div class="polaroid p3"><div class="polaroid-img" style="background:url('Fotos%20do%20portifolio/Fotos%20UGC%20%20academia.JPEG') center/cover;"></div></div></div>
+        <div class="polaroid-item"><div class="polaroid p14"><div class="polaroid-img" style="background:url('Fotos%20do%20portifolio/dr%20penaut.jpeg') center/cover;"></div></div></div>
       </div>
     </div>
   </section>
@@ -955,44 +939,14 @@
   });
   const GRADS = ['grad-1','grad-2','grad-3','grad-4','grad-5'];
   const grid = document.getElementById('portfolioGrid');
+  const filtersEl = document.getElementById('filters');
+  const categorias = ['todos', ...ALLOWED_CATEGORIES];
 
-  // Texto de cada categoria (definido pela Lucimara). Aparece uma única vez
-  // acima dos vídeos daquela categoria — não repetir por vídeo.
-  const CATEGORIA_INFO = {
-    'Beleza': {
-      texto: 'Conteúdo com foco em rotina de autocuidado, textura do produto e experiência de uso.',
-    },
-    'Bem-estar': {
-      texto: 'Conteúdo criado para mostrar bem-estar, movimento e autocuidado na vida real.',
-      objetivo: 'Objetivo: aproximar marcas de um público que busca leveza, constância e identificação.',
-    },
-    'Lifestyle': {
-      texto: 'Conteúdo com foco em ritual, aconchego e experiência de marca dentro da rotina.',
-      objetivo: 'Objetivo: conectar o produto a momentos reais de pausa, prazer e identificação.',
-    },
-  };
-
-  function renderGrid(){
+  function renderGrid(filtro){
     grid.innerHTML = '';
-    ALLOWED_CATEGORIES.forEach(categoria => {
-      const itens = PORTFOLIO_ITEMS.filter(item => item.categoria === categoria);
-      if (!itens.length) return; // só mostra categoria com vídeo real
-      const info = CATEGORIA_INFO[categoria] || {};
-
-      const grupo = document.createElement('div');
-      grupo.className = 'portfolio-categoria';
-      grupo.innerHTML = `
-        <div class="portfolio-categoria-header">
-          <h3 class="portfolio-categoria-titulo">${categoria}</h3>
-          <p class="portfolio-categoria-texto">${info.texto || ''}</p>
-          ${info.objetivo ? `<p class="portfolio-categoria-objetivo">${info.objetivo}</p>` : ''}
-        </div>
-      `;
-
-      const subgrid = document.createElement('div');
-      subgrid.className = 'portfolio-grid';
-
-      itens.forEach((item, i) => {
+    PORTFOLIO_ITEMS
+      .filter(item => filtro === 'todos' || item.categoria === filtro)
+      .forEach((item, i) => {
         const temVideo = !!item.youtubeId;
         const semImagem = !item.capa && !temVideo;
         const card = document.createElement('div');
@@ -1010,36 +964,46 @@
           card.style.cursor = 'pointer';
           card.addEventListener('click', () => abrirVideoModal(item.youtubeId));
         }
+        // EDITE AQUI: para itens ainda sem vídeo, troque o conteúdo por um <video> real quando integrar seus arquivos
         card.innerHTML = `
           <span class="video-tag">${item.categoria}</span>
           ${temVideo ? '<span class="about-video-badge">▶</span>' : ''}
         `;
-        subgrid.appendChild(card);
-      });
 
-      grupo.appendChild(subgrid);
-      grid.appendChild(grupo);
-    });
+        const wrapper = document.createElement('div');
+        wrapper.className = 'portfolio-item';
+        wrapper.appendChild(card);
+
+        if (item.descricao) {
+          const legenda = document.createElement('div');
+          legenda.className = 'portfolio-caption';
+          legenda.innerHTML = `
+            <p class="portfolio-caption-titulo">${item.descricao.linha}</p>
+            <p class="portfolio-caption-texto">${item.descricao.texto}</p>
+            <p class="portfolio-caption-objetivo">${item.descricao.objetivo}</p>
+          `;
+          wrapper.appendChild(legenda);
+        }
+
+        grid.appendChild(wrapper);
+      });
   }
 
-  renderGrid();
+  categorias.forEach(cat => {
+    const btn = document.createElement('button');
+    btn.className = 'filter-btn' + (cat === 'todos' ? ' active' : '');
+    btn.textContent = cat;
+    btn.addEventListener('click', () => {
+      filtersEl.querySelectorAll('.filter-btn').forEach(b => b.classList.remove('active'));
+      btn.classList.add('active');
+      renderGrid(cat);
+    });
+    filtersEl.appendChild(btn);
+  });
+  renderGrid('todos');
   } catch (erro) {
     console.error('Erro ao montar a seção de Trabalhos Selecionados:', erro);
   }
-
-  // ============================== FOTOS UGC: filtro por categoria ==============================
-  const fotosFiltrosEl = document.getElementById('fotosFiltros');
-  const polaroids = document.querySelectorAll('#polaroidGrade .polaroid-item');
-  fotosFiltrosEl.querySelectorAll('.filter-btn').forEach(btn => {
-    btn.addEventListener('click', () => {
-      fotosFiltrosEl.querySelectorAll('.filter-btn').forEach(b => b.classList.remove('active'));
-      btn.classList.add('active');
-      const cat = btn.dataset.fotosCat;
-      polaroids.forEach(p => {
-        p.style.display = (cat === 'todas' || p.dataset.categoria === cat) ? '' : 'none';
-      });
-    });
-  });
 
   // ============================== RESULTADOS: barras animadas ==============================
   // Seção removida por enquanto — este bloco só roda se ela existir na página.
