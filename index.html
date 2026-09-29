@@ -407,7 +407,7 @@
 
   /* ============================== MARCAS ============================== */
   .marcas-grid{
-    display:grid; grid-template-columns: repeat(4, 1fr); gap: 1.2rem;
+    display:grid; grid-template-columns: repeat(4, 1fr); gap: 1.2rem; align-items: start;
     max-width: 1100px; margin: 3rem auto 0;
   }
   .marca-card{
@@ -645,7 +645,10 @@
     .polaroid{ width: 42vw; }
     .crio-grid{ grid-template-columns: 1fr; }
     .marcas-grid{ grid-template-columns: repeat(2, 1fr); }
-    .marcas-grid .marca-card:last-child{ grid-column: 1 / -1; max-width: 48%; margin: 0 auto; }
+    #abordagem, .editorial-band{ min-height: auto; padding-top: 4.5rem; padding-bottom: 4.5rem; }
+  }
+  @media (max-width: 400px){
+    .marcas-grid{ grid-template-columns: 1fr; }
   }
 </style>
 </head>
