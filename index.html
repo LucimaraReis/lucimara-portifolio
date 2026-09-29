@@ -405,6 +405,28 @@
   .crio-nome{ font-family: var(--font-display); font-weight:400; font-size: 1.05rem; color: var(--vinho); margin-bottom: .5rem; }
   .crio-desc{ font-size: .82rem; color: var(--texto-suave); line-height:1.5; }
 
+  /* ============================== MARCAS ============================== */
+  .marcas-grid{
+    display:grid; grid-template-columns: repeat(4, 1fr); gap: 1.2rem;
+    max-width: 1100px; margin: 3rem auto 0;
+  }
+  .marca-card{
+    aspect-ratio: 4/3; display:flex; align-items:center; justify-content:center;
+    border: 1px dashed rgba(74,90,52,.3); border-radius: 16px; background: var(--off-white);
+    transition: transform .35s ease, box-shadow .35s ease, border-color .35s ease;
+  }
+  .marca-card:hover{ transform: translateY(-3px); border-color: var(--vinho-suave); box-shadow: 0 14px 28px rgba(43,46,34,.12); }
+  .marca-card span{ font-size: .72rem; letter-spacing:.08em; text-transform:uppercase; color: var(--texto-suave); }
+  .marca-logo{ max-width: 62%; max-height: 62%; object-fit: contain; border-radius: 8px; }
+  .marca-convite{
+    flex-direction:column; text-align:center; padding: 1rem; gap:.4rem;
+    border: 1px solid var(--vinho); background: var(--vinho);
+  }
+  .marca-convite:hover{ transform: scale(1.03) translateY(-3px); box-shadow: 0 22px 42px rgba(43,46,34,.28); }
+  .marca-convite-titulo{ font-family: var(--font-display); font-weight:400; font-size: 1.05rem; color: var(--off-white); }
+  .marca-convite-sub{ font-size: .78rem; color: var(--bege-rosado); }
+  .marcas-nota{ font-size: .72rem; color: var(--texto-suave); text-align:center; max-width: 620px; margin: 2.4rem auto 0; opacity:.8; }
+
   /* ============================== ABORDAGEM ============================== */
   #abordagem{
     min-height: 100vh; display:flex; align-items:center; justify-content:center;
@@ -609,6 +631,7 @@
     .portfolio-grid{ grid-template-columns: repeat(2, 1fr); }
     .metrics-grid{ grid-template-columns: repeat(2, 1fr); }
     .crio-grid{ grid-template-columns: repeat(2, 1fr); }
+    .marcas-grid{ grid-template-columns: repeat(3, 1fr); }
   }
   @media (max-width: 640px){
     .nav-links, .nav-cta{ display:none; }
@@ -621,6 +644,8 @@
     .polaroid-item{ width: 42vw; }
     .polaroid{ width: 42vw; }
     .crio-grid{ grid-template-columns: 1fr; }
+    .marcas-grid{ grid-template-columns: repeat(2, 1fr); }
+    .marcas-grid .marca-card:last-child{ grid-column: 1 / -1; max-width: 48%; margin: 0 auto; }
   }
 </style>
 </head>
@@ -752,6 +777,30 @@
     <p class="portfolio-intro">Uma seleção de conteúdos criados para mostrar produtos com estética, rotina, narrativa e intenção comercial.</p>
     <div class="filters" id="filters"></div>
     <div class="portfolio-grid" id="portfolioGrid"></div>
+  </section>
+
+  <!-- ============================== MARCAS ============================== -->
+  <section id="marcas" class="marcas reveal stagger">
+    <p class="eyebrow center">marcas</p>
+    <h2 class="section-title center">Marcas presentes no meu <em>portfólio</em></h2>
+    <p class="portfolio-intro">Conteúdos criados a partir de produtos, experiências reais, recebidos e parcerias, explorando diferentes formatos de comunicação, narrativa e demonstração de produto.</p>
+    <div class="marcas-grid">
+      <div class="marca-card"><img class="marca-logo" src="Fotos%20do%20portifolio/creamy.png" alt="Creamy Skincare"></div>
+      <div class="marca-card"><img class="marca-logo" src="Fotos%20do%20portifolio/lio.jpg" alt="lio."></div>
+      <div class="marca-card"><img class="marca-logo" src="Fotos%20do%20portifolio/lore.png" alt="L'Oréal Paris"></div>
+      <div class="marca-card"><img class="marca-logo" src="Fotos%20do%20portifolio/nescafe-dolce-gusto-logo-png_seeklogo-317814.png" alt="Nescafé Dolce Gusto"></div>
+      <div class="marca-card"><img class="marca-logo" src="Fotos%20do%20portifolio/sou%20fit.png" alt="SOUFIT"></div>
+      <div class="marca-card"><img class="marca-logo" src="Fotos%20do%20portifolio/basike.jpg" alt="basike"></div>
+      <div class="marca-card"><img class="marca-logo" src="Fotos%20do%20portifolio/Leite_Mo%C3%A7a.jpg" alt="Nestlé Moça"></div>
+      <div class="marca-card"><img class="marca-logo" src="Fotos%20do%20portifolio/WhatsApp%20Image%202026-09-29%20at%2015.19.54.jpeg" alt="Minimal Skincare"></div>
+      <div class="marca-card"><span>Inserir logo</span></div>
+      <div class="marca-card"><span>Inserir logo</span></div>
+      <div class="marca-card marca-convite">
+        <p class="marca-convite-titulo">Aguardando a sua marca.</p>
+        <p class="marca-convite-sub">Quem sabe o próximo conteúdo seja o seu?</p>
+      </div>
+    </div>
+    <p class="marcas-nota">Os conteúdos apresentados incluem produções autorais, recebidos e parcerias. A presença de uma marca nesta seção não representa necessariamente vínculo comercial.</p>
   </section>
 
   <!-- ============================== FRASE EDITORIAL ============================== -->
