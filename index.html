@@ -64,8 +64,8 @@
   img, video{ max-width:100%; display:block; }
   a{ text-decoration:none; color:inherit; }
   em{ font-family: var(--font-italic); font-style: italic; color: var(--vinho); }
-  section{ padding: 7rem 6vw; position: relative; }
-  @media (max-width: 768px){ section{ padding: 5rem 6vw; } }
+  section{ padding: 5.5rem 6vw; position: relative; }
+  @media (max-width: 768px){ section{ padding: 4rem 6vw; } }
 
   .eyebrow{
     font-family: var(--font-sans);
@@ -267,7 +267,7 @@
 
   /* ============================== SOBRE ============================== */
   .about{
-    display:grid; grid-template-columns: 1fr 1.2fr; gap: 3rem; align-items:center;
+    display:grid; grid-template-columns: 1.15fr 1fr; gap: 2.4rem; align-items:center;
     background-color: var(--off-white);
     /* textura sutil de mármore nude simulada só com CSS, sem imagem */
     background-image:
@@ -277,7 +277,7 @@
       radial-gradient(at 30% 85%, rgba(74,90,52,.05) 0px, transparent 40%);
   }
   .about-intro{
-    grid-column: 1 / -1; max-width: 640px; margin: 0 auto 1.5rem; text-align: center;
+    grid-column: 1 / -1; max-width: 640px; margin: 0 auto 1.1rem; text-align: center;
   }
   .about-intro .section-title{ margin-bottom: 1rem; }
   .about-intro p{ color: var(--texto-suave); }
@@ -303,8 +303,8 @@
   }
   .about-text{ max-width: 640px; }
   .about-text h2{ margin-bottom: 1.4rem; }
-  .about-text p{ color: var(--texto-suave); max-width: 480px; margin-bottom: 1.8rem; }
-  .pills{ display:flex; flex-wrap:wrap; gap: .6rem; margin-bottom: 2.2rem; }
+  .about-text p{ color: var(--texto-suave); max-width: 480px; margin-bottom: 1.4rem; }
+  .pills{ display:flex; flex-wrap:wrap; gap: .6rem; margin-bottom: 1.6rem; }
   .pill{
     font-size: .72rem; letter-spacing:.08em; text-transform:uppercase;
     padding: .5rem 1rem; border: 1px solid var(--vinho-suave); border-radius: 999px; color: var(--vinho);
@@ -481,6 +481,7 @@
   .contact{ background: var(--vinho-escuro); color: var(--off-white); }
   .contact-inner{ max-width: 780px; margin: 0 auto; text-align:center; }
   .contact-title{ font-family: var(--font-display); font-weight:300; font-size: clamp(2.4rem, 6vw, 4.2rem); margin-bottom: 1.2rem; }
+  .contact-title em{ color: var(--bege-rosado); }
   .contact-sub{ color: var(--rosa-claro); max-width: 480px; margin: 0 auto 2.4rem; }
   .socials{ display:flex; gap: 1.6rem; justify-content:center; margin-bottom: 3rem; flex-wrap:wrap; }
   .socials a{ font-size: .78rem; letter-spacing:.1em; text-transform:uppercase; border-bottom: 1px solid rgba(255,255,255,.35); padding-bottom: 3px; }
@@ -500,33 +501,6 @@
   .contact-form .btn:hover{ background: var(--off-white); color: var(--vinho-escuro); }
 
   footer{ text-align:center; padding: 2.2rem; font-size: .74rem; color: var(--texto-suave); letter-spacing:.05em; }
-
-  /* ============================== POP-UP ============================== */
-  .popup-overlay{
-    position: fixed; inset:0; background: rgba(43,46,34,.55); backdrop-filter: blur(4px);
-    display:flex; align-items:center; justify-content:center; z-index: 900;
-    opacity:0; visibility:hidden; transition: opacity .5s ease, visibility .5s ease;
-    padding: 2rem;
-  }
-  .popup-overlay.active{ opacity:1; visibility:visible; }
-  .popup{
-    background: var(--off-white); max-width: 780px; width:100%; display:grid; grid-template-columns: .9fr 1.1fr;
-    border-radius: 4px; overflow:hidden; box-shadow: 0 40px 80px rgba(43,46,34,.35);
-    transform: translateY(30px); transition: transform .5s ease;
-  }
-  .popup-overlay.active .popup{ transform: translateY(0); }
-  .popup-image{ min-height: 100%; }
-  .popup-content{ padding: 2.6rem; position:relative; }
-  .popup-content h3{ font-family: var(--font-display); font-weight:400; font-size: 1.5rem; margin: .8rem 0 1.6rem; }
-  .popup-close{
-    position:absolute; top: 1rem; right: 1.2rem; background:none; border:none; font-size: 1.4rem; cursor:pointer; color: var(--vinho);
-  }
-  .popup-form{ display:flex; flex-direction:column; gap: 1rem; }
-  .popup-form .field label{ color: var(--texto-suave); }
-  .popup-form .field input, .popup-form .field textarea{
-    border-bottom: 1px solid rgba(74,90,52,.25); color: var(--texto);
-  }
-  .popup-form .btn{ align-self:flex-start; margin-top: .6rem; }
 
   /* ============================== MODAL DE VÍDEO ============================== */
   .video-modal-overlay{
@@ -553,13 +527,11 @@
     .hero{ grid-template-columns: 1fr; padding-top: 7.5rem; }
     .hero-photo{ order:-1; }
     .about{ grid-template-columns: 1fr; }
-    .about-video{ order:-1; margin-bottom: 1.4rem; }
+    .about-video{ order:-1; margin-bottom: 1.1rem; }
     .vivencia{ grid-template-columns: 1fr; }
     .vivencia-collage{ order:-1; margin-bottom: 2.5rem; grid-template-columns: repeat(2, 1fr); }
     .portfolio-grid{ grid-template-columns: repeat(2, 1fr); }
     .metrics-grid{ grid-template-columns: repeat(2, 1fr); }
-    .popup{ grid-template-columns: 1fr; }
-    .popup-image{ min-height: 180px; }
   }
   @media (max-width: 640px){
     .nav-links, .nav-cta{ display:none; }
@@ -665,9 +637,7 @@
       </div>
       <div class="placeholder-img collage-foto collage-pequena" style="background: url('Fotos%20do%20portifolio/life%20style.jpeg') center/cover;"></div>
       <div class="placeholder-img collage-foto collage-pequena" style="background: url('Fotos%20do%20portifolio/Foto%20UGC-%20Creator.PNG') center/cover;"></div>
-      <div class="placeholder-img collage-foto collage-pequena" style="background: url('Fotos%20do%20portifolio/IMG_1546.PNG') center bottom/cover; cursor:pointer;" onclick="abrirVideoModal('5ppX1Oc9Jdw')">
-        <span class="about-video-badge">▶</span>
-      </div>
+      <div class="placeholder-img collage-foto collage-pequena" style="background: url('Fotos%20do%20portifolio/IMG_1546.PNG') center bottom/cover;"></div>
     </div>
     <div class="vivencia-texto">
       <p class="eyebrow">experiência</p>
@@ -764,20 +734,13 @@
       <div class="service-row"><span class="service-num">04</span><span class="service-name">Fotografia de produto e lifestyle</span><span class="service-desc">fotos para redes sociais e campanhas, com estética alinhada à marca e foco na apresentação natural do produto.</span></div>
       <div class="service-row"><span class="service-num">05</span><span class="service-name">Direção criativa e edição</span><span class="service-desc">conceito, cenas, enquadramentos, cortes e ritmo desenvolvidos de acordo com a identidade da marca e o objetivo da campanha.</span></div>
     </div>
-    <div class="service-cta">
-      <div class="service-cta-texto">
-        <h3>Vamos criar algo que o seu consumidor queira assistir?</h3>
-        <p>Me conte sobre sua campanha, produto ou objetivo. Vamos transformar sua ideia em um conteúdo natural, bem pensado e pronto para conectar com pessoas reais.</p>
-      </div>
-      <a href="https://wa.me/5531988229641" target="_blank" rel="noopener" class="btn btn-solid">fale comigo</a>
-    </div>
   </section>
 
   <!-- ============================== CONTATO ============================== -->
   <section id="contato" class="contact reveal">
     <div class="contact-inner">
       <p class="eyebrow light">contato</p>
-      <h2 class="contact-title">Vamos criar algo que o seu <em>consumidor</em> queira assistir?</h2>
+      <h2 class="contact-title">Vamos criar conteúdo que o seu <em>consumidor</em> queira assistir?</h2>
       <p class="contact-sub">Me conte sobre sua campanha, produto ou objetivo. Vamos transformar sua ideia em um conteúdo natural, bem pensado e pronto para conectar com pessoas reais.</p>
       <!-- EDITE AQUI: links reais de redes sociais e contato -->
       <div class="socials">
@@ -804,27 +767,6 @@
   </section>
 
   <footer>© <span id="ano"></span> Lucimara Reis. todos os direitos reservados.</footer>
-
-  <!-- ============================== POP-UP ============================== -->
-  <div class="popup-overlay" id="popupOverlay">
-    <div class="popup">
-      <div class="placeholder-img popup-image" style="background: url('Fotos%20do%20portifolio/IMG_1900.PNG') center/cover;"></div>
-      <div class="popup-content">
-        <button class="popup-close" id="popupClose" aria-label="fechar">×</button>
-        <p class="eyebrow">amou o portfólio?</p>
-        <h3>vamos criar um conteúdo que a sua audiência realmente <em>conecta</em>.</h3>
-        <!-- TODO: conectar formulário a um serviço real (Formspree, EmailJS, backend próprio) -->
-        <form class="popup-form" id="popupForm">
-          <div class="field"><label for="p-nome">nome</label><input id="p-nome" type="text" placeholder="seu nome" required></div>
-          <div class="field"><label for="p-empresa">empresa</label><input id="p-empresa" type="text" placeholder="nome da marca"></div>
-          <div class="field"><label for="p-email">e-mail</label><input id="p-email" type="email" placeholder="seu@email.com" required></div>
-          <div class="field"><label for="p-whats">whatsapp</label><input id="p-whats" type="tel" placeholder="(00) 00000-0000"></div>
-          <div class="field"><label for="p-briefing">briefing</label><textarea id="p-briefing" rows="2" placeholder="conte sobre o projeto..."></textarea></div>
-          <button type="submit" class="btn btn-solid">quero conversar</button>
-        </form>
-      </div>
-    </div>
-  </div>
 
   <!-- ============================== MODAL DE VÍDEO ============================== -->
   <div class="video-modal-overlay" id="videoModalOverlay">
@@ -1014,28 +956,6 @@
     }, { threshold: 0.3 }).observe(resultsSection);
   }
 
-  // ============================== POP-UP ==============================
-  const popupOverlay = document.getElementById('popupOverlay');
-  const popupClose = document.getElementById('popupClose');
-  let popupShown = false;
-  function showPopup(){
-    if (popupShown) return;
-    popupShown = true;
-    popupOverlay.classList.add('active');
-    document.body.style.overflow = 'hidden';
-  }
-  function hidePopup(){
-    popupOverlay.classList.remove('active');
-    document.body.style.overflow = '';
-  }
-  setTimeout(showPopup, 8000);
-  window.addEventListener('scroll', () => {
-    const max = document.documentElement.scrollHeight - window.innerHeight;
-    if (max > 0 && window.scrollY / max >= 0.5) showPopup();
-  });
-  popupClose.addEventListener('click', hidePopup);
-  popupOverlay.addEventListener('click', (e) => { if (e.target === popupOverlay) hidePopup(); });
-
   // ============================== MODAL DE VÍDEO ==============================
   const videoModalOverlay = document.getElementById('videoModalOverlay');
   const videoModalFrame = document.getElementById('videoModalFrame');
@@ -1060,10 +980,8 @@
     e.preventDefault();
     alert('Obrigada pelo contato! Este é um formulário de demonstração — conecte-o a um serviço como Formspree ou EmailJS para receber mensagens de verdade.');
     e.target.reset();
-    hidePopup();
   }
   document.getElementById('contactForm').addEventListener('submit', handleSubmit);
-  document.getElementById('popupForm').addEventListener('submit', handleSubmit);
 
   // ============================== ANO NO RODAPÉ ==============================
   document.getElementById('ano').textContent = new Date().getFullYear();
