@@ -243,11 +243,11 @@
 
   .hero-right{ position: relative; }
   .hero-collage{
-    display:grid; grid-template-columns: 1.3fr 1fr; grid-template-rows: repeat(3, 1fr);
-    gap: 10px; aspect-ratio: 4/5;
+    display:grid; grid-template-columns: 1.2fr 1fr; gap: 10px; aspect-ratio: 4/5;
   }
-  .hero-collage-principal{ grid-row: 1 / -1; border-radius: 28px; box-shadow: 0 20px 40px rgba(43,46,34,.18); transition: transform .4s ease; }
-  .hero-collage-pequena{ border-radius: 16px; box-shadow: 0 14px 28px rgba(43,46,34,.14); transition: transform .4s ease; }
+  .hero-collage-principal{ border-radius: 28px; box-shadow: 0 20px 40px rgba(43,46,34,.18); transition: transform .4s ease; overflow:hidden; }
+  .hero-collage-pequenas{ display:grid; grid-template-columns: repeat(2, 1fr); grid-template-rows: repeat(3, 1fr); gap: 8px; }
+  .hero-collage-pequena{ border-radius: 14px; box-shadow: 0 14px 28px rgba(43,46,34,.14); transition: transform .4s ease; overflow:hidden; }
   .hero-collage-principal:hover, .hero-collage-pequena:hover{ transform: scale(1.025); }
 
   /* ============================== TICKER ============================== */
@@ -557,12 +557,17 @@
     </div>
     <div class="hero-right">
       <p class="handle-tag">@lucimarareis.ugc</p>
-      <!-- CAPA: 1 foto principal + 3 fotos complementares. Troque os caminhos abaixo para atualizar as imagens. -->
+      <!-- CAPA: 1 foto principal + 6 fotos complementares. Troque os caminhos abaixo para atualizar as imagens. -->
       <div class="hero-collage">
         <div class="hero-collage-principal placeholder-img" style="background: url('Fotos%20do%20portifolio/Capa%20Portifolio.PNG') center top/cover;"></div>
-        <div class="hero-collage-pequena placeholder-img" style="background: url('Fotos%20do%20portifolio/cheema.jpeg') center top/cover;"></div>
-        <div class="hero-collage-pequena placeholder-img" style="background: url('Fotos%20do%20portifolio/Foto%20UGC-%20Creator.PNG') center/cover;"></div>
-        <div class="hero-collage-pequena placeholder-img" style="background: url('Fotos%20do%20portifolio/life%20style.jpeg') center/cover;"></div>
+        <div class="hero-collage-pequenas">
+          <div class="hero-collage-pequena placeholder-img" style="background: url('Fotos%20do%20portifolio/cheema.jpeg') center top/cover;"></div>
+          <div class="hero-collage-pequena placeholder-img" style="background: url('Fotos%20do%20portifolio/Foto%20UGC-%20Creator.PNG') center/cover;"></div>
+          <div class="hero-collage-pequena placeholder-img" style="background: url('Fotos%20do%20portifolio/life%20style.jpeg') center/cover;"></div>
+          <div class="hero-collage-pequena placeholder-img" style="background: url('P3.jpeg') center/cover;"></div>
+          <div class="hero-collage-pequena placeholder-img" style="background: url('p1.jpeg') center/cover;"></div>
+          <div class="hero-collage-pequena placeholder-img" style="background: url('Fotos%20do%20portifolio/Foto%20UGC%20-Moda.JPEG') center/cover;"></div>
+        </div>
       </div>
     </div>
   </section>
